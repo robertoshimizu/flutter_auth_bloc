@@ -10,21 +10,24 @@ part 'authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  // final UserRepository userRepository;
+  final UserRepository userRepository;
 
-  AuthenticationBloc() : super(AuthenticationInitial());
+  AuthenticationBloc({@required this.userRepository})
+      : assert(userRepository != null),
+        super(AuthenticationInitial());
 
   AuthenticationState get initialState => AuthenticationInitial();
-  UserRepository userRepository;
 
   @override
   Stream<AuthenticationState> mapEventToState(
     AuthenticationEvent event,
   ) async* {
     if (event is AuthenticationStarted) {
-      // final bool hasToken = await userRepository.hasToken();
-      final bool hasToken = false;
+      final bool hasToken = await userRepository.hasToken();
 
+      if (hasToken == null) {
+        yield AuthenticationFailure();
+      }
       if (hasToken) {
         yield AuthenticationSucess();
       } else {
@@ -34,13 +37,22 @@ class AuthenticationBloc
 
     if (event is AuthenticationLoggedIn) {
       yield AuthenticationInProgress();
+      try {
+        await userRepository.persistToken(token: event.token);
+        yield AuthenticationSucess();
+      } catch (e) {
+        print(e);
+        yield AuthenticationFailure();
+      }
+
       // await userRepository.persistToken(token: event.token);
-      yield AuthenticationSucess();
+      // if return from repository fails, throw error and return to login page
+
     }
 
     if (event is AuthenticationLoggedOut) {
       yield AuthenticationInProgress();
-      // await userRepository.deleteToken();
+      await userRepository.deleteToken();
       yield AuthenticationInitial();
     }
   }

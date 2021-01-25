@@ -2,8 +2,8 @@
 
 ### Requirements
 
-1. Telephone field should initialize with no error message
-2. Proceed buttom should initialize disabled
+1. ✅ Telephone field should initialize with no error message
+2. ✅ Proceed buttom should initialize disabled
 3. Mobile phone field should have a format mask of (##) ##### ####
 4. Mobile phone field should check for a full length number
 5. Mobile phone field cannot accept blank

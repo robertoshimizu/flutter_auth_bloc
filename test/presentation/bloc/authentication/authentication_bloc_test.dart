@@ -1,31 +1,46 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_auth_bloc/domain/repository/user_repository.dart';
 import 'package:flutter_auth_bloc/presentation/bloc/bloc.dart';
+import 'package:flutter_test/flutter_test.dart';
+
 import 'package:mockito/mockito.dart';
-import 'package:test/test.dart';
-import 'package:bloc_test/bloc_test.dart';
 
 class MockUserRepository extends Mock implements UserRepository {}
 
 void main() {
-  group('Authentication Bloc Test', () {
+  group('A - User Repository is instantiated', () {
+    // tearDown(() {
+    //   authbloc.close();
+    // });
+
+    test('1 - throws when userRepository is null', () {
+      expect(
+        () => AuthenticationBloc(
+          userRepository: null,
+        ),
+        throwsAssertionError,
+      );
+    });
+  });
+  group('B - Authentication Bloc Test', () {
     AuthenticationBloc authbloc;
     UserRepository userRepository;
 
     setUp(() {
-      authbloc = AuthenticationBloc();
       userRepository = MockUserRepository();
+      authbloc = AuthenticationBloc(userRepository: userRepository);
     });
 
     tearDown(() {
       authbloc.close();
     });
 
-    test('initial state is AuthenticationInitial', () {
+    test('1 - initial state is AuthenticationInitial', () {
       expect(authbloc.state, AuthenticationInitial());
     });
 
     blocTest<AuthenticationBloc, AuthenticationState>(
-      'emits [AuthenticationFailure] when AuthenticationStarted hasToken is null',
+      '2 - emits [AuthenticationFailure] when AuthenticationStarted hasToken is false',
       build: () {
         when(userRepository.hasToken()).thenAnswer((_) async => false);
         return authbloc;
@@ -37,7 +52,7 @@ void main() {
     );
 
     blocTest<AuthenticationBloc, AuthenticationState>(
-      'emits [AuthenticationSucess] when AuthenticationStarted hasToken is true',
+      '3 - emits [AuthenticationSucess] when AuthenticationStarted hasToken is true',
       build: () {
         when(userRepository.hasToken()).thenAnswer((_) async => true);
         return authbloc;
@@ -45,39 +60,40 @@ void main() {
       act: (bloc) {
         bloc.add(AuthenticationStarted());
       },
-      expect: [AuthenticationFailure()],
+      expect: [AuthenticationSucess()],
     );
 
     blocTest<AuthenticationBloc, AuthenticationState>(
-      'emits [AuthenticationSucess] when Repository confirms token',
-      build: () => authbloc,
+      '4 - emits [AuthenticationSucess] when Repository confirms token',
+      build: () {
+        when(userRepository.persistToken(token: 'any')).thenAnswer((_) => null);
+        return authbloc;
+      },
       act: (bloc) {
-        String token;
-        token = 'any';
-        bloc.add(AuthenticationLoggedIn(token: token));
+        bloc.add(AuthenticationLoggedIn(token: 'any'));
       },
       expect: [AuthenticationInProgress(), AuthenticationSucess()],
     );
     blocTest<AuthenticationBloc, AuthenticationState>(
-      'emits [AuthenticationFailure] when Repository rejects token',
-      build: () => authbloc,
+      '5 - emits [AuthenticationFailure] when Repository rejects token',
+      build: () {
+        when(userRepository.persistToken(token: 'any'))
+            .thenThrow(Exception('token invalid'));
+        return authbloc;
+      },
       act: (bloc) {
-        String token;
-        token = 'any';
-        bloc.add(AuthenticationLoggedIn(token: token));
+        bloc.add(AuthenticationLoggedIn(token: 'any'));
       },
       expect: [AuthenticationInProgress(), AuthenticationFailure()],
     );
 
     blocTest<AuthenticationBloc, AuthenticationState>(
-      'emits [AuthenticationLoggedOut] when Repository logs user out',
+      '6 - emits [AuthenticationLoggedOut] when Repository logs user out',
       build: () => authbloc,
       act: (bloc) {
-        String token;
-        token = 'any';
         bloc.add(AuthenticationLoggedOut());
       },
-      expect: [AuthenticationInitial()],
+      expect: [AuthenticationInProgress(), AuthenticationInitial()],
     );
   });
 }

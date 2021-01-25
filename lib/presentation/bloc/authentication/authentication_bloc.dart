@@ -23,7 +23,7 @@ class AuthenticationBloc
   ) async* {
     if (event is AuthenticationStarted) {
       // final bool hasToken = await userRepository.hasToken();
-      final bool hasToken = true;
+      final bool hasToken = false;
 
       if (hasToken) {
         yield AuthenticationSucess();

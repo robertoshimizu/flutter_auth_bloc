@@ -43,7 +43,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key key}) : super(key: key);
+  final UserRepository userRepository;
+  MyApp({Key key, this.userRepository}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +59,7 @@ class MyApp extends StatelessWidget {
             return HomePage();
           }
           if (state is AuthenticationFailure) {
-            return LoginPage();
+            return PhoneLoginWrapper();
           }
           if (state is AuthenticationInProgress) {
             return LoadingIndicator();

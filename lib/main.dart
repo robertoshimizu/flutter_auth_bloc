@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_bloc/domain/repository/user_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'presentation/bloc/bloc.dart';
@@ -18,18 +19,21 @@ class SimpleBlocObserver extends BlocObserver {
   }
 
   @override
-  void onError(Bloc bloc, Object error, StackTrace stackTrace) {
+  void onError(Cubit cubit, Object error, StackTrace stackTrace) {
     print(error);
-    super.onError(bloc, error, stackTrace);
+    super.onError(cubit, error, stackTrace);
   }
 }
 
 void main() {
   Bloc.observer = SimpleBlocObserver();
+  UserRepository userRepository;
+  // Needs to inject User Repository Implementation
   runApp(
     BlocProvider<AuthenticationBloc>(
       create: (context) {
-        return AuthenticationBloc()..add(AuthenticationStarted());
+        return AuthenticationBloc(userRepository: userRepository)
+          ..add(AuthenticationStarted());
       },
       child: MyApp(),
     ),
@@ -52,7 +56,7 @@ class MyApp extends StatelessWidget {
             return HomePage();
           }
           if (state is AuthenticationFailure) {
-            return LoginPage();
+            return SplashPage();
           }
           if (state is AuthenticationInProgress) {
             return LoadingIndicator();

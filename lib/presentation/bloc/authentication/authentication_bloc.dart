@@ -41,7 +41,7 @@ class AuthenticationBloc
     if (event is AuthenticationLoggedOut) {
       yield AuthenticationInProgress();
       // await userRepository.deleteToken();
-      yield AuthenticationFailure();
+      yield AuthenticationInitial();
     }
   }
 }

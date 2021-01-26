@@ -23,6 +23,7 @@ class AuthenticationBloc
     AuthenticationEvent event,
   ) async* {
     if (event is AuthenticationStarted) {
+      yield AuthenticationInProgress();
       final bool hasToken = await userRepository.hasToken();
 
       if (hasToken == null) {
@@ -36,7 +37,6 @@ class AuthenticationBloc
     }
 
     if (event is AuthenticationLoggedIn) {
-      yield AuthenticationInProgress();
       try {
         await userRepository.persistToken(token: event.token);
         yield AuthenticationSucess();

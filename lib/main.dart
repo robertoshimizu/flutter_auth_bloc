@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auth_bloc/domain/repository/user_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'data/repository/repositories.dart';
 import 'presentation/bloc/bloc.dart';
 import 'presentation/pages/pages.dart';
 
@@ -29,11 +30,11 @@ void main() {
   Bloc.observer = SimpleBlocObserver();
   UserRepository userRepository;
   // Needs to inject User Repository Implementation
+  userRepository = UserRepositoryImpl();
   runApp(
     BlocProvider<AuthenticationBloc>(
       create: (context) {
-        return AuthenticationBloc(userRepository: userRepository)
-          ..add(AuthenticationStarted());
+        return AuthenticationBloc(userRepository: userRepository);
       },
       child: MyApp(),
     ),
@@ -41,7 +42,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key key}) : super(key: key);
+  final UserRepository userRepository;
+  MyApp({Key key, this.userRepository}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +58,7 @@ class MyApp extends StatelessWidget {
             return HomePage();
           }
           if (state is AuthenticationFailure) {
-            return SplashPage();
+            return PhoneLoginWrapper();
           }
           if (state is AuthenticationInProgress) {
             return LoadingIndicator();

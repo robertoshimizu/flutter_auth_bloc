@@ -36,66 +36,82 @@ void main() {
       phoneLoginbloc.close();
     });
 
-    test('1 - initial state is AuthenticationInitial', () {
-      expect(phoneLoginbloc.state, AuthenticationInitial());
+    test('1 - initial state is PhoneloginInitial', () {
+      expect(phoneLoginbloc.state, PhoneloginInitial());
     });
 
-    blocTest<AuthenticationBloc, AuthenticationState>(
-      '2 - emits [AuthenticationFailure] when AuthenticationStarted hasToken is false',
+    blocTest<PhoneloginBloc, PhoneloginState>(
+      '2 - emits [OtpSendEvent()] when AuthServer sends a SMS',
       build: () {
         when(authRepository.sendOtp(phoNo: 'validphonenumber'))
-            .thenAnswer((_) async => false);
+            .thenAnswer((_) async => true);
         return phoneLoginbloc;
       },
       act: (bloc) {
-        bloc.add(SendOtpEvent());
+        bloc.add(SendOtpEvent(
+            phoNo: 'validphonenumber')); // this event is a http request
+        bloc.add(OtpSendEvent()); //This event should be from a http response
       },
-      expect: [AuthenticationFailure()],
+      expect: [LoadingState(), OtpSentState()],
     );
 
-    blocTest<AuthenticationBloc, AuthenticationState>(
-      '3 - emits [AuthenticationSucess] when AuthenticationStarted hasToken is true',
+    blocTest<PhoneloginBloc, PhoneloginState>(
+      '3 - emits [OtpSendEvent()] when AuthServer sends a SMS',
       build: () {
-        when(authRepository.hasToken()).thenAnswer((_) async => true);
+        when(authRepository.sendOtp(phoNo: 'validphonenumber'))
+            .thenAnswer((_) async => true);
         return phoneLoginbloc;
       },
       act: (bloc) {
-        bloc.add(AuthenticationStarted());
+        bloc.add(SendOtpEvent(phoNo: 'validphonenumber'));
+        bloc.add(OtpSendEvent());
       },
-      expect: [AuthenticationSucess()],
+      expect: [LoadingState(), OtpSentState()],
     );
 
-    blocTest<AuthenticationBloc, AuthenticationState>(
-      '4 - emits [AuthenticationSucess] when Repository confirms token',
-      build: () {
-        when(authRepository.persistToken(token: 'any')).thenAnswer((_) => null);
-        return phoneLoginbloc;
-      },
-      act: (bloc) {
-        bloc.add(AuthenticationLoggedIn(token: 'any'));
-      },
-      expect: [AuthenticationInProgress(), AuthenticationSucess()],
-    );
-    blocTest<AuthenticationBloc, AuthenticationState>(
-      '5 - emits [AuthenticationFailure] when Repository rejects token',
-      build: () {
-        when(authRepository.persistToken(token: 'any'))
-            .thenThrow(Exception('token invalid'));
-        return phoneLoginbloc;
-      },
-      act: (bloc) {
-        bloc.add(AuthenticationLoggedIn(token: 'any'));
-      },
-      expect: [AuthenticationInProgress(), AuthenticationFailure()],
-    );
+    // blocTest<AuthenticationBloc, AuthenticationState>(
+    //   '3 - emits [AuthenticationSucess] when AuthenticationStarted hasToken is true',
+    //   build: () {
+    //     when(authRepository.hasToken()).thenAnswer((_) async => true);
+    //     return phoneLoginbloc;
+    //   },
+    //   act: (bloc) {
+    //     bloc.add(AuthenticationStarted());
+    //   },
+    //   expect: [AuthenticationSucess()],
+    // );
 
-    blocTest<AuthenticationBloc, AuthenticationState>(
-      '6 - emits [AuthenticationLoggedOut] when Repository logs user out',
-      build: () => phoneLoginbloc,
-      act: (bloc) {
-        bloc.add(AuthenticationLoggedOut());
-      },
-      expect: [AuthenticationInProgress(), AuthenticationInitial()],
-    );
+    // blocTest<AuthenticationBloc, AuthenticationState>(
+    //   '4 - emits [AuthenticationSucess] when Repository confirms token',
+    //   build: () {
+    //     when(authRepository.persistToken(token: 'any')).thenAnswer((_) => null);
+    //     return phoneLoginbloc;
+    //   },
+    //   act: (bloc) {
+    //     bloc.add(AuthenticationLoggedIn(token: 'any'));
+    //   },
+    //   expect: [AuthenticationInProgress(), AuthenticationSucess()],
+    // );
+    // blocTest<AuthenticationBloc, AuthenticationState>(
+    //   '5 - emits [AuthenticationFailure] when Repository rejects token',
+    //   build: () {
+    //     when(authRepository.persistToken(token: 'any'))
+    //         .thenThrow(Exception('token invalid'));
+    //     return phoneLoginbloc;
+    //   },
+    //   act: (bloc) {
+    //     bloc.add(AuthenticationLoggedIn(token: 'any'));
+    //   },
+    //   expect: [AuthenticationInProgress(), AuthenticationFailure()],
+    // );
+
+    // blocTest<AuthenticationBloc, AuthenticationState>(
+    //   '6 - emits [AuthenticationLoggedOut] when Repository logs user out',
+    //   build: () => phoneLoginbloc,
+    //   act: (bloc) {
+    //     bloc.add(AuthenticationLoggedOut());
+    //   },
+    //   expect: [AuthenticationInProgress(), AuthenticationInitial()],
+    // );
   });
 }

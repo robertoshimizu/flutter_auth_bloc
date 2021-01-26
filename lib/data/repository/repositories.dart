@@ -1,1 +1,1 @@
-export 'user_repository_implementation.dart';
+export 'auth_repository_implementation.dart';

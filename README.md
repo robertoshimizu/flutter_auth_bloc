@@ -43,7 +43,32 @@ Used application-wide
 `Presentation` is the layer outside `Domain`. `Presentation` crosses the boundaries of the layers to communicate with `Domain`. However, *the Dependency Rule* is never violated. Using polymorphism, `Presentation` communicates with `Domain` using inherited class: classes that implement or extend the Repositories present in the `Domain` layer. Since polymorphism is used, the Repositories passed to `Domain` still adhere to the *Dependency Rule* since as far as `Domain` is concerned, they are abstract. The implementation is hidden behind the polymorphism.
 
 ### Contents of Presentation
-Since `Presentation` is the presentation layer of the application, it is the most framework-dependent layer, as it contains the UI and the event handlers of the UI.  It is this layer, for example, that will wholly contain the **MVC architecture of a GUI**. The Presenters, Views, and Controllers all belong in here. For **every page** in the application, `Presentation` defines at least 3 classes: a Controller, a Presenter, and a View.
+ `Presentation` layer contains the UI in the form of Widgets and also the presentation logic holders, which can be implemented as a ChangeNotifier, `Bloc`, Reducer, ViewModel, MobX Store... This tutorial will implement the BLoC pattern using the flutter_bloc package.
 
-This format differs when using Bloc, whose details and interrelationships will be clarified later on.
+##  Reso Coder's Clean Architecture Proposal
 
+This is a architecture design proposed by ResoCoder using Clean principles:
+
+![alt text](Flutter_Clean_Architecture.png)
+
+# BLoC
+
+**BLoC**, also written as BLoC is an abbreviation for **Business Logic Component**. Following the *Reso Coder's Clean Architecture Proposal*, he claims it should rather be called a PLoC (Presentation Logic Component), because all the **business logic** is in the **domain layer**, after all.
+
+Nevertheless, BLoC (as proposed by *Felix Angelov*) also claims that it allow us to separate our application into three layers:
+* Presentation
+* Business Logic
+* Data
+    * Repository
+    * Data Provider
+
+#### BLoC Architecture
+
+![alt text](BLoC.png)
+
+The **presentation layer's** responsibility is to figure out how to render itself based on one or more bloc states. In addition, it should handle user input and application lifecycle events.
+
+The **business logic (bloc)** layer's responsibility is to respond to events from the presentation layer with new states. The bloc layer can depend on one or more repositories to retrieve data needed to build up the application state.
+​Every bloc has a state stream which other blocs can subscribe to in order to react to changes within the bloc.
+
+Finally, the **data layer's** responsibility is to retrieve/manipulate data from one or more sources: The **repository layer** is a wrapper around one or more data providers with which the Bloc Layer communicates. The **data provider's** responsibility is to provide raw data. The data provider should be generic and versatile.

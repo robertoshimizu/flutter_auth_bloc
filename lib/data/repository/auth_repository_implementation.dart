@@ -1,14 +1,19 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_auth_bloc/domain/repository/auth_repository.dart';
 import 'package:meta/meta.dart';
 
-class AuthRepositoryImpl implements AuthRepository {
+class FirebaseService implements AuthRepository {
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
   Future<String> authenticate({
     @required String email,
     @required String password,
   }) async {
-    await Future.delayed(Duration(seconds: 2));
+    // await Future.delayed(Duration(seconds: 2));
+    await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email, password: password);
     return 'token';
   }
 

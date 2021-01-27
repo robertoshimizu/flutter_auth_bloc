@@ -9,7 +9,7 @@ import '../pages.dart';
 class PhoneLoginWrapper extends StatelessWidget {
   final AuthRepository authRepository;
 
-  PhoneLoginWrapper({Key key, this.authRepository}) : super(key: key);
+  PhoneLoginWrapper({Key key, @required this.authRepository}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

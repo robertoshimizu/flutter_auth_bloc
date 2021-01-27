@@ -33,20 +33,22 @@ void main() async {
   Bloc.observer = SimpleBlocObserver();
   AuthRepository authRepository;
   // Needs to inject Auth Repository Implementation
-  authRepository = AuthRepositoryImpl();
+  authRepository = FirebaseService();
   runApp(
     BlocProvider<AuthenticationBloc>(
       create: (context) {
         return AuthenticationBloc(authRepository: authRepository);
       },
-      child: MyApp(),
+      child: MyApp(
+        authRepository: authRepository,
+      ),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
   final AuthRepository authRepository;
-  MyApp({Key key, this.authRepository}) : super(key: key);
+  MyApp({Key key, @required this.authRepository}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,7 @@ class MyApp extends StatelessWidget {
       home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
           print('State at Main is $state');
+
           if (state is AuthenticationInitial) {
             return SplashPage();
           }

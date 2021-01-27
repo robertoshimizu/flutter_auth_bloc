@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_auth_bloc/domain/repository/user_repository.dart';
+import 'package:flutter_auth_bloc/domain/repository/auth_repository.dart';
 import 'package:meta/meta.dart';
 
 part 'authentication_event.dart';
@@ -10,10 +10,10 @@ part 'authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  final UserRepository userRepository;
+  final AuthRepository authRepository;
 
-  AuthenticationBloc({@required this.userRepository})
-      : assert(userRepository != null),
+  AuthenticationBloc({@required this.authRepository})
+      : assert(authRepository != null),
         super(AuthenticationInitial());
 
   AuthenticationState get initialState => AuthenticationInitial();
@@ -24,7 +24,7 @@ class AuthenticationBloc
   ) async* {
     if (event is AuthenticationStarted) {
       yield AuthenticationInProgress();
-      final bool hasToken = await userRepository.hasToken();
+      final bool hasToken = await authRepository.hasToken();
 
       if (hasToken == null) {
         yield AuthenticationFailure();
@@ -38,7 +38,7 @@ class AuthenticationBloc
 
     if (event is AuthenticationLoggedIn) {
       try {
-        await userRepository.persistToken(token: event.token);
+        await authRepository.persistToken(token: event.token);
         yield AuthenticationSucess();
       } catch (e) {
         print(e);
@@ -52,7 +52,7 @@ class AuthenticationBloc
 
     if (event is AuthenticationLoggedOut) {
       yield AuthenticationInProgress();
-      await userRepository.deleteToken();
+      await authRepository.deleteToken();
       yield AuthenticationInitial();
     }
   }

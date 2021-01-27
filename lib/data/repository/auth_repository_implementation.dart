@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:flutter_auth_bloc/domain/repository/user_repository.dart';
+import 'package:flutter_auth_bloc/domain/repository/auth_repository.dart';
 import 'package:meta/meta.dart';
 
-class UserRepositoryImpl implements UserRepository {
+class AuthRepositoryImpl implements AuthRepository {
   Future<String> authenticate({
     @required String email,
     @required String password,
@@ -28,5 +28,26 @@ class UserRepositoryImpl implements UserRepository {
     /// read from keystore/keychain
     await Future.delayed(Duration(seconds: 2));
     return false;
+  }
+
+  @override
+  Future<String> authenticateUser() {
+    throw UnimplementedError();
+  }
+
+  @override
+  get httpClient => throw UnimplementedError();
+
+  @override
+  Future<bool> sendOtp({String phoNo}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  String get url => throw UnimplementedError();
+
+  @override
+  Future<void> verifyOtp({String verificationCode}) {
+    throw UnimplementedError();
   }
 }

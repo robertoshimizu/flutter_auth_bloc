@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_bloc/domain/repository/auth_repository.dart';
 import 'package:flutter_auth_bloc/presentation/bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -6,10 +7,14 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import '../pages.dart';
 
 class PhoneLoginWrapper extends StatelessWidget {
+  final AuthRepository authRepository;
+
+  PhoneLoginWrapper({Key key, this.authRepository}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider<PhoneloginBloc>(
-      create: (context) => PhoneloginBloc(),
+      create: (context) => PhoneloginBloc(authRepository: authRepository),
       child: BlocBuilder<PhoneloginBloc, PhoneloginState>(
         builder: (context, state) {
           print('PhoneLoginState is $state');

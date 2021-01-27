@@ -21,10 +21,10 @@ class PhoneLoginWrapper extends StatelessWidget {
           if (state is PhoneloginInitial) {
             return PhoneFormPage();
           }
-          if (state is LoadingState) {
+          if (state is OtpSentState) {
             return SMSVerificationView();
           }
-          if (state is OtpVerifiedState) {
+          if (state is LoginCompleteState) {
             return HomePage();
           }
           return PhoneFormPage();

@@ -40,46 +40,49 @@ void main() {
       expect(phoneLoginbloc.state, PhoneloginInitial());
     });
 
+    // blocTest<PhoneloginBloc, PhoneloginState>(
+    //   '2 - emits [OtpSendEvent()] when AuthServer sends a SMS',
+    //   build: () {
+    //     when(authRepository.sendOtp(phoNo: 'validphonenumber'))
+    //         .thenAnswer((_) async => true);
+    //     return phoneLoginbloc;
+    //   },
+    //   act: (bloc) {
+    //     bloc.add(SendOtpEvent(
+    //         phoNo: 'validphonenumber')); // this event is a http request
+    //     bloc.add(OtpSendEvent()); //This event should be from a http response
+    //   },
+    //   expect: [LoadingState(), OtpSentState()],
+    // );
+
     blocTest<PhoneloginBloc, PhoneloginState>(
       '2 - emits [OtpSendEvent()] when AuthServer sends a SMS',
       build: () {
-        when(authRepository.sendOtp(phoNo: 'validphonenumber'))
-            .thenAnswer((_) async => true);
-        return phoneLoginbloc;
-      },
-      act: (bloc) {
-        bloc.add(SendOtpEvent(
-            phoNo: 'validphonenumber')); // this event is a http request
-        bloc.add(OtpSendEvent()); //This event should be from a http response
-      },
-      expect: [LoadingState(), OtpSentState()],
-    );
-
-    blocTest<PhoneloginBloc, PhoneloginState>(
-      '3 - emits [OtpSendEvent()] when AuthServer sends a SMS',
-      build: () {
-        when(authRepository.sendOtp(phoNo: 'validphonenumber'))
-            .thenAnswer((_) async => true);
+        String smsCode = 'xxxx';
+        when(authRepository.sendOtp(phoNo: 'validphonenumber')).thenAnswer(
+          (_) => Future.value(smsCode),
+        );
         return phoneLoginbloc;
       },
       act: (bloc) {
         bloc.add(SendOtpEvent(phoNo: 'validphonenumber'));
-        bloc.add(OtpSendEvent());
       },
       expect: [LoadingState(), OtpSentState()],
     );
 
-    // blocTest<AuthenticationBloc, AuthenticationState>(
-    //   '3 - emits [AuthenticationSucess] when AuthenticationStarted hasToken is true',
-    //   build: () {
-    //     when(authRepository.hasToken()).thenAnswer((_) async => true);
-    //     return phoneLoginbloc;
-    //   },
-    //   act: (bloc) {
-    //     bloc.add(AuthenticationStarted());
-    //   },
-    //   expect: [AuthenticationSucess()],
-    // );
+    blocTest<PhoneloginBloc, PhoneloginState>(
+      '3 - emits [OtpExceptionState()] when AuthServer fails to send SMS',
+      build: () {
+        when(authRepository.sendOtp(phoNo: 'validphonenumber')).thenThrow(
+          Exception('Unable to send SMS or phone invalid'),
+        );
+        return phoneLoginbloc;
+      },
+      act: (bloc) {
+        bloc.add(SendOtpEvent(phoNo: 'validphonenumber'));
+      },
+      expect: [LoadingState(), OtpExceptionState()],
+    );
 
     // blocTest<AuthenticationBloc, AuthenticationState>(
     //   '4 - emits [AuthenticationSucess] when Repository confirms token',

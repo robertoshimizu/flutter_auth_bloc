@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_bloc/presentation/bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../pages.dart';
 
 class SMSVerificationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    String _smsCode;
     return Scaffold(
       // appBar: AppBar(
       //   centerTitle: true,
@@ -61,9 +64,10 @@ class SMSVerificationView extends StatelessWidget {
                         if (value.isEmpty) {
                           return 'Por favor entre com um valor';
                         }
-                        if (value.length < 15) {
+                        if (value.length < 6) {
                           return 'Numero incompleto';
                         }
+                        _smsCode = value;
                         return null;
                       },
                     ),
@@ -73,7 +77,11 @@ class SMSVerificationView extends StatelessWidget {
                     ),
                     RoundedButton(
                       text: 'Avançar',
-                      onPress: () {},
+                      onPress: () {
+                        BlocProvider.of<PhoneloginBloc>(context).add(
+                          VerifyOtpEvent(otp: _smsCode),
+                        );
+                      },
                       enabled: true,
                     )
                   ],

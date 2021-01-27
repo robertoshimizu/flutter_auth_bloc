@@ -35,8 +35,8 @@ void main() {
     group('VerifyOtpEvent', () {
       test('supports value comparisons', () {
         expect(
-          VerifyOtpEvent(),
-          VerifyOtpEvent(),
+          VerifyOtpEvent(otp: '654321'),
+          VerifyOtpEvent(otp: '654321'),
         );
       });
     });

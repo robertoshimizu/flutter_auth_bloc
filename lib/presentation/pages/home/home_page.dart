@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_bloc/presentation/bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/authentication/authentication_bloc.dart';
@@ -17,6 +18,7 @@ class HomePage extends StatelessWidget {
           onPressed: () {
             BlocProvider.of<AuthenticationBloc>(context)
                 .add(AuthenticationLoggedOut());
+            BlocProvider.of<PhoneloginBloc>(context).add(LogoutEvent());
           },
         )),
       ),

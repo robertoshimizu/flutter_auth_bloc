@@ -22,10 +22,9 @@ class OtpSendEvent extends PhoneloginEvent {}
 
 // Triggered when user type SMS received in order to match and verify
 class VerifyOtpEvent extends PhoneloginEvent {
-  // final String otp;
+  final String otp;
 
-  // VerifyOtpEvent({this.otp});
-
+  VerifyOtpEvent({@required this.otp});
 }
 
 class LoginCompleteEvent extends PhoneloginEvent {

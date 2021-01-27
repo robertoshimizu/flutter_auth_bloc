@@ -6,20 +6,24 @@ import 'package:meta/meta.dart';
 
 class FirebaseService implements AuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  String smsCode;
+  String verificationId;
+  int resendToken;
 
-  Future<String> authenticate({
-    @required String email,
-    @required String password,
-  }) async {
+  Future<String> authenticate({@required String smsCode}) async {
+    this.smsCode = smsCode;
+    PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
+      verificationId: this.verificationId,
+      smsCode: this.smsCode,
+    );
     // await Future.delayed(Duration(seconds: 2));
-    await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email, password: password);
+    await _firebaseAuth.signInWithCredential(phoneAuthCredential);
     return 'token';
   }
 
-  Future<void> deleteToken() async {
+  Future<void> logout() async {
     /// delete from keystore/keychain
-    await Future.delayed(Duration(seconds: 2));
+    await _firebaseAuth.signOut();
     return;
   }
 
@@ -44,8 +48,30 @@ class FirebaseService implements AuthRepository {
   get httpClient => throw UnimplementedError();
 
   @override
-  Future<bool> sendOtp({String phoNo}) {
-    throw UnimplementedError();
+  Future<String> sendOtp({String phoNo}) async {
+    await _firebaseAuth.verifyPhoneNumber(
+      phoneNumber: phoNo,
+      verificationCompleted: (AuthCredential phoneAuthCredential) {
+        print(
+            'Verification Complete, here the credential: {phoneAuthCredential.toString()}');
+        return phoneAuthCredential.toString();
+      },
+      verificationFailed: (FirebaseAuthException exception) {
+        print('Verification Failed: {exception.message}');
+        return exception.message;
+      },
+      codeSent: (String verId, [int forceCodeResend]) {
+        print('Code Sent: $verId');
+        this.verificationId = verId;
+        this.resendToken = forceCodeResend;
+        return verId;
+      },
+      codeAutoRetrievalTimeout: (String verId) {
+        this.verificationId = verId;
+        return verId;
+      },
+    );
+    return 'SendOtp failed';
   }
 
   @override

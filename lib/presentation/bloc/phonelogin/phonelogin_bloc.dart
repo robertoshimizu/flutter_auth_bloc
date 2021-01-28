@@ -20,7 +20,7 @@ class PhoneloginBloc extends Bloc<PhoneloginEvent, PhoneloginState> {
   ) async* {
     if (event is SendOtpEvent) {
       yield LoadingState();
-      final String otp = await authRepository.sendOtp(phoNo: event.phoNo);
+      final String otp = await authRepository.verifyPhone(phoNo: event.phoNo);
 
       if (otp == null) {
         yield OtpExceptionState();

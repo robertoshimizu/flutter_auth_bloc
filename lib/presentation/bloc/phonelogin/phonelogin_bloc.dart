@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io' show Platform;
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -25,10 +26,23 @@ class PhoneloginBloc extends Bloc<PhoneloginEvent, PhoneloginState> {
       if (otp == null) {
         yield OtpExceptionState();
       } else {
-        yield OtpSentState();
+        if (Platform.isIOS) {
+          // iOS-specific code
+
+          yield OtpSentState();
+        } else if (Platform.isAndroid) {
+          final String uuid = await authRepository.authenticate('any');
+          print('uuid = $uuid');
+          if (uuid == null) {
+            yield ExceptionState();
+          } else {
+            print('Login Sucesful, uuid: $uuid');
+            yield LoginCompleteState();
+          }
+        }
       }
     } else if (event is VerifyOtpEvent) {
-      final String uuid = await authRepository.authenticate(smsCode: event.otp);
+      final String uuid = await authRepository.authenticate(event.otp);
       if (uuid == null) {
         yield ExceptionState();
       } else {

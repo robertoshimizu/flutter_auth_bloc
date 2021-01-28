@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_auth_bloc/domain/repository/auth_repository.dart';
 import 'package:meta/meta.dart';
+import 'dart:io' show Platform;
 
 class FirebaseService implements AuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -10,14 +11,26 @@ class FirebaseService implements AuthRepository {
   String verificationId;
   int resendToken;
 
-  Future<String> authenticate({@required String smsCode}) async {
+  Future<String> authenticate(String smsCode) async {
     this.smsCode = smsCode;
-    PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
-      verificationId: this.verificationId,
-      smsCode: this.smsCode,
-    );
+    print('Platform is Android: ${Platform.isAndroid}');
+
+    if (Platform.isAndroid) {
+      // Android-specific code
+
+      PhoneAuthCredential phoneAuthCredential;
+      await _firebaseAuth.signInWithCredential(phoneAuthCredential);
+    } else if (Platform.isIOS) {
+      // iOS-specific code
+      PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
+        verificationId: this.verificationId,
+        smsCode: this.smsCode,
+      );
+      await _firebaseAuth.signInWithCredential(phoneAuthCredential);
+    }
+
     // await Future.delayed(Duration(seconds: 2));
-    await _firebaseAuth.signInWithCredential(phoneAuthCredential);
+
     return 'token';
   }
 
@@ -70,6 +83,12 @@ class FirebaseService implements AuthRepository {
       this.verificationId = verId;
       return verId;
     };
+
+    if (Platform.isAndroid) {
+      // Android-specific code
+    } else if (Platform.isIOS) {
+      // iOS-specific code
+    }
 
     await _firebaseAuth.verifyPhoneNumber(
       phoneNumber: phoNo,

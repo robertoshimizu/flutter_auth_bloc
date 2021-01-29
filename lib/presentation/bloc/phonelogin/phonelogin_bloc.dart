@@ -19,35 +19,39 @@ class PhoneloginBloc extends Bloc<PhoneloginEvent, PhoneloginState> {
   Stream<PhoneloginState> mapEventToState(
     PhoneloginEvent event,
   ) async* {
-    if (event is SendOtpEvent) {
-      yield LoadingState();
-      final String otp = await authRepository.verifyPhone(phoNo: event.phoNo);
-
-      if (otp == null) {
-        yield OtpExceptionState();
-      } else {
-        if (Platform.isIOS) {
-          // iOS-specific code
-
-          yield OtpSentState();
-        } else if (Platform.isAndroid) {
-          final String uuid = await authRepository.authenticate('any');
-          print('uuid = $uuid');
-          if (uuid == null) {
-            yield ExceptionState();
-          } else {
-            print('Login Sucesful, uuid: $uuid');
-            yield LoginCompleteState();
-          }
+    if (Platform.isAndroid) {
+      if (event is SendOtpEvent) {
+        yield LoadingState();
+        final String otp = await authRepository.verifyPhone(phoNo: event.phoNo);
+        if (otp == null) {
+          yield OtpExceptionState();
+        } else {
+          yield LoginCompleteState();
         }
+      } else if (event is LogoutEvent) {
+        yield PhoneloginInitial();
       }
-    } else if (event is VerifyOtpEvent) {
-      final String uuid = await authRepository.authenticate(event.otp);
-      if (uuid == null) {
-        yield ExceptionState();
-      } else {
-        print('Login Sucesful, uuid: $uuid');
-        yield LoginCompleteState();
+    }
+    if (Platform.isIOS) {
+      if (event is SendOtpEvent) {
+        yield LoadingState();
+        final String otp = await authRepository.verifyPhone(phoNo: event.phoNo);
+        if (otp == null) {
+          yield OtpExceptionState();
+        } else {
+          yield OtpSentState();
+        }
+      } else if (event is VerifyOtpEvent) {
+        final String uuid =
+            await authRepository.authenticate(smsCode: event.otp);
+        if (uuid == null) {
+          yield ExceptionState();
+        } else {
+          print('Login Sucesful, uuid: $uuid');
+          yield LoginCompleteState();
+        }
+      } else if (event is LogoutEvent) {
+        yield PhoneloginInitial();
       }
       //   yield OtpVerifiedState();
       // } else if (event is LoginCompleteEvent) {
@@ -56,8 +60,6 @@ class PhoneloginBloc extends Bloc<PhoneloginEvent, PhoneloginState> {
       //   yield ExceptionState();
       // } else if (event is LogoutEvent) {
       //   yield PhoneloginInitial();
-    } else if (event is LogoutEvent) {
-      yield PhoneloginInitial();
     }
   }
 }

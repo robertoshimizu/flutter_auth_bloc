@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_auth_bloc/domain/repository/auth_repository.dart';
 import 'package:meta/meta.dart';
-import 'dart:io' show Platform;
 
 class FirebaseService implements AuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -11,27 +10,19 @@ class FirebaseService implements AuthRepository {
   String verificationId;
   int resendToken;
 
-  Future<String> authenticate(String smsCode) async {
+  Future<String> authenticate({@required String smsCode}) async {
     this.smsCode = smsCode;
-    print('Platform is Android: ${Platform.isAndroid}');
 
-    if (Platform.isAndroid) {
-      // Android-specific code
+    PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
+      verificationId: this.verificationId,
+      smsCode: this.smsCode,
+    );
 
-      PhoneAuthCredential phoneAuthCredential;
-      await _firebaseAuth.signInWithCredential(phoneAuthCredential);
-    } else if (Platform.isIOS) {
-      // iOS-specific code
-      PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
-        verificationId: this.verificationId,
-        smsCode: this.smsCode,
-      );
-      await _firebaseAuth.signInWithCredential(phoneAuthCredential);
-    }
+    await _firebaseAuth.signInWithCredential(phoneAuthCredential);
 
     // await Future.delayed(Duration(seconds: 2));
 
-    return 'token';
+    return '';
   }
 
   Future<void> logout() async {
@@ -63,9 +54,10 @@ class FirebaseService implements AuthRepository {
   @override
   Future<String> verifyPhone({String phoNo}) async {
     PhoneVerificationCompleted _verificationCompleted =
-        (AuthCredential phoneAuthCredential) {
+        (AuthCredential phoneAuthCredential) async {
       print(
           'Verification Complete, here the credential: {phoneAuthCredential.toString()}');
+      await _firebaseAuth.signInWithCredential(phoneAuthCredential);
       return phoneAuthCredential.toString();
     };
     PhoneVerificationFailed _verificationFailed =
@@ -74,7 +66,7 @@ class FirebaseService implements AuthRepository {
       return exception.message;
     };
     PhoneCodeSent _codeSent = (String verId, [int forceCodeResend]) {
-      print('Code Sent: $verId');
+      print('Otp Sent to phone - please verify');
       this.verificationId = verId;
       this.resendToken = forceCodeResend;
       return verId;
@@ -83,12 +75,6 @@ class FirebaseService implements AuthRepository {
       this.verificationId = verId;
       return verId;
     };
-
-    if (Platform.isAndroid) {
-      // Android-specific code
-    } else if (Platform.isIOS) {
-      // iOS-specific code
-    }
 
     await _firebaseAuth.verifyPhoneNumber(
       phoneNumber: phoNo,

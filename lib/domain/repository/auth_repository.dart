@@ -16,7 +16,7 @@ abstract class AuthRepository {
 
   // Auth
 
-  Future<String> authenticate(String smsCode);
+  Future<String> authenticate({String smsCode});
 
   Future<void> logout();
 

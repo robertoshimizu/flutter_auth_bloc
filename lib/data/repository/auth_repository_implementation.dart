@@ -53,36 +53,25 @@ class FirebaseService implements AuthRepository {
   get httpClient => throw UnimplementedError();
 
   @override
-  Future<String> verifyPhone({String phoNo}) async {
-    User currentUser;
+  Future<void> verifyPhone({String phoNo}) async {
     PhoneVerificationCompleted _verificationCompleted =
         (AuthCredential phoneAuthCredential) async {
       print(
           'Verification Complete, here the credential: {phoneAuthCredential.toString()}');
-      final UserCredential userCredential =
-          await _firebaseAuth.signInWithCredential(phoneAuthCredential);
 
-      currentUser = _firebaseAuth.currentUser;
-
-      // Check if user is logged In
-      assert(userCredential.user.uid == currentUser.uid);
-
-      return userCredential.user.uid;
+      await _firebaseAuth.signInWithCredential(phoneAuthCredential);
     };
     PhoneVerificationFailed _verificationFailed =
         (FirebaseAuthException exception) {
       print('Verification Failed: {exception.message}');
-      return exception.message;
     };
     PhoneCodeSent _codeSent = (String verId, [int forceCodeResend]) {
       print('Otp Sent to phone - please verify');
       this.verificationId = verId;
       this.resendToken = forceCodeResend;
-      return verId;
     };
     PhoneCodeAutoRetrievalTimeout _codeAutoRetrievalTimeout = (String verId) {
       this.verificationId = verId;
-      return verId;
     };
 
     await _firebaseAuth.verifyPhoneNumber(
@@ -92,7 +81,6 @@ class FirebaseService implements AuthRepository {
       codeSent: _codeSent,
       codeAutoRetrievalTimeout: _codeAutoRetrievalTimeout,
     );
-    return 'SentOtp';
   }
 
   @override

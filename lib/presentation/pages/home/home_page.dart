@@ -13,7 +13,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     AppUser _user;
     _user = authRepository.user;
-    print('User dentro do HomePage: ${_user.mobilePhone}');
+    // print('User dentro do HomePage: ${_user.mobilePhone}');
     return Scaffold(
       appBar: AppBar(
         title: Text('Home'),

@@ -9,7 +9,7 @@ abstract class AuthRepository {
 
   AuthRepository({@required this.httpClient, @required this.url});
 
-  Future<String> verifyPhone({@required String phoNo});
+  Future<void> verifyPhone({@required String phoNo});
 
   Future<void> verifyOtp({@required String verificationCode});
 

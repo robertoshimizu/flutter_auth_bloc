@@ -22,25 +22,15 @@ class PhoneloginBloc extends Bloc<PhoneloginEvent, PhoneloginState> {
     if (Platform.isAndroid) {
       if (event is SendOtpEvent) {
         yield LoadingState();
-        final String otp = await authRepository.verifyPhone(phoNo: event.phoNo);
-        print(otp);
-        if (otp == null) {
-          yield OtpExceptionState();
-        } else {
-          yield LoginCompleteState();
-        }
+        await authRepository.verifyPhone(phoNo: event.phoNo);
+        yield LoginCompleteState();
       }
     }
     if (Platform.isIOS) {
       if (event is SendOtpEvent) {
         yield LoadingState();
-        final String otp = await authRepository.verifyPhone(phoNo: event.phoNo);
-
-        if (otp == null) {
-          yield OtpExceptionState();
-        } else {
-          yield OtpSentState();
-        }
+        await authRepository.verifyPhone(phoNo: event.phoNo);
+        yield OtpSentState();
       } else if (event is VerifyOtpEvent) {
         final String uuid =
             await authRepository.authenticate(smsCode: event.otp);

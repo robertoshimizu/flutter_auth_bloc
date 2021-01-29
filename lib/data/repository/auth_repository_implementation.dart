@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_auth_bloc/domain/entities/user.dart';
 import 'package:flutter_auth_bloc/domain/repository/auth_repository.dart';
 import 'package:meta/meta.dart';
 
@@ -18,11 +19,11 @@ class FirebaseService implements AuthRepository {
       smsCode: this.smsCode,
     );
 
-    await _firebaseAuth.signInWithCredential(phoneAuthCredential);
+    final UserCredential userCredential =
+        await _firebaseAuth.signInWithCredential(phoneAuthCredential);
 
     // await Future.delayed(Duration(seconds: 2));
-
-    return '';
+    return userCredential.user.uid;
   }
 
   Future<void> logout() async {
@@ -52,28 +53,25 @@ class FirebaseService implements AuthRepository {
   get httpClient => throw UnimplementedError();
 
   @override
-  Future<String> verifyPhone({String phoNo}) async {
+  Future<void> verifyPhone({String phoNo}) async {
     PhoneVerificationCompleted _verificationCompleted =
         (AuthCredential phoneAuthCredential) async {
       print(
           'Verification Complete, here the credential: {phoneAuthCredential.toString()}');
+
       await _firebaseAuth.signInWithCredential(phoneAuthCredential);
-      return phoneAuthCredential.toString();
     };
     PhoneVerificationFailed _verificationFailed =
         (FirebaseAuthException exception) {
       print('Verification Failed: {exception.message}');
-      return exception.message;
     };
     PhoneCodeSent _codeSent = (String verId, [int forceCodeResend]) {
       print('Otp Sent to phone - please verify');
       this.verificationId = verId;
       this.resendToken = forceCodeResend;
-      return verId;
     };
     PhoneCodeAutoRetrievalTimeout _codeAutoRetrievalTimeout = (String verId) {
       this.verificationId = verId;
-      return verId;
     };
 
     await _firebaseAuth.verifyPhoneNumber(
@@ -83,7 +81,6 @@ class FirebaseService implements AuthRepository {
       codeSent: _codeSent,
       codeAutoRetrievalTimeout: _codeAutoRetrievalTimeout,
     );
-    return 'SendOtp failed';
   }
 
   @override
@@ -93,4 +90,31 @@ class FirebaseService implements AuthRepository {
   Future<void> verifyOtp({String verificationCode}) {
     throw UnimplementedError();
   }
+
+  AppUser _userFromFirebaseUSer(User user) {
+    return user != null
+        ? AppUser(
+            uid: user.uid,
+            mobilePhone: user.phoneNumber,
+          )
+        : null;
+  }
+
+  @override
+  Stream<AppUser> get state {
+    return _firebaseAuth
+        .authStateChanges()
+        .map((User user) => _userFromFirebaseUSer(user));
+  }
+
+  @override
+  AppUser get user => _userFromFirebaseUSer(_firebaseAuth.currentUser);
+
+  // @override
+  // Stream<AppUser> stateChanges {
+  //   return _userFromFirebaseUSer(_firebaseAuth.currentUser);
+  //    == null
+  //       ? null
+  //       : _userFromFirebaseUSer(_firebaseAuth.currentUser);
+  // }
 }

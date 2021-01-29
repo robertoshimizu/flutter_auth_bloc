@@ -8,21 +8,20 @@ abstract class AuthenticationEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class AuthenticationStarted extends AuthenticationEvent {}
-
-class AuthenticationLoggedIn extends AuthenticationEvent {
-  final String token;
-
-  AuthenticationLoggedIn({@required this.token});
-// Note: the meta package is used to annotate the AuthenticationEvent parameters
-// as @required. This will cause the dart analyzer to warn developers if they
-// don't provide the required parameters.
+class AppStarted extends AuthenticationEvent {
+  @override
+  String toString() => 'AppStarted';
 
   @override
-  List<Object> get props => [token];
-
-  @override
-  String toString() => 'AuthenticationLoggedIn { token: $token }';
+  List<Object> get props => [];
 }
 
-class AuthenticationLoggedOut extends AuthenticationEvent {}
+class Login extends AuthenticationEvent {}
+
+class Logout extends AuthenticationEvent {
+  @override
+  String toString() => 'LoggedOut';
+
+  @override
+  List<Object> get props => [];
+}

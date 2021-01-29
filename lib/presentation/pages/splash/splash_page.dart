@@ -73,8 +73,7 @@ class SplashPage extends StatelessWidget {
                   RoundedButton(
                     text: 'Já sou cadastrado',
                     onPress: () {
-                      BlocProvider.of<AuthenticationBloc>(context)
-                          .add(AuthenticationStarted());
+                      BlocProvider.of<AuthenticationBloc>(context).add(Login());
                     },
                     enabled: false,
                   )

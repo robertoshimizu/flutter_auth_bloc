@@ -6,19 +6,17 @@ void main() {
     group('Authentication Started', () {
       test('supports value comparisons', () {
         expect(
-          AuthenticationStarted(),
-          AuthenticationStarted(),
+          AppStarted(),
+          AppStarted(),
         );
       });
     });
 
     group('Authentication LoggedIn', () {
       test('supports value comparisons', () {
-        String token;
-        token = 'any';
         expect(
-          AuthenticationLoggedIn(token: token),
-          AuthenticationLoggedIn(token: token),
+          Login(),
+          Login(),
         );
       });
     });
@@ -26,8 +24,8 @@ void main() {
     group('Authentication Logged Out', () {
       test('supports value comparisons', () {
         expect(
-          AuthenticationLoggedOut(),
-          AuthenticationLoggedOut(),
+          Logout(),
+          Logout(),
         );
       });
     });

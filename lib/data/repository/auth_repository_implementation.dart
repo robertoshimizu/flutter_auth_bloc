@@ -19,11 +19,11 @@ class FirebaseService implements AuthRepository {
       smsCode: this.smsCode,
     );
 
-    await _firebaseAuth.signInWithCredential(phoneAuthCredential);
+    final UserCredential userCredential =
+        await _firebaseAuth.signInWithCredential(phoneAuthCredential);
 
     // await Future.delayed(Duration(seconds: 2));
-
-    return '';
+    return userCredential.user.uid;
   }
 
   Future<void> logout() async {
@@ -54,12 +54,20 @@ class FirebaseService implements AuthRepository {
 
   @override
   Future<String> verifyPhone({String phoNo}) async {
+    User currentUser;
     PhoneVerificationCompleted _verificationCompleted =
         (AuthCredential phoneAuthCredential) async {
       print(
           'Verification Complete, here the credential: {phoneAuthCredential.toString()}');
-      await _firebaseAuth.signInWithCredential(phoneAuthCredential);
-      return phoneAuthCredential.toString();
+      final UserCredential userCredential =
+          await _firebaseAuth.signInWithCredential(phoneAuthCredential);
+
+      currentUser = _firebaseAuth.currentUser;
+
+      // Check if user is logged In
+      assert(userCredential.user.uid == currentUser.uid);
+
+      return userCredential.user.uid;
     };
     PhoneVerificationFailed _verificationFailed =
         (FirebaseAuthException exception) {
@@ -84,7 +92,7 @@ class FirebaseService implements AuthRepository {
       codeSent: _codeSent,
       codeAutoRetrievalTimeout: _codeAutoRetrievalTimeout,
     );
-    return 'SendOtp failed';
+    return 'SentOtp';
   }
 
   @override
@@ -105,11 +113,15 @@ class FirebaseService implements AuthRepository {
   }
 
   @override
-  Stream<AppUser> get user {
+  Stream<AppUser> get state {
     return _firebaseAuth
         .authStateChanges()
         .map((User user) => _userFromFirebaseUSer(user));
   }
+
+  @override
+  AppUser get user => _userFromFirebaseUSer(_firebaseAuth.currentUser);
+
   // @override
   // Stream<AppUser> stateChanges {
   //   return _userFromFirebaseUSer(_firebaseAuth.currentUser);

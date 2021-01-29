@@ -25,7 +25,9 @@ class PhoneLoginWrapper extends StatelessWidget {
             return SMSVerificationView();
           }
           if (state is LoginCompleteState) {
-            return HomePage();
+            return HomePage(
+              authRepository: authRepository,
+            );
           }
           return PhoneFormPage();
         },

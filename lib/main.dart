@@ -61,7 +61,9 @@ class MyApp extends StatelessWidget {
           if (state is Uninitialized) {
             return SplashPage();
           } else if (state is Authenticated) {
-            return HomePage();
+            return HomePage(
+              authRepository: authRepository,
+            );
           } else if (state is Unauthenticated) {
             return PhoneLoginWrapper(
               authRepository: authRepository,

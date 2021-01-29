@@ -26,11 +26,12 @@ class AuthenticationBloc
     AuthenticationEvent event,
   ) async* {
     if (event is AppStarted) {
-      authRepository.user.listen((user) {
-        _user = user;
-        print('User: $user');
-      });
+      // authRepository.state.listen((user) {
+      //   _user = user;
+      //   print('User dentro do Authbloc: $user');
+      // });
 
+      _user = authRepository.user;
       if (_user != null) {
         yield Authenticated();
       } else {

@@ -17,7 +17,7 @@ abstract class AuthRepository {
 
   // Auth
 
-  Future<String> authenticate({String smsCode});
+  Future<dynamic> authenticate({String smsCode});
 
   Future<void> logout();
 
@@ -26,7 +26,9 @@ abstract class AuthRepository {
   Future<bool> hasToken();
 
   // ignore: missing_return
-  Stream<AppUser> get user {}
+  Stream<AppUser> get state {}
+
+  AppUser get user;
 }
 
 class HttpClient {}

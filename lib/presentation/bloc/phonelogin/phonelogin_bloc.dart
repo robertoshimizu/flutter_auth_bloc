@@ -23,19 +23,19 @@ class PhoneloginBloc extends Bloc<PhoneloginEvent, PhoneloginState> {
       if (event is SendOtpEvent) {
         yield LoadingState();
         final String otp = await authRepository.verifyPhone(phoNo: event.phoNo);
+        print(otp);
         if (otp == null) {
           yield OtpExceptionState();
         } else {
           yield LoginCompleteState();
         }
-      } else if (event is LogoutEvent) {
-        yield PhoneloginInitial();
       }
     }
     if (Platform.isIOS) {
       if (event is SendOtpEvent) {
         yield LoadingState();
         final String otp = await authRepository.verifyPhone(phoNo: event.phoNo);
+
         if (otp == null) {
           yield OtpExceptionState();
         } else {
@@ -50,8 +50,6 @@ class PhoneloginBloc extends Bloc<PhoneloginEvent, PhoneloginState> {
           print('Login Sucesful, uuid: $uuid');
           yield LoginCompleteState();
         }
-      } else if (event is LogoutEvent) {
-        yield PhoneloginInitial();
       }
       //   yield OtpVerifiedState();
       // } else if (event is LoginCompleteEvent) {

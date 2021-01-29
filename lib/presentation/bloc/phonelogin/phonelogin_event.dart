@@ -37,3 +37,5 @@ class LoginExceptionEvent extends PhoneloginEvent {
 
   LoginExceptionEvent(this.message);
 }
+
+class LogoutEvent extends PhoneloginEvent {}

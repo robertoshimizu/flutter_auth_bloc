@@ -40,6 +40,8 @@ class PhoneloginBloc extends Bloc<PhoneloginEvent, PhoneloginState> {
           print('Login Sucesful, uuid: $uuid');
           yield LoginCompleteState();
         }
+      } else if (event is LogoutEvent) {
+        yield PhoneloginInitial();
       }
       //   yield OtpVerifiedState();
       // } else if (event is LoginCompleteEvent) {

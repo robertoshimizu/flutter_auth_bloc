@@ -8,7 +8,7 @@ abstract class AuthRepository {
 
   AuthRepository({@required this.httpClient, @required this.url});
 
-  Future<String> sendOtp({@required String phoNo});
+  Future<String> verifyPhone({@required String phoNo});
 
   Future<void> verifyOtp({@required String verificationCode});
 
@@ -16,7 +16,7 @@ abstract class AuthRepository {
 
   // Auth
 
-  Future<String> authenticate({@required String smsCode});
+  Future<String> authenticate({String smsCode});
 
   Future<void> logout();
 

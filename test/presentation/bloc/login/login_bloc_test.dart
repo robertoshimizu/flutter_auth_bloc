@@ -59,7 +59,7 @@ void main() {
       '2 - emits [OtpSendEvent()] when AuthServer sends a SMS',
       build: () {
         String smsCode = 'xxxx';
-        when(authRepository.sendOtp(phoNo: 'validphonenumber')).thenAnswer(
+        when(authRepository.verifyPhone(phoNo: 'validphonenumber')).thenAnswer(
           (_) => Future.value(smsCode),
         );
         return phoneLoginbloc;
@@ -73,7 +73,7 @@ void main() {
     blocTest<PhoneloginBloc, PhoneloginState>(
       '3 - emits [OtpExceptionState()] when AuthServer fails to send SMS',
       build: () {
-        when(authRepository.sendOtp(phoNo: 'validphonenumber')).thenThrow(
+        when(authRepository.verifyPhone(phoNo: 'validphonenumber')).thenThrow(
           Exception('Unable to send SMS or phone invalid'),
         );
         return phoneLoginbloc;

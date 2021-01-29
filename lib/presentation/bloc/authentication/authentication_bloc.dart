@@ -19,16 +19,19 @@ class AuthenticationBloc
         super(Uninitialized());
 
   AuthenticationState get initialState => Uninitialized();
+  AppUser _user;
 
   @override
   Stream<AuthenticationState> mapEventToState(
     AuthenticationEvent event,
   ) async* {
     if (event is AppStarted) {
-      final AppUser user = authRepository.user;
-      print('User: $user');
+      authRepository.user.listen((user) {
+        _user = user;
+        print('User: $user');
+      });
 
-      if (user != null) {
+      if (_user != null) {
         yield Authenticated();
       } else {
         yield Uninitialized();

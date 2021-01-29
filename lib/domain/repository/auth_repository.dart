@@ -26,7 +26,7 @@ abstract class AuthRepository {
   Future<bool> hasToken();
 
   // ignore: missing_return
-  AppUser get user {}
+  Stream<AppUser> get user {}
 }
 
 class HttpClient {}

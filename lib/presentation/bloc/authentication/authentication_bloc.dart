@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+
 import 'package:flutter_auth_bloc/domain/repository/auth_repository.dart';
 import 'package:meta/meta.dart';
 
@@ -24,21 +25,17 @@ class AuthenticationBloc
   ) async* {
     if (event is AuthenticationStarted) {
       yield AuthenticationInProgress();
-      final bool hasToken = await authRepository.hasToken();
-
-      if (hasToken == null) {
+      var user = authRepository.user;
+      print('User loggedIn: $user');
+      if (user == null) {
         yield AuthenticationFailure();
-      }
-      if (hasToken) {
-        yield AuthenticationSucess();
       } else {
-        yield AuthenticationFailure();
+        yield AuthenticationSucess();
       }
     }
 
     if (event is AuthenticationLoggedIn) {
       try {
-        await authRepository.persistToken(token: event.token);
         yield AuthenticationSucess();
       } catch (e) {
         print(e);

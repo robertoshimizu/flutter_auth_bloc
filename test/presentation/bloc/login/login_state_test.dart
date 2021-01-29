@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // ignore: must_be_immutable
-class MockUser extends Mock implements User {}
+class MockUser extends Mock implements AppUser {}
 
 void main() {
   group('LoginState', () {

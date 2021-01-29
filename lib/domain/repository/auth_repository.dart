@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_bloc/domain/entities/user.dart';
 
 abstract class AuthRepository {
   final HttpClient httpClient;
@@ -23,6 +24,9 @@ abstract class AuthRepository {
   Future<void> persistToken({@required String token});
 
   Future<bool> hasToken();
+
+  // ignore: missing_return
+  AppUser get user {}
 }
 
 class HttpClient {}

@@ -14,11 +14,9 @@ void main() {
 
     group('Authentication LoggedIn', () {
       test('supports value comparisons', () {
-        String token;
-        token = 'any';
         expect(
-          AuthenticationLoggedIn(token: token),
-          AuthenticationLoggedIn(token: token),
+          AuthenticationLoggedIn(),
+          AuthenticationLoggedIn(),
         );
       });
     });

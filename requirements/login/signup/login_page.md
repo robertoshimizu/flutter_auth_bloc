@@ -23,3 +23,4 @@
 14. ✅ If login is successful, land in home page
 15. After user types sms code and click proceed, show a loading indicator.
 16. Errors should show up in snack bar.
+17. Explore Firebase's account linking feature.

@@ -70,7 +70,7 @@ void main() {
         return authbloc;
       },
       act: (bloc) {
-        bloc.add(AuthenticationLoggedIn(token: 'any'));
+        bloc.add(AuthenticationLoggedIn());
       },
       expect: [AuthenticationSucess()],
     );
@@ -82,7 +82,7 @@ void main() {
         return authbloc;
       },
       act: (bloc) {
-        bloc.add(AuthenticationLoggedIn(token: 'any'));
+        bloc.add(AuthenticationLoggedIn());
       },
       expect: [AuthenticationFailure()],
     );

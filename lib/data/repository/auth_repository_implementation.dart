@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_auth_bloc/domain/entities/user.dart';
 import 'package:flutter_auth_bloc/domain/repository/auth_repository.dart';
 import 'package:meta/meta.dart';
 
@@ -92,5 +93,30 @@ class FirebaseService implements AuthRepository {
   @override
   Future<void> verifyOtp({String verificationCode}) {
     throw UnimplementedError();
+  }
+
+  AppUser _userFromFirebaseUSer(User user) {
+    return user != null
+        ? AppUser(
+            uid: user.uid,
+            mobilePhone: user.phoneNumber,
+          )
+        : null;
+  }
+
+  // @override
+  // Stream<AppUser> get user {
+  //   _firebaseAuth.authStateChanges().map((User user) {
+  //     return _userFromFirebaseUSer(user) == null
+  //         ? AppUser.empty
+  //         : _userFromFirebaseUSer(user);
+  //   });
+  //   return null;
+  // }
+  @override
+  AppUser get user {
+    return _userFromFirebaseUSer(_firebaseAuth.currentUser) == null
+        ? null
+        : _userFromFirebaseUSer(_firebaseAuth.currentUser);
   }
 }

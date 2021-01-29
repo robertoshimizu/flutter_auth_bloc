@@ -1,12 +1,16 @@
 import 'package:equatable/equatable.dart';
 
-class User extends Equatable {
-  const User(this.id);
+class AppUser extends Equatable {
+  final String uid;
+  final String mobilePhone;
 
-  final String id;
+  const AppUser({
+    this.uid,
+    this.mobilePhone,
+  });
 
   @override
-  List<Object> get props => [id];
+  List<Object> get props => [uid, mobilePhone];
 
-  static const empty = User('-');
+  static const empty = AppUser(uid: '-', mobilePhone: '-');
 }

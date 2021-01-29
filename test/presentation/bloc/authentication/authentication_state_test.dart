@@ -8,11 +8,11 @@ class MockUser extends Mock implements AppUser {}
 
 void main() {
   group('AuthenticationState', () {
-    group('AuthenticationInitial', () {
+    group('Uninitialized', () {
       test('supports value comparisons', () {
         expect(
-          AuthenticationInitial(),
-          AuthenticationInitial(),
+          Uninitialized(),
+          Uninitialized(),
         );
       });
     });
@@ -21,8 +21,8 @@ void main() {
       test('supports value comparisons', () {
         // final user = MockUser();
         expect(
-          AuthenticationInProgress(),
-          AuthenticationInProgress(),
+          Authenticated(),
+          Authenticated(),
         );
       });
     });
@@ -30,8 +30,8 @@ void main() {
     group('AuthenticationFailure', () {
       test('supports value comparisons', () {
         expect(
-          AuthenticationFailure(),
-          AuthenticationFailure(),
+          Unauthenticated(),
+          Unauthenticated(),
         );
       });
     });
@@ -39,8 +39,8 @@ void main() {
     group('AuthenticationSucess', () {
       test('supports value comparisons', () {
         expect(
-          AuthenticationSucess(),
-          AuthenticationSucess(),
+          Loading(),
+          Loading(),
         );
       });
     });

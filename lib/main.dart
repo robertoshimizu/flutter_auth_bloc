@@ -37,7 +37,8 @@ void main() async {
   runApp(
     BlocProvider<AuthenticationBloc>(
       create: (context) {
-        return AuthenticationBloc(authRepository: authRepository);
+        return AuthenticationBloc(authRepository: authRepository)
+          ..add(AppStarted());
       },
       child: MyApp(
         authRepository: authRepository,
@@ -57,21 +58,17 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           print('State at Main is $state');
 
-          if (state is AuthenticationInitial) {
+          if (state is Uninitialized) {
             return SplashPage();
-          }
-          if (state is AuthenticationSucess) {
+          } else if (state is Authenticated) {
             return HomePage();
-          }
-          if (state is AuthenticationFailure) {
+          } else if (state is Unauthenticated) {
             return PhoneLoginWrapper(
               authRepository: authRepository,
             );
+          } else {
+            return SplashPage();
           }
-          if (state is AuthenticationInProgress) {
-            return LoadingIndicator();
-          }
-          return SplashPage();
         },
       ),
     );

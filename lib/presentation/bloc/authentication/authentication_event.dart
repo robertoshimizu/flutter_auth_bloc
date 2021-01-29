@@ -8,8 +8,20 @@ abstract class AuthenticationEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class AuthenticationStarted extends AuthenticationEvent {}
+class AppStarted extends AuthenticationEvent {
+  @override
+  String toString() => 'AppStarted';
 
-class AuthenticationLoggedIn extends AuthenticationEvent {}
+  @override
+  List<Object> get props => [];
+}
 
-class AuthenticationLoggedOut extends AuthenticationEvent {}
+class Login extends AuthenticationEvent {}
+
+class Logout extends AuthenticationEvent {
+  @override
+  String toString() => 'LoggedOut';
+
+  @override
+  List<Object> get props => [];
+}

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_auth_bloc/domain/entities/user.dart';
 
 import 'package:flutter_auth_bloc/domain/repository/auth_repository.dart';
 import 'package:meta/meta.dart';
@@ -15,42 +16,33 @@ class AuthenticationBloc
 
   AuthenticationBloc({@required this.authRepository})
       : assert(authRepository != null),
-        super(AuthenticationInitial());
+        super(Uninitialized());
 
-  AuthenticationState get initialState => AuthenticationInitial();
+  AuthenticationState get initialState => Uninitialized();
 
   @override
   Stream<AuthenticationState> mapEventToState(
     AuthenticationEvent event,
   ) async* {
-    if (event is AuthenticationStarted) {
-      yield AuthenticationInProgress();
-      var user = authRepository.user;
-      print('User loggedIn: $user');
-      if (user == null) {
-        yield AuthenticationFailure();
+    if (event is AppStarted) {
+      final AppUser user = authRepository.user;
+      print('User: $user');
+
+      if (user != null) {
+        yield Authenticated();
       } else {
-        yield AuthenticationSucess();
+        yield Uninitialized();
       }
     }
 
-    if (event is AuthenticationLoggedIn) {
-      try {
-        yield AuthenticationSucess();
-      } catch (e) {
-        print(e);
-        yield AuthenticationFailure();
-      }
-
-      // await userRepository.persistToken(token: event.token);
-      // if return from repository fails, throw error and return to login page
-
+    if (event is Login) {
+      yield Loading();
+      yield Unauthenticated();
     }
 
-    if (event is AuthenticationLoggedOut) {
-      yield AuthenticationInProgress();
-      await authRepository.logout();
-      yield AuthenticationInitial();
+    if (event is Logout) {
+      yield Loading();
+      yield Unauthenticated();
     }
   }
 }

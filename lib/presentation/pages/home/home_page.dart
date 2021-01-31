@@ -25,7 +25,6 @@ class HomePage extends StatelessWidget {
           onPressed: () async {
             await authRepository.logout();
             BlocProvider.of<AuthenticationBloc>(context).add(Logout());
-            BlocProvider.of<PhoneloginBloc>(context).add(LogoutEvent());
           },
         )),
       ),

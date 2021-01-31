@@ -35,13 +35,13 @@ class AuthenticationBloc
       if (_user != null) {
         yield Authenticated();
       } else {
-        yield Uninitialized();
+        yield Unauthenticated();
       }
     }
 
     if (event is Login) {
       yield Loading();
-      yield Unauthenticated();
+      yield Authenticated();
     }
 
     if (event is Logout) {

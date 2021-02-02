@@ -45,7 +45,7 @@ class AuthenticationBloc
   AuthenticationState _mapAuthenticationUserChangedToState(
     AuthenticationUserChanged event,
   ) {
-    print((event.user) == null ? 'AppUser is null' : event.user.props);
+    // print((event.user) == null ? 'AppUser is null' : event.user.props);
     return event.user != null ? Authenticated() : Unauthenticated();
   }
 }

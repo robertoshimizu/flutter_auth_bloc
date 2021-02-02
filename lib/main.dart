@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
-          print('State at Main is $state');
+          // print('State at Main is $state');
 
           if (state is Uninitialized) {
             return SplashPage();

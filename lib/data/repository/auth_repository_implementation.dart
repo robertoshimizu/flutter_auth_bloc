@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_bloc/domain/entities/user.dart';
 import 'package:flutter_auth_bloc/domain/repository/auth_repository.dart';
+import 'package:flutter_auth_bloc/presentation/bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
 class FirebaseService with ChangeNotifier implements AuthRepository {
@@ -12,7 +13,7 @@ class FirebaseService with ChangeNotifier implements AuthRepository {
   String verificationId;
   int resendToken;
 
-  Future<String> authenticate({@required String smsCode}) async {
+  Future<AppUser> authenticate({@required String smsCode}) async {
     this.smsCode = smsCode;
 
     PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
@@ -24,7 +25,7 @@ class FirebaseService with ChangeNotifier implements AuthRepository {
         await _firebaseAuth.signInWithCredential(phoneAuthCredential);
 
     // await Future.delayed(Duration(seconds: 2));
-    return userCredential.user.uid;
+    return _userFromFirebaseUSer(userCredential.user);
   }
 
   Future<void> logout() async {
@@ -53,25 +54,36 @@ class FirebaseService with ChangeNotifier implements AuthRepository {
   get httpClient => throw UnimplementedError();
 
   @override
-  Future<void> verifyPhone({String phoNo}) async {
-    PhoneVerificationCompleted _verificationCompleted =
-        (AuthCredential phoneAuthCredential) async {
-      print(
-          'Verification Complete, here the credential: {phoneAuthCredential.toString()}');
+  Stream<PhoneloginEvent> verifyPhone({String phoNo}) async* {
+    StreamController<PhoneloginEvent> eventStream = StreamController();
 
-      await _firebaseAuth.signInWithCredential(phoneAuthCredential);
+    final PhoneVerificationCompleted _verificationCompleted =
+        (AuthCredential phoneAuthCredential) {
+      try {
+        var user = _userFromFirebaseUSer(_firebaseAuth.currentUser);
+        eventStream.add(LoginCompleteEvent(user));
+        eventStream.close();
+      } on Exception {
+        print('Error on phoneverificationcompleted');
+      }
     };
-    PhoneVerificationFailed _verificationFailed =
+    final PhoneVerificationFailed _verificationFailed =
         (FirebaseAuthException exception) {
       print('Verification Failed: {exception.message}');
+
+      eventStream.add(LoginExceptionEvent(exception.message));
+      eventStream.close();
     };
-    PhoneCodeSent _codeSent = (String verId, [int forceCodeResend]) {
+    final PhoneCodeSent _codeSent = (String verId, [int forceCodeResend]) {
       print('Otp Sent to phone - please verify');
       this.verificationId = verId;
       this.resendToken = forceCodeResend;
+      eventStream.add(OtpSendEvent());
     };
-    PhoneCodeAutoRetrievalTimeout _codeAutoRetrievalTimeout = (String verId) {
+    final PhoneCodeAutoRetrievalTimeout _codeAutoRetrievalTimeout =
+        (String verId) {
       this.verificationId = verId;
+      eventStream.close();
     };
 
     await _firebaseAuth.verifyPhoneNumber(
@@ -81,6 +93,7 @@ class FirebaseService with ChangeNotifier implements AuthRepository {
       codeSent: _codeSent,
       codeAutoRetrievalTimeout: _codeAutoRetrievalTimeout,
     );
+    yield* eventStream.stream;
   }
 
   @override
@@ -109,12 +122,4 @@ class FirebaseService with ChangeNotifier implements AuthRepository {
 
   @override
   AppUser get user => _userFromFirebaseUSer(_firebaseAuth.currentUser);
-
-  // @override
-  // Stream<AppUser> stateChanges {
-  //   return _userFromFirebaseUSer(_firebaseAuth.currentUser);
-  //    == null
-  //       ? null
-  //       : _userFromFirebaseUSer(_firebaseAuth.currentUser);
-  // }
 }

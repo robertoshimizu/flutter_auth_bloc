@@ -55,20 +55,20 @@ void main() {
     //   expect: [LoadingState(), OtpSentState()],
     // );
 
-    blocTest<PhoneloginBloc, PhoneloginState>(
-      '2 - emits [OtpSendEvent()] when AuthServer sends a SMS',
-      build: () {
-        String smsCode = 'xxxx';
-        when(authRepository.verifyPhone(phoNo: 'validphonenumber')).thenAnswer(
-          (_) => Future.value(smsCode),
-        );
-        return phoneLoginbloc;
-      },
-      act: (bloc) {
-        bloc.add(SendOtpEvent(phoNo: 'validphonenumber'));
-      },
-      expect: [LoadingState(), OtpSentState()],
-    );
+    // blocTest<PhoneloginBloc, PhoneloginState>(
+    //   '2 - emits [OtpSendEvent()] when AuthServer sends a SMS',
+    //   build: () {
+    //     String smsCode = 'xxxx';
+    //     when(authRepository.verifyPhone(phoNo: 'validphonenumber')).thenAnswer(
+    //       (_) => Future.value(smsCode),
+    //     );
+    //     return phoneLoginbloc;
+    //   },
+    //   act: (bloc) {
+    //     bloc.add(SendOtpEvent(phoNo: 'validphonenumber'));
+    //   },
+    //   expect: [LoadingState(), OtpSentState()],
+    // );
 
     blocTest<PhoneloginBloc, PhoneloginState>(
       '3 - emits [OtpExceptionState()] when AuthServer fails to send SMS',

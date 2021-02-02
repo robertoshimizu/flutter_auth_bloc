@@ -1,16 +1,21 @@
 import 'dart:async';
-import 'dart:io' show Platform;
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_auth_bloc/domain/repository/auth_repository.dart';
+
+import '../../../domain/entities/user.dart';
+import '../../../domain/repository/auth_repository.dart';
 
 part 'phonelogin_event.dart';
 part 'phonelogin_state.dart';
 
 class PhoneloginBloc extends Bloc<PhoneloginEvent, PhoneloginState> {
   final AuthRepository authRepository;
+  // ignore: cancel_subscriptions
+  StreamSubscription subscription;
+  String verID = "";
+
   PhoneloginBloc({@required this.authRepository})
       : assert(authRepository != null),
         super(PhoneloginInitial());
@@ -19,38 +24,49 @@ class PhoneloginBloc extends Bloc<PhoneloginEvent, PhoneloginState> {
   Stream<PhoneloginState> mapEventToState(
     PhoneloginEvent event,
   ) async* {
-    if (Platform.isAndroid) {
-      if (event is SendOtpEvent) {
-        yield LoadingState();
-        await authRepository.verifyPhone(phoNo: event.phoNo);
-        yield LoginCompleteState();
-      }
-    }
-    if (Platform.isIOS) {
-      if (event is SendOtpEvent) {
-        yield LoadingState();
-        await authRepository.verifyPhone(phoNo: event.phoNo);
-        yield OtpSentState();
-      } else if (event is VerifyOtpEvent) {
-        final String uuid =
-            await authRepository.authenticate(smsCode: event.otp);
-        if (uuid == null) {
-          yield ExceptionState();
+    if (event is SendOtpEvent) {
+      yield LoadingState();
+
+      subscription =
+          authRepository.verifyPhone(phoNo: event.phoNo).listen((event) {
+        add(event);
+      });
+    } else if (event is OtpSendEvent) {
+      yield OtpSentState();
+    } else if (event is LoginCompleteEvent) {
+      yield LoginCompleteState(event.appUser);
+    } else if (event is LoginExceptionEvent) {
+      yield ExceptionState(message: event.message);
+    } else if (event is VerifyOtpEvent) {
+      yield LoadingState();
+      try {
+        AppUser result = await authRepository.authenticate(smsCode: event.otp);
+        if (result != null) {
+          yield LoginCompleteState(result);
         } else {
-          print('Login Sucesful, uuid: $uuid');
-          yield LoginCompleteState();
+          yield OtpExceptionState(message: "Invalid otp!");
         }
+      } catch (e) {
+        yield OtpExceptionState(message: "Invalid otp!");
+        print(e);
       }
-      // else if (event is LogoutEvent) {
-      //   yield PhoneloginInitial();
-      // }
-      //   yield OtpVerifiedState();
-      // } else if (event is LoginCompleteEvent) {
-      //   yield LoginCompleteState();
-      // } else if (event is LoginExceptionEvent) {
-      //   yield ExceptionState();
-      // } else if (event is LogoutEvent) {
-      //   yield PhoneloginInitial();
     }
+  }
+
+  @override
+  void onEvent(PhoneloginEvent event) {
+    super.onEvent(event);
+    print(event);
+  }
+
+  @override
+  void onError(Object error, StackTrace stacktrace) {
+    super.onError(error, stacktrace);
+    print(stacktrace);
+  }
+
+  Future<void> close() async {
+    print("Bloc closed");
+    super.close();
   }
 }

@@ -54,14 +54,14 @@ void main() {
       });
     });
 
-    group('LoginCompleteState', () {
-      test('supports value comparisons', () {
-        expect(
-          LoginCompleteState(),
-          LoginCompleteState(),
-        );
-      });
-    });
+    // group('LoginCompleteState', () {
+    //   test('supports value comparisons', () {
+    //     expect(
+    //       LoginCompleteState(),
+    //       LoginCompleteState(),
+    //     );
+    //   });
+    // });
 
     group('ExceptionState', () {
       test('supports value comparisons', () {

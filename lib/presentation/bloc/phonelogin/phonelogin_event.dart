@@ -28,8 +28,8 @@ class VerifyOtpEvent extends PhoneloginEvent {
 }
 
 class LoginCompleteEvent extends PhoneloginEvent {
-  // final FirebaseUser firebaseUser;
-  // LoginCompleteEvent(this.firebaseUser);
+  final AppUser appUser;
+  LoginCompleteEvent(this.appUser);
 }
 
 class LoginExceptionEvent extends PhoneloginEvent {

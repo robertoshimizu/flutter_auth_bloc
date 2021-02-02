@@ -41,14 +41,14 @@ void main() {
       });
     });
 
-    group('LoginCompleteEvent', () {
-      test('supports value comparisons', () {
-        expect(
-          LoginCompleteEvent(),
-          LoginCompleteEvent(),
-        );
-      });
-    });
+    // group('LoginCompleteEvent', () {
+    //   test('supports value comparisons', () {
+    //     expect(
+    //       LoginCompleteEvent(),
+    //       LoginCompleteEvent(),
+    //     );
+    //   });
+    // });
 
     group('LoginExceptionEvent', () {
       test('supports value comparisons', () {

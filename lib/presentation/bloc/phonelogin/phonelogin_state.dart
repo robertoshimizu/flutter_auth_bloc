@@ -25,13 +25,13 @@ class OtpVerifiedState extends PhoneloginState {
 }
 
 class LoginCompleteState extends PhoneloginState {
-  // FirebaseUser _firebaseUser;
+  final AppUser _user;
 
-  // LoginCompleteState(this._firebaseUser);
+  LoginCompleteState(this._user);
 
-  // FirebaseUser getUser() {
-  //   return _firebaseUser;
-  // }
+  AppUser getUser() {
+    return _user;
+  }
 
   @override
   List<Object> get props => [];

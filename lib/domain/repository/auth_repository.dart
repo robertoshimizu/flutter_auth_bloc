@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_bloc/domain/entities/user.dart';
+import 'package:flutter_auth_bloc/presentation/bloc/bloc.dart';
 
 abstract class AuthRepository with ChangeNotifier {
   final HttpClient httpClient;
@@ -9,7 +10,7 @@ abstract class AuthRepository with ChangeNotifier {
 
   AuthRepository({@required this.httpClient, @required this.url});
 
-  Future<void> verifyPhone({@required String phoNo});
+  Stream<PhoneloginEvent> verifyPhone({@required String phoNo});
 
   Future<void> verifyOtp({@required String verificationCode});
 

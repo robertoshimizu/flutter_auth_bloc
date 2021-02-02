@@ -26,8 +26,8 @@ class Logout extends AuthenticationEvent {
   List<Object> get props => [];
 }
 
-class AuthenticationUserChanged extends AuthenticationEvent {
-  const AuthenticationUserChanged(this.user);
+class ListeningToUserAuthChanges extends AuthenticationEvent {
+  const ListeningToUserAuthChanges(this.user);
 
   final AppUser user;
 

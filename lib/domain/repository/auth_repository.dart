@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_bloc/domain/entities/user.dart';
 
-abstract class AuthRepository {
+abstract class AuthRepository with ChangeNotifier {
   final HttpClient httpClient;
   final String url;
 

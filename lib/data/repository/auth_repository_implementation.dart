@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_auth_bloc/domain/entities/user.dart';
 import 'package:flutter_auth_bloc/domain/repository/auth_repository.dart';
 import 'package:meta/meta.dart';
 
-class FirebaseService implements AuthRepository {
+class FirebaseService with ChangeNotifier implements AuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   String smsCode;
   String verificationId;

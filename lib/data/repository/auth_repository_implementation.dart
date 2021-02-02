@@ -30,7 +30,6 @@ class FirebaseService with ChangeNotifier implements AuthRepository {
   Future<void> logout() async {
     /// delete from keystore/keychain
     await _firebaseAuth.signOut();
-    return;
   }
 
   Future<void> persistToken({@required String token}) async {

@@ -16,37 +16,60 @@ class AuthenticationBloc
 
   AuthenticationBloc({@required this.authRepository})
       : assert(authRepository != null),
-        super(Uninitialized());
+        super(Uninitialized()) {
+    _userSubscription = authRepository.state.listen(
+      (user) => add(AuthenticationUserChanged(user)),
+    );
+  }
 
   AuthenticationState get initialState => Uninitialized();
-  AppUser _user;
+  StreamSubscription<AppUser> _userSubscription;
 
   @override
   Stream<AuthenticationState> mapEventToState(
     AuthenticationEvent event,
   ) async* {
-    if (event is AppStarted) {
-      // authRepository.state.listen((user) {
-      //   _user = user;
-      //   print('User dentro do Authbloc: $user');
-      // });
-
-      _user = authRepository.user;
-      if (_user != null) {
-        yield Authenticated();
-      } else {
-        yield Unauthenticated();
-      }
-    }
-
-    if (event is Login) {
-      yield Loading();
-      yield Authenticated();
-    }
-
-    if (event is Logout) {
-      yield Loading();
-      yield Unauthenticated();
+    if (event is AuthenticationUserChanged) {
+      yield _mapAuthenticationUserChangedToState(event);
+    } else if (event is Logout) {
+      await authRepository.logout();
     }
   }
+
+  @override
+  Future<void> close() {
+    _userSubscription?.cancel();
+    return super.close();
+  }
+
+  AuthenticationState _mapAuthenticationUserChangedToState(
+    AuthenticationUserChanged event,
+  ) {
+    print((event.user) == null ? 'AppUser is null' : event.user.props);
+    return event.user != null ? Authenticated() : Unauthenticated();
+  }
 }
+// if (event is AppStarted) {
+// authRepository.state.listen((user) {
+//   _user = user;
+//   print('User dentro do Authbloc: $user');
+// });
+
+//   _user = authRepository.user;
+//   if (_user != null) {
+//     yield Authenticated();
+//   } else {
+//     yield Unauthenticated();
+//   }
+// }
+
+// if (event is Login) {
+//   yield Loading();
+//   yield Authenticated();
+// }
+
+// if (event is Logout) {
+//   yield Loading();
+//   yield Unauthenticated();
+// }
+// }

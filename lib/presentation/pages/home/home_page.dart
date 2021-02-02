@@ -22,8 +22,8 @@ class HomePage extends StatelessWidget {
         child: Center(
             child: ElevatedButton(
           child: Text('logout'),
-          onPressed: () async {
-            await authRepository.logout();
+          onPressed: () {
+            // await authRepository.logout();
             BlocProvider.of<AuthenticationBloc>(context).add(Logout());
           },
         )),

@@ -12,5 +12,5 @@ class AppUser extends Equatable {
   @override
   List<Object> get props => [uid, mobilePhone];
 
-  static const empty = AppUser(uid: '-', mobilePhone: '-');
+  static const empty = AppUser(uid: '', mobilePhone: '');
 }

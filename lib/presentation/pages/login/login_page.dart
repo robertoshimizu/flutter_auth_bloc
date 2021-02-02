@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_auth_bloc/domain/repository/auth_repository.dart';
-import 'package:flutter_auth_bloc/presentation/bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
+import '../../../domain/repository/auth_repository.dart';
+import '../../bloc/bloc.dart';
 import '../pages.dart';
 
 class PhoneLoginWrapper extends StatelessWidget {
@@ -15,22 +15,71 @@ class PhoneLoginWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<PhoneloginBloc>(
       create: (context) => PhoneloginBloc(authRepository: authRepository),
+      child: Scaffold(
+        body: LoginForm(),
+      ),
+    );
+  }
+}
+
+class LoginForm extends StatefulWidget {
+  const LoginForm({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  _LoginFormState createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  // ignore: close_sinks
+  PhoneloginBloc _loginBloc;
+
+  @override
+  void initState() {
+    _loginBloc = BlocProvider.of<PhoneloginBloc>(context);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<PhoneloginBloc, PhoneloginState>(
+      cubit: _loginBloc,
+      listener: (context, loginState) {
+        if (loginState is ExceptionState || loginState is OtpExceptionState) {
+          String message;
+          if (loginState is ExceptionState) {
+            message = loginState.message;
+          } else if (loginState is OtpExceptionState) {
+            message = loginState.message;
+          }
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [Text(message), Icon(Icons.error)],
+                ),
+                backgroundColor: Colors.red,
+              ),
+            );
+        }
+      },
       child: BlocBuilder<PhoneloginBloc, PhoneloginState>(
+        // ignore: missing_return
         builder: (context, state) {
-          print('PhoneLoginState is $state');
           if (state is PhoneloginInitial) {
             return PhoneFormPage();
-          }
-          if (state is OtpSentState) {
+          } else if (state is OtpSentState || state is OtpExceptionState) {
             return SMSVerificationView();
-          }
-          if (state is LoginCompleteState) {
+          } else if (state is LoadingState) {
+            return LoadingIndicator();
+          } else if (state is LoginCompleteState) {
             BlocProvider.of<AuthenticationBloc>(context).add(Login());
-            // return HomePage(
-            //   authRepository: authRepository,
-            // );
+          } else {
+            return PhoneFormPage();
           }
-          return PhoneFormPage();
         },
       ),
     );

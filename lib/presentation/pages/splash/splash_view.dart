@@ -104,6 +104,7 @@ class _SplashState extends State<Splash> {
             child: GestureDetector(
               onTap: () {
                 BlocProvider.of<AuthenticationBloc>(context).add(Login());
+                // Navigator.pushNamed(context, 'phoneLoginWrapper');
               },
               child: Center(
                 child: Text(

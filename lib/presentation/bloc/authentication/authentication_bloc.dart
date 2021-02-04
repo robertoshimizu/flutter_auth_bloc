@@ -33,6 +33,8 @@ class AuthenticationBloc
       yield _mapAuthenticationUserChangedToState(event);
     } else if (event is Logout) {
       await authRepository.logout();
+    } else if (event is Login) {
+      yield Unauthenticated();
     }
   }
 
@@ -46,7 +48,7 @@ class AuthenticationBloc
     ListeningToUserAuthChanges event,
   ) {
     // print((event.user) == null ? 'AppUser is null' : event.user.props);
-    return event.user != null ? Authenticated() : Unauthenticated();
+    return event.user != null ? Authenticated() : Uninitialized();
   }
 }
 // if (event is AppStarted) {

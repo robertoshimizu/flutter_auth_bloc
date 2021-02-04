@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_bloc/data/repository/repositories.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-import '../../../domain/repository/auth_repository.dart';
+import '../../../locator.dart';
 import '../../bloc/bloc.dart';
 import '../pages.dart';
 
 class PhoneLoginWrapper extends StatelessWidget {
-  final AuthRepository authRepository;
-
-  PhoneLoginWrapper({Key key, @required this.authRepository}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider<PhoneloginBloc>(
-      create: (context) => PhoneloginBloc(authRepository: authRepository),
+      create: (context) =>
+          PhoneloginBloc(authRepository: locator<FirebaseService>()),
       child: Scaffold(
+        appBar: AppBar(),
         body: LoginForm(),
       ),
     );
@@ -75,9 +74,11 @@ class _LoginFormState extends State<LoginForm> {
             return SMSVerificationView();
           } else if (state is LoadingState) {
             return LoadingIndicator();
-          } else if (state is LoginCompleteState) {
-            BlocProvider.of<AuthenticationBloc>(context).add(Login());
-          } else {
+          }
+          // else if (state is LoginCompleteState) {
+          //   return HomePage();
+          // }
+          else {
             return PhoneFormPage();
           }
         },

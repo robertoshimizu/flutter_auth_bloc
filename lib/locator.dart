@@ -7,4 +7,5 @@ GetIt locator = GetIt.instance;
 void setupLocator() {
   // locator.registerLazySingleton(() => DatabaseService('users'));
   locator.registerLazySingleton(() => FirebaseService());
+  locator.registerLazySingleton(() => FirestoreService());
 }

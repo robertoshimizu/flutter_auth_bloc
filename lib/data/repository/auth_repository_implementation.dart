@@ -51,9 +51,6 @@ class FirebaseService with ChangeNotifier implements AuthRepository {
   }
 
   @override
-  get httpClient => throw UnimplementedError();
-
-  @override
   Stream<PhoneloginEvent> verifyPhone({String phoNo}) async* {
     StreamController<PhoneloginEvent> eventStream = StreamController();
 
@@ -95,9 +92,6 @@ class FirebaseService with ChangeNotifier implements AuthRepository {
     );
     yield* eventStream.stream;
   }
-
-  @override
-  String get url => throw UnimplementedError();
 
   @override
   Future<void> verifyOtp({String verificationCode}) {

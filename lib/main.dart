@@ -6,6 +6,7 @@ import 'data/repository/repositories.dart';
 import 'domain/repository/auth_repository.dart';
 import 'presentation/bloc/bloc.dart';
 import 'presentation/pages/pages.dart';
+import 'presentation/pages/splash/splash_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,18 +39,18 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           // print('State at Main is $state');
 
-          if (state is Uninitialized) {
-            return SplashPage();
+          if (state is Unauthenticated) {
+            return Splash();
           } else if (state is Authenticated) {
             return HomePage(
               authRepository: authRepository,
             );
-          } else if (state is Unauthenticated) {
+          } else if (state is Uninitialized) {
             return PhoneLoginWrapper(
               authRepository: authRepository,
             );
           } else {
-            return SplashPage();
+            return Splash();
           }
         },
       ),

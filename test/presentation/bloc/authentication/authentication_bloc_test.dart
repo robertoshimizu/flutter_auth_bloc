@@ -54,7 +54,7 @@ void main() {
           bloc.add(ListeningToUserAuthChanges(user));
         });
       },
-      expect: [Authenticated()],
+      expect: [Authenticated(AppUser())],
     );
 
     // blocTest<AuthenticationBloc, AuthenticationState>(

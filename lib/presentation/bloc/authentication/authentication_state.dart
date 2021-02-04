@@ -9,7 +9,18 @@ abstract class AuthenticationState extends Equatable {
 
 class Uninitialized extends AuthenticationState {}
 
-class Authenticated extends AuthenticationState {}
+class Authenticated extends AuthenticationState {
+  final AppUser _user;
+
+  Authenticated(this._user);
+
+  AppUser getUser() {
+    return _user;
+  }
+
+  @override
+  List<Object> get props => [];
+}
 
 class Unauthenticated extends AuthenticationState {}
 

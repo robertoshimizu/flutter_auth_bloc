@@ -48,7 +48,7 @@ class AuthenticationBloc
     ListeningToUserAuthChanges event,
   ) {
     // print((event.user) == null ? 'AppUser is null' : event.user.props);
-    return event.user != null ? Authenticated() : Uninitialized();
+    return event.user != null ? Authenticated(event.user) : Uninitialized();
   }
 }
 // if (event is AppStarted) {

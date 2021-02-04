@@ -21,8 +21,8 @@ void main() {
       test('supports value comparisons', () {
         // final user = MockUser();
         expect(
-          Authenticated(),
-          Authenticated(),
+          Authenticated(AppUser()),
+          Authenticated(AppUser()),
         );
       });
     });

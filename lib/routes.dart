@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_bloc/presentation/pages/pages.dart';
 
+import 'presentation/pages/service_request/add_new_request_view.dart';
+import 'presentation/pages/service_request/needRequest_page.dart';
+
 class Routeer {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -14,10 +17,10 @@ class Routeer {
       //   return MaterialPageRoute(builder: (_) => FirstProfile2());
       // case 'mycontacts_screen':
       //   return MaterialPageRoute(builder: (_) => Contacts());
-      // case 'needRequest_screen':
-      //   return MaterialPageRoute(builder: (_) => NeedRequestPage());
-      // case 'addRequest_screen':
-      //   return MaterialPageRoute(builder: (_) => AddNewRequestPage());
+      case 'needRequest_screen':
+        return MaterialPageRoute(builder: (_) => NeedRequestPage());
+      case 'addRequest_screen':
+        return MaterialPageRoute(builder: (_) => AddNewRequestPage());
       // case 'contacts_widget':
       //   return MaterialPageRoute(builder: (_) => SelectContacts());
       // case 'oneContact_widget':

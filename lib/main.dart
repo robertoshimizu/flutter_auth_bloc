@@ -2,9 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_bloc/routes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 import 'data/repository/repositories.dart';
 import 'domain/repository/auth_repository.dart';
+import 'domain/repository/needRequest_repository.dart';
 import 'locator.dart';
 import 'presentation/bloc/bloc.dart';
 import 'presentation/pages/pages.dart';
@@ -19,12 +21,19 @@ void main() async {
   // Needs to inject Auth Repository Implementation
   authRepository = locator<FirebaseService>();
   runApp(
-    BlocProvider<AuthenticationBloc>(
-      create: (context) {
-        return AuthenticationBloc(authRepository: authRepository)
-          ..add(AppStarted());
-      },
-      child: MyApp(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => locator<AllRequests>(),
+        ),
+      ],
+      child: BlocProvider<AuthenticationBloc>(
+        create: (context) {
+          return AuthenticationBloc(authRepository: authRepository)
+            ..add(AppStarted());
+        },
+        child: MyApp(),
+      ),
     ),
   );
 }

@@ -1,3 +1,4 @@
+import 'package:flutter_auth_bloc/domain/repository/needRequest_repository.dart';
 import 'package:get_it/get_it.dart';
 
 import 'data/repository/repositories.dart';
@@ -8,4 +9,6 @@ void setupLocator() {
   // locator.registerLazySingleton(() => DatabaseService('users'));
   locator.registerLazySingleton(() => FirebaseService());
   locator.registerLazySingleton(() => FirestoreService());
+  locator.registerLazySingleton(() => AllRequests());
+  // locator.registerLazySingleton(() => DatabaseServices());
 }

@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../locator.dart';
 import '../../bloc/bloc.dart';
+import 'main_drawer.dart';
 
 class HomePage extends StatelessWidget {
   final AppUser _user;
@@ -17,7 +18,11 @@ class HomePage extends StatelessWidget {
     print(_user.props);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Welcome ${_user.mobilePhone}'),
+        title: Text('Home Page'),
+      ),
+      drawer: Container(
+        width: MediaQuery.of(context).size.width * 0.9,
+        child: MainDrawer(_user),
       ),
       body: Container(
         child: Column(
@@ -34,12 +39,13 @@ class HomePage extends StatelessWidget {
               future: _userRepository.getUserById(_user.uid),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
+                  var username = snapshot.data['name'];
                   return Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          'Existing User',
+                          'Existing User: $username',
                           style: TextStyle(fontSize: 20.0),
                         ),
                       ],

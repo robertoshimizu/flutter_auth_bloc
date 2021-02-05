@@ -161,7 +161,7 @@ class MainDrawer extends StatelessWidget {
                           ),
                           onTap: () {
                             Navigator.of(context).pop();
-                            Navigator.pushNamed(context, 'home_screen');
+                            // Navigator.pushNamed(context, 'home_screen');
                           },
                         ),
                         ListTile(
@@ -198,7 +198,7 @@ class MainDrawer extends StatelessWidget {
                           ),
                           onTap: () {
                             Navigator.of(context).pop();
-                            Navigator.pushNamed(context, 'mycontacts_screen');
+                            // Navigator.pushNamed(context, 'mycontacts_screen');
                           },
                         ),
                         ListTile(

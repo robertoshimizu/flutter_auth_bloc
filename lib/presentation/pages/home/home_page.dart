@@ -48,6 +48,34 @@ class HomePage extends StatelessWidget {
                           'Existing User: $username',
                           style: TextStyle(fontSize: 20.0),
                         ),
+                        SizedBox(height: 15.0),
+                        ButtonBar(
+                          mainAxisSize: MainAxisSize
+                              .min, // this will take space as minimum as posible(to center)
+                          children: <Widget>[
+                            new ElevatedButton(
+                              child: new Text(
+                                'Requests',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              onPressed: () => Navigator.pushNamed(
+                                  context, 'needRequest_screen'),
+                            ),
+                            new ElevatedButton(
+                              child: new Text(
+                                'Indications',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              onPressed: null,
+                            ),
+                            new ElevatedButton(
+                                child: new Text(
+                                  'Applications',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                onPressed: null),
+                          ],
+                        ),
                       ],
                     ),
                   );

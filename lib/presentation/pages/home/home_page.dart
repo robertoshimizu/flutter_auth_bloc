@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_auth_bloc/data/repository/repositories.dart';
-import 'package:flutter_auth_bloc/domain/entities/user.dart';
-import 'package:flutter_auth_bloc/domain/repository/user_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../data/repository/repositories.dart';
+import '../../../domain/entities/user.dart';
+import '../../../domain/repository/repositories.dart';
 import '../../../locator.dart';
 import '../../bloc/bloc.dart';
 import 'main_drawer.dart';
 
 class HomePage extends StatelessWidget {
-  final AppUser _user;
-  final UserRepository _userRepository = locator<FirestoreService>();
-  HomePage(this._user);
+  final AuthRepository _authRepository = locator<DataAuthRepository>();
+  final UserRepository _userRepository = locator<DataUserRepository>();
 
   @override
   Widget build(BuildContext context) {
+    AppUser _user = _authRepository.user;
     print(_user.props);
     return Scaffold(
       appBar: AppBar(

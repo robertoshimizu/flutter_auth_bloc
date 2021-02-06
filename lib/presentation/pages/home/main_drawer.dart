@@ -7,7 +7,7 @@ import '../../../locator.dart';
 
 class MainDrawer extends StatelessWidget {
   final AppUser user;
-  final UserRepository qqeur = locator<FirestoreService>();
+  final UserRepository qqeur = locator<DataUserRepository>();
   MainDrawer(this.user);
 
   @override

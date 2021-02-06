@@ -5,8 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import 'data/repository/repositories.dart';
-import 'domain/repository/auth_repository.dart';
-import 'domain/repository/needRequest_repository.dart';
 import 'locator.dart';
 import 'presentation/bloc/bloc.dart';
 import 'presentation/pages/pages.dart';
@@ -17,19 +15,21 @@ void main() async {
   await Firebase.initializeApp();
   setupLocator();
   Bloc.observer = SimpleBlocObserver();
-  AuthRepository authRepository;
-  // Needs to inject Auth Repository Implementation
-  authRepository = locator<FirebaseService>();
+
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => locator<AllRequests>(),
+          create: (_) => locator<DataUserRepository>(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => locator<DataAllRequests>(),
         ),
       ],
       child: BlocProvider<AuthenticationBloc>(
         create: (context) {
-          return AuthenticationBloc(authRepository: authRepository)
+          return AuthenticationBloc(
+              authRepository: locator<DataAuthRepository>())
             ..add(AppStarted());
         },
         child: MyApp(),
@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
             return Splash();
           } else if (state is Authenticated) {
             // print(state.getUser().props);
-            return HomePage(state.getUser());
+            return HomePage();
           } else if (state is Unauthenticated) {
             return PhoneLoginWrapper();
           } else {

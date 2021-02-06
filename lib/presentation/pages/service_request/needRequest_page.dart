@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_bloc/data/repository/repositories.dart';
 import 'package:flutter_auth_bloc/domain/entities/entities.dart';
-import 'package:flutter_auth_bloc/domain/repository/needRequest_repository.dart';
 import 'package:flutter_auth_bloc/presentation/pages/service_request/requests_card.dart';
 import 'package:provider/provider.dart';
 
@@ -12,7 +12,7 @@ class NeedRequestPage extends StatelessWidget {
     // final user = Provider.of<User>(context);
     // AllRequests allRequests = AllRequests();
     List<NeedRequest> requests;
-    final needRequestProvider = Provider.of<AllRequests>(context);
+    final needRequestProvider = Provider.of<DataAllRequests>(context);
 
     return Scaffold(
       appBar: AppBar(

@@ -12,7 +12,7 @@ class PhoneLoginWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<PhoneloginBloc>(
       create: (context) =>
-          PhoneloginBloc(authRepository: locator<FirebaseService>()),
+          PhoneloginBloc(authRepository: locator<DataAuthRepository>()),
       child: Scaffold(
         appBar: AppBar(),
         body: LoginForm(),

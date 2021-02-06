@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_bloc/data/repository/repositories.dart';
 import 'package:flutter_auth_bloc/domain/entities/entities.dart';
-
-import '../../../locator.dart';
+import 'package:provider/provider.dart';
 
 class RequestCard extends StatelessWidget {
   final NeedRequest requestDetails;
@@ -10,7 +9,7 @@ class RequestCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final qqeur = locator<FirestoreService>();
+    final qqeur = Provider.of<DataUserRepository>(context);
     var uid = requestDetails.userId;
 
     return FutureBuilder(

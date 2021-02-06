@@ -1,15 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_auth_bloc/data/external_apis/firebase_instance.dart';
+import 'package:flutter_auth_bloc/data/external_apis/firestore_instance.dart';
 
 import '../../locator.dart';
 
-class FirebaseService {
+class FirestoreService {
   final String path;
   CollectionReference collectionReference;
 
-  FirebaseService(this.path) {
+  FirestoreService(this.path) {
     collectionReference =
-        locator<FirebaseInstance>().instatiate().collection(path);
+        locator<FirestoreInstance>().instatiate().collection(path);
   }
 
   Future<QuerySnapshot> getDataCollection() {

@@ -4,7 +4,7 @@ import 'package:flutter_auth_bloc/domain/entities/entities.dart';
 import 'package:flutter_auth_bloc/domain/repository/repositories.dart';
 
 class DataAllRequests with ChangeNotifier implements AllRequests {
-  FirebaseService _api = FirebaseService('needRequest');
+  FirestoreService _api = FirestoreService('needRequest');
 
   List<NeedRequest> requests;
 

@@ -2,13 +2,17 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_auth_bloc/domain/entities/user.dart';
-import 'package:flutter_auth_bloc/domain/repository/auth_repository.dart';
-import 'package:flutter_auth_bloc/presentation/bloc/bloc.dart';
+import 'package:flutter_auth_bloc/data/external_apis/firebase_auth_instance.dart';
 import 'package:meta/meta.dart';
 
+import '../../domain/entities/user.dart';
+import '../../domain/repository/auth_repository.dart';
+import '../../locator.dart';
+import '../../presentation/bloc/bloc.dart';
+
 class DataAuthRepository with ChangeNotifier implements AuthRepository {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseAuth _firebaseAuth =
+      locator<FirebaseAuthInstance>().instatiate();
   String smsCode;
   String verificationId;
   int resendToken;

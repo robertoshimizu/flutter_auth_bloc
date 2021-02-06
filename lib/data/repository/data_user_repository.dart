@@ -4,7 +4,7 @@ import 'package:flutter_auth_bloc/data/adapters/adapters.dart';
 import '../../domain/repository/user_repository.dart';
 
 class DataUserRepository with ChangeNotifier implements UserRepository {
-  FirebaseService _api = FirebaseService('users');
+  FirestoreService _api = FirestoreService('users');
 
   @override
   Future<Map> getUserById(String id) async {

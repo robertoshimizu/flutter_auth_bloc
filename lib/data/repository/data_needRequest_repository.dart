@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_bloc/data/adapters/adapters.dart';
 import 'package:flutter_auth_bloc/domain/entities/entities.dart';
@@ -18,8 +16,15 @@ class DataAllRequests with ChangeNotifier implements AllRequests {
     return requests;
   }
 
-  Stream<QuerySnapshot> fetchRequestsAsStream() {
-    return _api.streamDataCollection();
+  Stream<List<NeedRequest>> fetchRequestsAsStream() {
+    var stream = _api.streamDataCollection();
+    var result = stream.map((event) => event.docs
+        .map((doc) => NeedRequest.fromMap(
+              doc.data(),
+              doc.id,
+            ))
+        .toList());
+    return result;
   }
 
   Future addRequest(NeedRequest data) async {

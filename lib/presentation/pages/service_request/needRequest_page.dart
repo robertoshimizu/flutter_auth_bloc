@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_bloc/data/repository/repositories.dart';
 import 'package:flutter_auth_bloc/domain/entities/entities.dart';
@@ -25,12 +23,10 @@ class NeedRequestPage extends StatelessWidget {
       body: Container(
         child: StreamBuilder(
             stream: needRequestProvider.fetchRequestsAsStream(),
-            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            builder: (context, snapshot) {
               if (snapshot.hasData) {
                 print('stream de needRequests tem data');
-                requests = snapshot.data.docs
-                    .map((doc) => NeedRequest.fromMap(doc.data(), doc.id))
-                    .toList();
+                requests = snapshot.data;
                 return new ListView.builder(
                   itemCount: requests.length,
                   itemBuilder: (buildContext, index) =>

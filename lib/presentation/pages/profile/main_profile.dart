@@ -5,6 +5,10 @@ import 'package:flutter_auth_bloc/domain/entities/entities.dart';
 import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
+  final String userId;
+
+  const Profile(this.userId);
+
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -26,9 +30,7 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    var user = Provider.of<AppUser>(context);
     var qqeur = Provider.of<DataUserRepository>(context);
-    print(user.uid);
 
     List<Map<dynamic, dynamic>> _categories = [
       {
@@ -44,10 +46,10 @@ class _ProfileState extends State<Profile> {
     ];
 
     return FutureBuilder(
-        future: qqeur.getUserById(user.uid),
+        future: qqeur.getUserById(widget.userId),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            var userData = UserData.fromMap(snapshot.data, user.uid);
+            var userData = UserData.fromMap(snapshot.data, widget.userId);
 
             return Scaffold(
               appBar: AppBar(
@@ -72,7 +74,7 @@ class _ProfileState extends State<Profile> {
                         if (_formKey.currentState.validate()) {
                           _formKey.currentState.save();
                           var updateUser = UserData(
-                            uid: user.uid,
+                            uid: widget.userId,
                             name: _currentName ?? userData.name,
                             mobilePhone1:
                                 _currentMobile1 ?? userData.mobilePhone1,
@@ -90,7 +92,7 @@ class _ProfileState extends State<Profile> {
                             registered: userData.registered,
                             birthdate: userData.birthdate,
                           );
-                          qqeur.updateUserData(updateUser, user.uid);
+                          qqeur.updateUserData(updateUser, widget.userId);
 
                           setState(() {
                             index = 0;

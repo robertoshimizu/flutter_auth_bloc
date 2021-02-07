@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auth_bloc/data/repository/repositories.dart';
 import 'package:flutter_auth_bloc/domain/entities/user.dart';
 import 'package:flutter_auth_bloc/domain/repository/user_repository.dart';
+import 'package:flutter_auth_bloc/presentation/pages/profile/main_profile.dart';
 
 import '../../../locator.dart';
 
@@ -178,7 +179,11 @@ class MainDrawer extends StatelessWidget {
                           ),
                           onTap: () {
                             Navigator.of(context).pop();
-                            Navigator.pushNamed(context, 'main_profile');
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Profile(user.uid)));
+                            // Navigator.pushNamed(context, 'main_profile');
                           },
                         ),
                         ListTile(

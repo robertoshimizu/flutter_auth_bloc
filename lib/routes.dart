@@ -12,8 +12,8 @@ class Routeer {
         return MaterialPageRoute(builder: (_) => PhoneLoginWrapper());
       // case 'home_screen':
       //   return MaterialPageRoute(builder: (_) => HomePage());
-      case 'main_profile':
-        return MaterialPageRoute(builder: (_) => Profile());
+      // case 'main_profile':
+      //   return MaterialPageRoute(builder: (_) => Profile());
       // case 'first_profile1':
       //   return MaterialPageRoute(builder: (_) => FirstProfile1());
       // case 'first_profile2':

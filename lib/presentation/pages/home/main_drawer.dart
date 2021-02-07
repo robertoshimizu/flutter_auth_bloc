@@ -177,11 +177,8 @@ class MainDrawer extends StatelessWidget {
                             ),
                           ),
                           onTap: () {
-                            // Navigator.of(context).pop();
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => Profile()));
+                            Navigator.of(context).pop();
+                            Navigator.pushNamed(context, 'main_profile');
                           },
                         ),
                         ListTile(

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import 'data/repository/repositories.dart';
+import 'domain/entities/entities.dart';
 import 'locator.dart';
 import 'presentation/bloc/bloc.dart';
 import 'presentation/pages/pages.dart';
@@ -19,6 +20,9 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        StreamProvider<AppUser>.value(
+          value: locator<DataAuthRepository>().state,
+        ),
         ChangeNotifierProvider(
           create: (_) => locator<DataUserRepository>(),
         ),

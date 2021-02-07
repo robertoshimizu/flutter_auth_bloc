@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_bloc/presentation/pages/pages.dart';
 
+import 'presentation/pages/profile/main_profile.dart';
 import 'presentation/pages/service_request/add_new_request_view.dart';
 import 'presentation/pages/service_request/needRequest_page.dart';
 
@@ -11,6 +12,8 @@ class Routeer {
         return MaterialPageRoute(builder: (_) => PhoneLoginWrapper());
       // case 'home_screen':
       //   return MaterialPageRoute(builder: (_) => HomePage());
+      case 'main_profile':
+        return MaterialPageRoute(builder: (_) => Profile());
       // case 'first_profile1':
       //   return MaterialPageRoute(builder: (_) => FirstProfile1());
       // case 'first_profile2':

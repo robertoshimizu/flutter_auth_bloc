@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_bloc/data/adapters/adapters.dart';
+import 'package:flutter_auth_bloc/domain/entities/user.dart';
 
 import '../../domain/repository/user_repository.dart';
 
@@ -13,5 +14,11 @@ class DataUserRepository with ChangeNotifier implements UserRepository {
       return null;
     }
     return doc.data();
+  }
+
+  @override
+  Future updateUserData(UserData data, String id) async {
+    await _api.updateDocument(data.toJson(), id);
+    return;
   }
 }

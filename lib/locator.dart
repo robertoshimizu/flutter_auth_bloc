@@ -8,11 +8,9 @@ import 'data/repository/repositories.dart';
 GetIt locator = GetIt.instance;
 
 void setupLocator() {
-  // locator.registerLazySingleton(() => DatabaseService('users'));
   locator.registerLazySingleton(() => FirestoreInstance());
   locator.registerLazySingleton(() => FirebaseAuthInstance());
   locator.registerLazySingleton(() => DataUserRepository());
   locator.registerLazySingleton(() => DataAuthRepository());
   locator.registerLazySingleton(() => DataAllRequests());
-  // locator.registerLazySingleton(() => DatabaseServices());
 }

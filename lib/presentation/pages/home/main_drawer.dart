@@ -4,16 +4,16 @@ import 'package:flutter_auth_bloc/domain/entities/user.dart';
 import 'package:flutter_auth_bloc/domain/repository/user_repository.dart';
 import 'package:flutter_auth_bloc/presentation/pages/contacts/mycontacts_page.dart';
 import 'package:flutter_auth_bloc/presentation/pages/profile/main_profile.dart';
+import 'package:provider/provider.dart';
 
 import '../../../locator.dart';
 
 class MainDrawer extends StatelessWidget {
-  final AppUser user;
   final UserRepository qqeur = locator<DataUserRepository>();
-  MainDrawer(this.user);
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<AppUser>(context);
     return Drawer(
       child: FutureBuilder(
           future: qqeur.getUserById(user.uid),
@@ -183,7 +183,7 @@ class MainDrawer extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Profile(user.uid)));
+                                    builder: (context) => Profile()));
                             // Navigator.pushNamed(context, 'main_profile');
                           },
                         ),
@@ -204,7 +204,7 @@ class MainDrawer extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Contacts(user.uid)));
+                                    builder: (context) => Contacts()));
                           },
                         ),
                         ListTile(

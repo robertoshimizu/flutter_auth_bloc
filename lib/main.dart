@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'data/repository/repositories.dart';
 import 'domain/entities/entities.dart';
+import 'domain/repository/contactSelection_repository.dart';
 import 'locator.dart';
 import 'presentation/bloc/bloc.dart';
 import 'presentation/pages/pages.dart';
@@ -20,14 +21,17 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        StreamProvider<AppUser>.value(
-          value: locator<DataAuthRepository>().state,
+        ChangeNotifierProvider.value(
+          value: locator<DataAuthRepository>().user,
         ),
         ChangeNotifierProvider(
           create: (_) => locator<DataUserRepository>(),
         ),
         ChangeNotifierProvider(
           create: (_) => locator<DataAllRequests>(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => locator<MyContactSelection>(),
         ),
       ],
       child: BlocProvider<AuthenticationBloc>(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_bloc/presentation/pages/pages.dart';
 
+import 'presentation/pages/contacts/select_OneContact_widget.dart';
+import 'presentation/pages/contacts/select_contacts_widget.dart';
 import 'presentation/pages/profile/main_profile.dart';
 import 'presentation/pages/service_request/add_new_request_view.dart';
 import 'presentation/pages/service_request/needRequest_page.dart';
@@ -24,10 +26,10 @@ class Routeer {
         return MaterialPageRoute(builder: (_) => NeedRequestPage());
       case 'addRequest_screen':
         return MaterialPageRoute(builder: (_) => AddNewRequestPage());
-      // case 'contacts_widget':
-      //   return MaterialPageRoute(builder: (_) => SelectContacts());
-      // case 'oneContact_widget':
-      //   return MaterialPageRoute(builder: (_) => SelectOneContact());
+      case 'contacts_widget':
+        return MaterialPageRoute(builder: (_) => SelectContacts());
+      case 'oneContact_widget':
+        return MaterialPageRoute(builder: (_) => SelectOneContact());
 
       default:
         return MaterialPageRoute(

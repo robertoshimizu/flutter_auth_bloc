@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_auth_bloc/domain/entities/entities.dart';
-import 'package:flutter_auth_bloc/domain/repository/contactSelection_repository.dart';
-import 'package:flutter_auth_bloc/domain/repository/needRequest_repository.dart';
-import 'package:flutter_auth_bloc/domain/repository/user_repository.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+
+import '../../../data/repository/repositories.dart';
+import '../../../domain/entities/entities.dart';
+import '../../../domain/repository/contactSelection_repository.dart';
+import '../../../locator.dart';
 
 class AddNewRequestPage extends StatefulWidget {
   @override
@@ -26,8 +27,8 @@ class _AddNewRequestPageState extends State<AddNewRequestPage> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<AppUser>(context);
-    final qqeur = Provider.of<UserRepository>(context);
-    final needRequestProvider = Provider.of<AllRequests>(context);
+    final qqeur = locator<DataUserRepository>();
+    final needRequestProvider = Provider.of<DataAllRequests>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Adicionar Nova Requisição'),

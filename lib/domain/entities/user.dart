@@ -1,10 +1,11 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
-class AppUser extends Equatable {
+class AppUser extends Equatable with ChangeNotifier {
   final String uid;
   final String mobilePhone;
 
-  const AppUser({
+  AppUser({
     this.uid,
     this.mobilePhone,
   });
@@ -12,7 +13,7 @@ class AppUser extends Equatable {
   @override
   List<Object> get props => [uid, mobilePhone];
 
-  static const empty = AppUser(uid: '', mobilePhone: '');
+  static var empty = AppUser(uid: '', mobilePhone: '');
 }
 
 // Custom Class for Firestore UserData

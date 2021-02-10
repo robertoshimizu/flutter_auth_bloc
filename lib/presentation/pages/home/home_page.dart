@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
       ),
       drawer: Container(
         width: MediaQuery.of(context).size.width * 0.9,
-        child: MainDrawer(_user),
+        child: MainDrawer(),
       ),
       body: Container(
         child: Column(

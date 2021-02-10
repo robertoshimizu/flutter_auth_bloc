@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_bloc/domain/entities/entities.dart';
 import 'package:flutter_auth_bloc/domain/repository/userFriends_repository.dart';
+import 'package:provider/provider.dart';
 
 class Contacts extends StatelessWidget {
-  final String userId;
-
-  const Contacts(this.userId);
   @override
   Widget build(BuildContext context) {
-    MyContacts myContacts = MyContacts(userId: userId);
+    final user = Provider.of<AppUser>(context);
+    MyContacts myContacts = MyContacts(userId: user.uid);
 
     return Scaffold(
       appBar: AppBar(

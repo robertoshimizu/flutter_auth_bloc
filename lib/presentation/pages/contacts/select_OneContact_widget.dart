@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_bloc/domain/entities/entities.dart';
+import 'package:flutter_auth_bloc/domain/repository/repositories.dart';
+import 'package:flutter_auth_bloc/domain/repository/userFriends_repository.dart';
 import 'package:provider/provider.dart';
-
-import '../../../../domain/entities/entities.dart';
-import '../../../../domain/repositories/domain_repositories.dart';
 
 class SelectOneContact extends StatefulWidget {
   @override

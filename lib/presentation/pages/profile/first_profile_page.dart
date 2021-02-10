@@ -1,9 +1,11 @@
 import 'package:cpfcnpj/cpfcnpj.dart';
-import 'package:euindicoapp/data/repositories/repositories.dart';
-import 'package:euindicoapp/domain/entities/entities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+
+import '../../../data/repository/repositories.dart';
+import '../../../domain/entities/entities.dart';
+import '../../../locator.dart';
 
 class FirstProfile1 extends StatefulWidget {
   @override
@@ -15,7 +17,7 @@ class _FirstProfile1State extends State<FirstProfile1> {
   String name;
   String birthDate;
   String cpf;
-  DatabaseServices api = DatabaseServices();
+  DataUserRepository api = locator<DataUserRepository>();
 
   @override
   Widget build(BuildContext context) {

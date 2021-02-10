@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_bloc/data/repository/repositories.dart';
 import 'package:flutter_auth_bloc/domain/entities/entities.dart';
+import 'package:flutter_auth_bloc/presentation/pages/service_request/request_detail.dart';
 import 'package:provider/provider.dart';
 
 class RequestCard extends StatelessWidget {
@@ -20,16 +21,16 @@ class RequestCard extends StatelessWidget {
             var photo = snapshot.data["photo"];
             return GestureDetector(
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (_) => RequestDetails(
-                //       request: requestDetails,
-                //       name: name,
-                //       photo: photo,
-                //     ),
-                //   ),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => RequestDetails(
+                      request: requestDetails,
+                      name: name,
+                      photo: photo,
+                    ),
+                  ),
+                );
               },
               child: Padding(
                 padding: EdgeInsets.all(8),

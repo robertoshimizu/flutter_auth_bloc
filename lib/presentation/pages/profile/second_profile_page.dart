@@ -1,10 +1,10 @@
-import 'package:euindicoapp/domain/entities/entities.dart';
-import 'package:provider/provider.dart';
-
-import '../../../../data/repositories/repositories.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
+import '../../../data/repository/repositories.dart';
+import '../../../domain/entities/entities.dart';
+import '../../../locator.dart';
 import '../pages.dart';
 
 class FirstProfile2 extends StatefulWidget {
@@ -13,7 +13,7 @@ class FirstProfile2 extends StatefulWidget {
 }
 
 class _FirstProfile2State extends State<FirstProfile2> {
-  DatabaseServices api = DatabaseServices();
+  DataUserRepository api = locator<DataUserRepository>();
   final _formKey = GlobalKey<FormState>();
   String nickname;
   @override
@@ -80,10 +80,10 @@ class _FirstProfile2State extends State<FirstProfile2> {
                         shape: RoundedRectangleBorder(
                             borderRadius: new BorderRadius.circular(30)),
                         onPressed: () {
-                          if (_formKey.currentState.validate()) {
-                            api.updateUserfield(
-                                id: user.uid, key: 'nickname', value: nickname);
-                          }
+                          // if (_formKey.currentState.validate()) {
+                          //   api.updateUserfield(
+                          //       id: user.uid, key: 'nickname', value: nickname);
+                          // }
                           Navigator.push(
                               context,
                               MaterialPageRoute(

@@ -1,11 +1,13 @@
 import 'dart:io';
 
-import 'package:euindicoapp/application/view/pages/pages.dart';
-import 'package:euindicoapp/data/repositories/repositories.dart';
-import 'package:euindicoapp/domain/entities/entities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+
+import '../../../data/repository/repositories.dart';
+import '../../../domain/entities/entities.dart';
+import '../../../locator.dart';
+import '../pages.dart';
 
 class FirstProfile4 extends StatelessWidget {
   final String imagePath;
@@ -16,7 +18,7 @@ class FirstProfile4 extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<AppUser>(context);
     Size size = MediaQuery.of(context).size;
-    DatabaseServices api = DatabaseServices();
+    DataUserRepository api = locator<DataUserRepository>();
     return Scaffold(
       appBar: AppBar(title: Text('Display the Picture')),
       body: Container(
@@ -104,24 +106,24 @@ class FirstProfile4 extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(30)),
                     onPressed: () async {
-                      var title = (user.uid).substring(0, 7);
-                      var selectedImage = File(imagePath);
-                      var cloudStorageService = CloudStorageService();
-                      var storageResult = await cloudStorageService.uploadImage(
-                          imageToUpload: selectedImage, title: title);
+                      // var title = (user.uid).substring(0, 7);
+                      // var selectedImage = File(imagePath);
+                      // var cloudStorageService = CloudStorageService();
+                      // var storageResult = await cloudStorageService.uploadImage(
+                      //     imageToUpload: selectedImage, title: title);
 
-                      var imageUrl = storageResult.imageUrl;
+                      // var imageUrl = storageResult.imageUrl;
 
-                      try {
-                        await api.updateUserfield(
-                          id: user.uid,
-                          key: 'photo',
-                          value: imageUrl,
-                        );
-                      } catch (error) {}
+                      // try {
+                      //   await api.updateUserfield(
+                      //     id: user.uid,
+                      //     key: 'photo',
+                      //     value: imageUrl,
+                      //   );
+                      // } catch (error) {}
 
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => HomePage()));
+                      // Navigator.push(context,
+                      //     MaterialPageRoute(builder: (context) => HomePage()));
                     },
                     child: Text(
                       "Gostei",

@@ -14,7 +14,7 @@ class NeedRequestPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Requisições de Serviços'),
+        title: Text('Solicitações de Indicações'),
       ),
       // drawer: Container(
       //   width: MediaQuery.of(context).size.width * 0.9,
@@ -25,7 +25,7 @@ class NeedRequestPage extends StatelessWidget {
             stream: needRequestProvider.fetchRequestsAsStream(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                print('stream de needRequests tem data');
+                // print('stream de needRequests tem data');
                 requests = snapshot.data;
                 return new ListView.builder(
                   itemCount: requests.length,

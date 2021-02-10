@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_auth_bloc/domain/entities/entities.dart';
 import 'package:intl/intl.dart';
+
+import '../../../domain/entities/entities.dart';
+import '../pages.dart';
 
 class RequestDetails extends StatelessWidget {
   final NeedRequest request;
@@ -178,14 +180,14 @@ class RequestDetails extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => MakeIndicationPage(
-                    //       requestId: request.requestId,
-                    //     ),
-                    //   ),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MakeIndicationPage(
+                          requestId: request.requestId,
+                        ),
+                      ),
+                    );
                   }),
               new ElevatedButton(
                 child: new Text(
@@ -195,14 +197,14 @@ class RequestDetails extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => DisplayIndications(
-                  //       requestId: request.requestId,
-                  //     ),
-                  //   ),
-                  // );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DisplayIndications(
+                        requestId: request.requestId,
+                      ),
+                    ),
+                  );
                 },
               )
             ],

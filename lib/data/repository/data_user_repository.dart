@@ -21,4 +21,10 @@ class DataUserRepository with ChangeNotifier implements UserRepository {
     await _api.updateDocument(data.toJson(), id);
     return;
   }
+
+  Future<void> createUser(Map<String, dynamic> values) async {
+    String uid = values['uid'];
+    await _api.createFirestoreUser(values, uid);
+    return;
+  }
 }

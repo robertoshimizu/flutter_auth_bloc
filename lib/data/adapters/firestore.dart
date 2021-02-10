@@ -35,4 +35,8 @@ class FirestoreService {
   Future<void> updateDocument(Map data, String id) {
     return collectionReference.doc(id).update(data);
   }
+
+  Future<void> createFirestoreUser(Map data, String id) {
+    return collectionReference.doc(id).set(data);
+  }
 }

@@ -8,6 +8,7 @@ import '../../../locator.dart';
 
 import '../../bloc/bloc.dart';
 import '../pages.dart';
+import '../pages.dart';
 import 'main_drawer.dart';
 
 class HomePage extends StatelessWidget {
@@ -83,6 +84,16 @@ class HomePage extends StatelessWidget {
                                     style: TextStyle(color: Colors.white),
                                   ),
                                   onPressed: null),
+                              new ElevatedButton(
+                                child: new Text(
+                                  'Chat',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ChatPage())),
+                              )
                             ],
                           ),
                         ],

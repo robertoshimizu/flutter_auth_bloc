@@ -122,7 +122,6 @@ class _MakeIndicationPageState extends State<MakeIndicationPage> {
                         knowledgeLevel: knowledgeLevel,
                         comments: comments,
                       );
-                      print('to aqui');
                       _showCupertinoDialog(context, newIndication, requestId);
                     },
                   ),
@@ -187,7 +186,6 @@ _showCupertinoDialog(
       _addIndicationToFirestore(newIndication, requestId);
       Provider.of<MyContactSelection>(context, listen: false)
           .clearContactSelection();
-
       Navigator.pushNamedAndRemoveUntil(context, 'home_screen', (_) => false);
     },
   );

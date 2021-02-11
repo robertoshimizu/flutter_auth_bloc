@@ -1,3 +1,5 @@
+export './chat/chat_page.dart';
+export './chat/conversationList.dart';
 export './contacts/invite_contacts_page.dart';
 export './contacts/mycontacts_page.dart';
 export './contacts/select_OneContact_widget.dart';
@@ -23,4 +25,3 @@ export './splash/splash_page.dart';
 export './splash/splash_view.dart';
 export './widgets/loading_indicator.dart';
 export './widgets/rounded_button.dart';
-export './chat/chat_page.dart';

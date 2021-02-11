@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_auth_bloc/presentation/pages/pages.dart';
 
-import 'presentation/pages/contacts/select_OneContact_widget.dart';
-import 'presentation/pages/contacts/select_contacts_widget.dart';
-import 'presentation/pages/profile/main_profile.dart';
-import 'presentation/pages/service_request/add_new_request_view.dart';
-import 'presentation/pages/service_request/needRequest_page.dart';
+import 'presentation/pages/pages.dart';
 
 class Routeer {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case 'phoneLoginWrapper':
         return MaterialPageRoute(builder: (_) => PhoneLoginWrapper());
-      // case 'home_screen':
-      //   return MaterialPageRoute(builder: (_) => HomePage());
+      case 'home_screen':
+        return MaterialPageRoute(builder: (_) => HomePage());
       // case 'main_profile':
       //   return MaterialPageRoute(builder: (_) => Profile());
       // case 'first_profile1':

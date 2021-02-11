@@ -52,7 +52,7 @@ class _LoginFormState extends State<LoginForm> {
           } else if (loginState is OtpExceptionState) {
             message = loginState.message;
           }
-          ScaffoldMessenger.of(context)
+          Scaffold.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(

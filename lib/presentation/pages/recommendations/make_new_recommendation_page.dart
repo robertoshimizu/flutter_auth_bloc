@@ -183,7 +183,8 @@ _showCupertinoDialog(
       _addIndicationToFirestore(newIndication, requestId);
       Provider.of<MyContactSelection>(context, listen: false)
           .clearContactSelection();
-      Navigator.pushNamed(context, 'home_screen');
+
+      Navigator.pushNamedAndRemoveUntil(context, 'home_screen', (_) => false);
     },
   );
   // set up the AlertDialog

@@ -2,15 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../../data/helpers/themeData.dart';
-
 class InviteNewFriends extends StatelessWidget {
   final String invitation =
       'Eu%20queria%20te%20convidar%20para%20se%20conectar%20comigo%20no%20EuIndico.app';
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: indicoTheme,
       home: Scaffold(
         appBar: AppBar(
           title: Text(

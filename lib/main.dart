@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import 'data/repository/repositories.dart';
-import 'domain/entities/entities.dart';
+
 import 'domain/repository/contactSelection_repository.dart';
 import 'locator.dart';
 import 'presentation/bloc/bloc.dart';
@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: Routeer.generateRoute,
       home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
-          // print('State at Main is $state');
+          print('State at Main is $state');
 
           if (state is Uninitialized) {
             return Splash();

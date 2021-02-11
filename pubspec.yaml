@@ -20,6 +20,11 @@ dependencies:
   cpfcnpj:
   camera:
   path_provider:
+  path:
+  image_picker:
+  permission_handler:
+  contacts_service:
+  url_launcher:
 
   # Firebase Dependencies
   firebase_core: ^0.5.0
@@ -27,7 +32,7 @@ dependencies:
   cloud_firestore:
   firebase_storage:
 
-  cupertino_icons: ^1.0.2
+  cupertino_icons:
 
 dev_dependencies:
   flutter_test:

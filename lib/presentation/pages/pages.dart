@@ -1,3 +1,4 @@
+export './chat/chat_detail.dart';
 export './chat/chat_page.dart';
 export './chat/conversationList.dart';
 export './contacts/invite_contacts_page.dart';

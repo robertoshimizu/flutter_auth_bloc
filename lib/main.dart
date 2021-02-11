@@ -1,16 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_auth_bloc/routes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import 'data/repository/repositories.dart';
-
-import 'domain/repository/contactSelection_repository.dart';
+import 'domain/repository/repositories.dart';
 import 'locator.dart';
 import 'presentation/bloc/bloc.dart';
 import 'presentation/pages/pages.dart';
-import 'presentation/pages/splash/splash_view.dart';
+import 'routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

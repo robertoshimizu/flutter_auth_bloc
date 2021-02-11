@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: Routeer.generateRoute,
       home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
-          print('State at Main is $state');
+          print('Authbloc state: $state');
 
           if (state is Uninitialized) {
             return Splash();
@@ -76,19 +76,19 @@ class MyApp extends StatelessWidget {
 class SimpleBlocObserver extends BlocObserver {
   @override
   void onEvent(Bloc bloc, Object event) {
-    print(event);
+    print('bloc event: $event');
     super.onEvent(bloc, event);
   }
 
   @override
   void onTransition(Bloc bloc, Transition transition) {
-    print(transition);
+    print('bloc transition: $transition');
     super.onTransition(bloc, transition);
   }
 
   @override
   void onError(Cubit cubit, Object error, StackTrace stackTrace) {
-    print(error);
+    print('bloc error: $error');
     super.onError(cubit, error, stackTrace);
   }
 }

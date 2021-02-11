@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_bloc/data/repository/repositories.dart';
-import 'package:flutter_auth_bloc/domain/entities/user.dart';
+import 'package:flutter_auth_bloc/domain/entities/entities.dart';
+import 'package:flutter_auth_bloc/domain/repository/repositories.dart';
+
 import 'package:flutter_auth_bloc/domain/repository/user_repository.dart';
 import 'package:flutter_auth_bloc/presentation/pages/contacts/mycontacts_page.dart';
 import 'package:flutter_auth_bloc/presentation/pages/profile/main_profile.dart';
-import 'package:provider/provider.dart';
 
 import '../../../locator.dart';
 
 class MainDrawer extends StatelessWidget {
   final UserRepository qqeur = locator<DataUserRepository>();
+  final AuthRepository _authRepository = locator<DataAuthRepository>();
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<AppUser>(context);
+    AppUser user = _authRepository.user;
     return Drawer(
       child: FutureBuilder(
           future: qqeur.getUserById(user.uid),

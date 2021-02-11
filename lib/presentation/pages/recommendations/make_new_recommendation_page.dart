@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_bloc/data/repository/repositories.dart';
 import 'package:provider/provider.dart';
 
 import '../../../domain/entities/entities.dart';
 import '../../../domain/repository/repositories.dart';
+import '../../../locator.dart';
+import '../../../main.dart';
 
 class MakeIndicationPage extends StatefulWidget {
   final String requestId;
@@ -16,6 +19,7 @@ class MakeIndicationPage extends StatefulWidget {
 
 class _MakeIndicationPageState extends State<MakeIndicationPage> {
   String knowledgeLevel = 'Conheço muito bem, já usei os serviços.';
+  final AuthRepository _authRepository = locator<DataAuthRepository>();
 
   void getKnowledgeLevel(String knowledge) {
     knowledgeLevel = knowledge;
@@ -23,7 +27,7 @@ class _MakeIndicationPageState extends State<MakeIndicationPage> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<AppUser>(context);
+    AppUser user = _authRepository.user;
     var friendsList = Provider.of<MyContactSelection>(context).selectedId;
     var photoList = Provider.of<MyContactSelection>(context).selectedPhoto;
     var name = Provider.of<MyContactSelection>(context).selectedName;

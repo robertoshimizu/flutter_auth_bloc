@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_auth_bloc/domain/repository/repositories.dart';
 
 import '../../../data/repository/repositories.dart';
 import '../../../domain/entities/entities.dart';
@@ -14,11 +14,12 @@ class FirstProfile2 extends StatefulWidget {
 
 class _FirstProfile2State extends State<FirstProfile2> {
   DataUserRepository api = locator<DataUserRepository>();
+  final AuthRepository _authRepository = locator<DataAuthRepository>();
   final _formKey = GlobalKey<FormState>();
   String nickname;
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<AppUser>(context);
+    AppUser user = _authRepository.user;
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(),

@@ -1,13 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_bloc/data/repository/repositories.dart';
 import 'package:flutter_auth_bloc/domain/entities/entities.dart';
+import 'package:flutter_auth_bloc/domain/repository/repositories.dart';
 import 'package:flutter_auth_bloc/domain/repository/userFriends_repository.dart';
-import 'package:provider/provider.dart';
+
+import '../../../locator.dart';
 
 class Contacts extends StatelessWidget {
+  final AuthRepository _authRepository = locator<DataAuthRepository>();
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<AppUser>(context);
+    AppUser user = _authRepository.user;
     MyContacts myContacts = MyContacts(userId: user.uid);
 
     return Scaffold(

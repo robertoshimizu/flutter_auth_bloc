@@ -1,7 +1,7 @@
 import 'package:cpfcnpj/cpfcnpj.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_auth_bloc/domain/repository/repositories.dart';
 
 import '../../../data/repository/repositories.dart';
 import '../../../domain/entities/entities.dart';
@@ -18,10 +18,11 @@ class _FirstProfile1State extends State<FirstProfile1> {
   String birthDate;
   String cpf;
   DataUserRepository api = locator<DataUserRepository>();
+  final AuthRepository _authRepository = locator<DataAuthRepository>();
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<AppUser>(context);
+    AppUser user = _authRepository.user;
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(

@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_bloc/data/repository/repositories.dart';
 import 'package:flutter_auth_bloc/domain/entities/entities.dart';
 import 'package:flutter_auth_bloc/domain/repository/repositories.dart';
 import 'package:flutter_auth_bloc/domain/repository/userFriends_repository.dart';
 import 'package:provider/provider.dart';
+
+import '../../../locator.dart';
 
 class SelectOneContact extends StatefulWidget {
   @override
@@ -12,6 +15,7 @@ class SelectOneContact extends StatefulWidget {
 
 class _SelectOneContactState extends State<SelectOneContact> {
   bool isChecked = false;
+  final AuthRepository _authRepository = locator<DataAuthRepository>();
 
   void eraseAllBoxesCallback() {
     setState(() {
@@ -21,7 +25,7 @@ class _SelectOneContactState extends State<SelectOneContact> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<AppUser>(context);
+    AppUser user = _authRepository.user;
     MyContacts myContacts = MyContacts(userId: user.uid);
 
     return Scaffold(

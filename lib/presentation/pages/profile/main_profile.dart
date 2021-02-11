@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auth_bloc/data/repository/repositories.dart';
 
 import 'package:flutter_auth_bloc/domain/entities/entities.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_auth_bloc/domain/repository/repositories.dart';
+
+import '../../../locator.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -24,10 +26,12 @@ class _ProfileState extends State<Profile> {
   String _currentId;
   String _currentAbout;
 
+  final UserRepository qqeur = locator<DataUserRepository>();
+  final AuthRepository _authRepository = locator<DataAuthRepository>();
+
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<AppUser>(context);
-    var qqeur = Provider.of<DataUserRepository>(context);
+    AppUser user = _authRepository.user;
 
     List<Map<dynamic, dynamic>> _categories = [
       {

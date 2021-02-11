@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_auth_bloc/domain/repository/repositories.dart';
 
 import '../../../data/repository/repositories.dart';
 import '../../../domain/entities/entities.dart';
@@ -11,12 +11,12 @@ import '../pages.dart';
 
 class FirstProfile4 extends StatelessWidget {
   final String imagePath;
-
-  const FirstProfile4({Key key, this.imagePath}) : super(key: key);
+  final AuthRepository _authRepository = locator<DataAuthRepository>();
+  FirstProfile4({Key key, this.imagePath}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<AppUser>(context);
+    AppUser user = _authRepository.user;
     Size size = MediaQuery.of(context).size;
     DataUserRepository api = locator<DataUserRepository>();
     return Scaffold(

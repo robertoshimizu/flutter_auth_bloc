@@ -35,7 +35,10 @@ class DataChatRepository with ChangeNotifier {
   CollectionReference _api = FirebaseFirestore.instance.collection('messages');
   List<ChatMessage> chat;
   Future<void> sendMessage(ChatMessage message) {
+    var chatId = getChatId(message.messageSender, message.messageReceiver);
     return _api
+        .doc(chatId)
+        .collection(chatId)
         .add(message.toJson())
         .then((value) => print("Message Confirmed: $value"))
         .catchError((error) => print("Failed to send message: $error"));
@@ -43,32 +46,32 @@ class DataChatRepository with ChangeNotifier {
 
   Future<List<ChatMessage>> fetchMessages(
       String sender, String receiver) async {
-    var result1 = await _api
-        .where('receiver', isEqualTo: receiver)
-        .where('sender', isEqualTo: sender)
-        .get();
-    var result2 = await _api
-        .where('receiver', isEqualTo: sender)
-        .where('sender', isEqualTo: receiver)
-        .get();
+    var chatId = getChatId(sender, receiver);
+    var result = await _api.doc(chatId).collection(chatId).get();
 
-    chat = result1.docs.map((doc) => ChatMessage.fromMap(doc.data())).toList();
-    chat.addAll(
-        result2.docs.map((doc) => ChatMessage.fromMap(doc.data())).toList());
-    print(chat.length);
+    chat = result.docs.map((doc) => ChatMessage.fromMap(doc.data())).toList();
+
+    print('chat length: ${chat.length}');
 
     return chat;
   }
 
-  Stream<List<ChatMessage>> fetchMessagesAsStream() {
-    var result = _api
-        .where('sender', isEqualTo: "5eb9628e08e7a36ab6141444")
-        .where('receiver', isEqualTo: "5eb9628e015a6a5c21dd85c9")
-        .snapshots();
+  Stream<List<ChatMessage>> fetchMessagesAsStream(
+      String sender, String receiver) {
+    var chatId = getChatId(sender, receiver);
+    var result = _api.doc(chatId).collection(chatId).snapshots();
 
     var requests = result.map((event) =>
         event.docs.map((doc) => ChatMessage.fromMap(doc.data())).toList());
 
     return requests;
+  }
+}
+
+getChatId(firstId, secondId) {
+  if (firstId.hashCode <= secondId.hashCode) {
+    return '$firstId-$secondId';
+  } else {
+    return '$secondId-$firstId';
   }
 }

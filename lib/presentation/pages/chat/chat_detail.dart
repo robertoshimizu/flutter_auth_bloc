@@ -116,12 +116,14 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
       body: Stack(
         children: <Widget>[
           StreamBuilder<Object>(
-              stream: qqeur.fetchMessagesAsStream(),
+              stream: qqeur.fetchMessagesAsStream(
+                  "5eb9628e015a6a5c21dd85c9", "5eb9628e08e7a36ab6141444"),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   messages = snapshot.data;
                   print('num of messages: ${messages.length}');
                   return ListView.builder(
+                    reverse: true,
                     itemCount: messages.length,
                     shrinkWrap: true,
                     padding: EdgeInsets.only(top: 10, bottom: 10),

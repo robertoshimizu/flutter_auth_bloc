@@ -11,6 +11,7 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   final DataChatRepository qqeur = DataChatRepository();
+  List<Map<String, dynamic>> requests;
 
   List<ChatMessage> messages = [
     ChatMessage(
@@ -95,7 +96,7 @@ class _ChatPageState extends State<ChatPage> {
     //   qqeur.sendMessage(element);
     //   print(element.toJson());
     // });
-    qqeur.fetchConversationsAsStream('5eb9628e015a6a5c21dd85c9');
+
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.red,
@@ -185,23 +186,27 @@ class _ChatPageState extends State<ChatPage> {
               ),
             ),
             StreamBuilder<Object>(
-                stream: null,
+                stream: qqeur
+                    .fetchConversationsAsStream('5eb9628e015a6a5c21dd85c9'),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    print(snapshot.data);
+                    print('Snapshot Data: ${snapshot.data}');
+                    requests = snapshot.data;
                     return ListView.builder(
-                      itemCount: chatUsers.length,
+                      itemCount: requests.length,
                       shrinkWrap: true,
                       padding: EdgeInsets.only(top: 16),
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
-                        return ConversationList(
-                          name: chatUsers[index].name,
-                          messageText: chatUsers[index].messageText,
-                          imageUrl: chatUsers[index].imageURL,
-                          time: chatUsers[index].time,
-                          isMessageRead:
-                              (index == 0 || index == 3) ? true : false,
+                        return ListTile(
+                          title: Text('${requests[index]}'),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ChatDetailPage(
+                                        chatId: '184763751-936641347')));
+                          },
                         );
                       },
                     );

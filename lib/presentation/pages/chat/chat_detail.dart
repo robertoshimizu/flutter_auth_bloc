@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_bloc/data/repository/repositories.dart';
 import 'package:flutter_auth_bloc/domain/entities/entities.dart';
-import 'package:flutter_auth_bloc/domain/repository/repositories.dart';
-
-import '../../../locator.dart';
 
 class ChatDetailPage extends StatefulWidget {
+  final String chatId;
+
+  const ChatDetailPage({Key key, @required this.chatId}) : super(key: key);
   @override
   _ChatDetailPageState createState() => _ChatDetailPageState();
 }
@@ -53,7 +53,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     //   print(element.toJson());
     // });
     // qqeur.sendMessage();
-    qqeur.fetchMessages("5eb9628e015a6a5c21dd85c9", "5eb9628e08e7a36ab6141444");
+    qqeur.fetchMessages(widget.chatId);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -116,8 +116,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
       body: Stack(
         children: <Widget>[
           StreamBuilder<Object>(
-              stream: qqeur.fetchMessagesAsStream(
-                  "5eb9628e1219965a9bed74af", "5eb9628e08e7a36ab6141444"),
+              stream: qqeur.fetchMessagesAsStream(widget.chatId),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   messages = snapshot.data;

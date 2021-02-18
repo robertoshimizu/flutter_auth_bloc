@@ -64,9 +64,8 @@ class DataChatRepository with ChangeNotifier {
     return null;
   }
 
-  Future<List<ChatMessage>> fetchMessages(
-      String sender, String receiver) async {
-    var chatId = getChatId(sender, receiver);
+  Future<List<ChatMessage>> fetchMessages(String chatId) async {
+    // var chatId = getChatId(sender, receiver);
     var result = await _api.doc(chatId).collection(chatId).get();
 
     chat = result.docs.map((doc) => ChatMessage.fromMap(doc.data())).toList();
@@ -76,9 +75,7 @@ class DataChatRepository with ChangeNotifier {
     return chat;
   }
 
-  Stream<List<ChatMessage>> fetchMessagesAsStream(
-      String sender, String receiver) {
-    var chatId = getChatId(sender, receiver);
+  Stream<List<ChatMessage>> fetchMessagesAsStream(String chatId) {
     var result = _api.doc(chatId).collection(chatId).snapshots();
 
     var requests = result.map((event) =>
@@ -87,26 +84,31 @@ class DataChatRepository with ChangeNotifier {
     return requests;
   }
 
-  Future<List<String>> fetchConversationsAsStream(String currentId) async {
-    await FirebaseFirestore.instance
-        .collection('messages')
-        .where(field)
-        .get()
-        .then((querySnapshot) {
-      if (querySnapshot.docs.isNotEmpty) {
-        print('CHATS FOUND: ${querySnapshot.docs.length}');
+  Stream<List<Map<String, dynamic>>> fetchConversationsAsStream(
+      String currentId) {
+    var result = FirebaseFirestore.instance.collection('messages').snapshots();
 
-        querySnapshot.docs.forEach((element) {
-          List<String> lista;
-          if (element.id.toString().contains('${currentId.hashCode}')) {
-            print('Achei: ${element.id}');
-            lista.add(element.id);
-          }
-          return lista;
-        });
-      }
-    });
-    return null;
+    // var requests =
+    //     result.map((event) => event.docs.map((doc) => doc.data()).toList());
+    var requests =
+        result.map((event) => event.docs.map((doc) => doc.data()).toList());
+    return requests;
+
+    //     .then((querySnapshot) {
+    //   if (querySnapshot.docs.isNotEmpty) {
+    //     print('CHATS FOUND: ${querySnapshot.docs.length}');
+
+    //     querySnapshot.docs.forEach((element) {
+    //       List<String> lista;
+    //       if (element.id.toString().contains('${currentId.hashCode}')) {
+    //         print('Achei: ${element.id}');
+    //         lista.add(element.id);
+    //       }
+    //       return lista;
+    //     });
+    //   }
+    // });
+    // return null;
 
     // var requests = result.map((event) =>
     //     event.docs.map((doc) => ChatMessage.fromMap(doc.data())).toList());

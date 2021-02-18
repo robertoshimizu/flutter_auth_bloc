@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_bloc/data/repository/repositories.dart';
 import 'package:flutter_auth_bloc/domain/entities/entities.dart';
+import 'package:flutter_auth_bloc/domain/repository/repositories.dart';
+
+import '../../../locator.dart';
 
 class ChatDetailPage extends StatefulWidget {
   @override
@@ -7,18 +11,49 @@ class ChatDetailPage extends StatefulWidget {
 }
 
 class _ChatDetailPageState extends State<ChatDetailPage> {
-  List<ChatMessage> messages = [
-    ChatMessage(messageContent: "Hello, Will", messageType: "receiver"),
-    ChatMessage(messageContent: "How have you been?", messageType: "receiver"),
-    ChatMessage(
-        messageContent: "Hey Kriss, I am doing fine dude. wbu?",
-        messageType: "sender"),
-    ChatMessage(messageContent: "ehhhh, doing OK.", messageType: "receiver"),
-    ChatMessage(
-        messageContent: "Is there any thing wrong?", messageType: "sender"),
-  ];
+  List<ChatMessage> messages;
+  //  = [
+  //   ChatMessage(
+  //     messageContent: "Hello, Orr",
+  //     messageSender: "5eb9628e08e7a36ab6141444",
+  //     messageReceiver: "5eb9628e015a6a5c21dd85c9",
+  //     messageDate: DateTime.parse("2021-02-17 20:18:00"),
+  //   ),
+  //   ChatMessage(
+  //     messageContent: "How have you been?",
+  //     messageSender: "5eb9628e08e7a36ab6141444",
+  //     messageReceiver: "5eb9628e015a6a5c21dd85c9",
+  //     messageDate: DateTime.parse("2021-02-17 20:19:10"),
+  //   ),
+  //   ChatMessage(
+  //     messageContent: "Hey Leanna, I am doing fine dude. wbu?",
+  //     messageSender: "5eb9628e015a6a5c21dd85c9",
+  //     messageReceiver: "5eb9628e08e7a36ab6141444",
+  //     messageDate: DateTime.parse("2021-02-17 20:20:20"),
+  //   ),
+  //   ChatMessage(
+  //     messageContent: "ehhhh, doing OK.",
+  //     messageSender: "5eb9628e08e7a36ab6141444",
+  //     messageReceiver: "5eb9628e015a6a5c21dd85c9",
+  //     messageDate: DateTime.parse("2021-02-17 20:21:30"),
+  //   ),
+  //   ChatMessage(
+  //     messageContent: "Is there any thing wrong?",
+  //     messageSender: "5eb9628e015a6a5c21dd85c9",
+  //     messageReceiver: "5eb9628e08e7a36ab6141444",
+  //     messageDate: DateTime.parse("2021-02-17 20:22:00"),
+  //   ),
+  // ];
+  final DataChatRepository qqeur = DataChatRepository();
   @override
   Widget build(BuildContext context) {
+    // print('to aqui');
+    // messages.forEach((element) {
+    //   qqeur.sendMessage(element);
+    //   print(element.toJson());
+    // });
+    // qqeur.sendMessage();
+    qqeur.fetchMessages("5eb9628e015a6a5c21dd85c9", "5eb9628e08e7a36ab6141444");
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -41,11 +76,10 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                 SizedBox(
                   width: 2,
                 ),
-                CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      "<https://randomuser.me/api/portraits/men/5.jpg>"),
-                  maxRadius: 20,
-                ),
+                // CircleAvatar(
+                //   backgroundImage: ,
+                //   maxRadius: 20,
+                // ),
                 SizedBox(
                   width: 12,
                 ),
@@ -81,36 +115,54 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
       ),
       body: Stack(
         children: <Widget>[
-          ListView.builder(
-            itemCount: messages.length,
-            shrinkWrap: true,
-            padding: EdgeInsets.only(top: 10, bottom: 10),
-            physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return Container(
-                padding:
-                    EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
-                child: Align(
-                  alignment: (messages[index].messageType == "receiver"
-                      ? Alignment.topLeft
-                      : Alignment.topRight),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: (messages[index].messageType == "receiver"
-                          ? Colors.grey.shade200
-                          : Colors.blue[200]),
-                    ),
-                    padding: EdgeInsets.all(16),
-                    child: Text(
-                      messages[index].messageContent,
-                      style: TextStyle(fontSize: 15),
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
+          StreamBuilder<Object>(
+              stream: qqeur.fetchMessagesAsStream(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  messages = snapshot.data;
+                  print('num of messages: ${messages.length}');
+                  return ListView.builder(
+                    itemCount: messages.length,
+                    shrinkWrap: true,
+                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return Container(
+                        padding: EdgeInsets.only(
+                            left: 14, right: 14, top: 10, bottom: 10),
+                        child: Align(
+                          alignment: (messages[index].messageReceiver ==
+                                  "5eb9628e015a6a5c21dd85c9"
+                              ? Alignment.topLeft
+                              : Alignment.topRight),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: (messages[index].messageReceiver ==
+                                      "5eb9628e015a6a5c21dd85c9"
+                                  ? Colors.grey.shade200
+                                  : Colors.blue[200]),
+                            ),
+                            padding: EdgeInsets.all(16),
+                            child: Text(
+                              messages[index].messageContent,
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                } else if (snapshot.hasError) {
+                  return Text(
+                    'error',
+                    style: TextStyle(fontSize: 20.0),
+                  );
+                } else {
+                  print('modo wait');
+                  return Text('Não há nenhuma requisição na plataforma');
+                }
+              }),
           Align(
             alignment: Alignment.bottomLeft,
             child: Container(

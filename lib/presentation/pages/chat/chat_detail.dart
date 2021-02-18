@@ -14,34 +14,34 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   List<ChatMessage> messages;
   //  = [
   //   ChatMessage(
-  //     messageContent: "Hello, Orr",
+  //     messageContent: "Hello, Harriet",
   //     messageSender: "5eb9628e08e7a36ab6141444",
-  //     messageReceiver: "5eb9628e015a6a5c21dd85c9",
-  //     messageDate: DateTime.parse("2021-02-17 20:18:00"),
+  //     messageReceiver: "5eb9628e1219965a9bed74af",
+  //     messageDate: DateTime.parse("2021-02-07 20:18:00"),
   //   ),
   //   ChatMessage(
   //     messageContent: "How have you been?",
   //     messageSender: "5eb9628e08e7a36ab6141444",
-  //     messageReceiver: "5eb9628e015a6a5c21dd85c9",
-  //     messageDate: DateTime.parse("2021-02-17 20:19:10"),
+  //     messageReceiver: "5eb9628e1219965a9bed74af",
+  //     messageDate: DateTime.parse("2021-02-08 20:19:10"),
   //   ),
   //   ChatMessage(
   //     messageContent: "Hey Leanna, I am doing fine dude. wbu?",
-  //     messageSender: "5eb9628e015a6a5c21dd85c9",
+  //     messageSender: "5eb9628e1219965a9bed74af",
   //     messageReceiver: "5eb9628e08e7a36ab6141444",
-  //     messageDate: DateTime.parse("2021-02-17 20:20:20"),
+  //     messageDate: DateTime.parse("2021-02-09 20:20:20"),
   //   ),
   //   ChatMessage(
   //     messageContent: "ehhhh, doing OK.",
   //     messageSender: "5eb9628e08e7a36ab6141444",
-  //     messageReceiver: "5eb9628e015a6a5c21dd85c9",
-  //     messageDate: DateTime.parse("2021-02-17 20:21:30"),
+  //     messageReceiver: "5eb9628e1219965a9bed74af",
+  //     messageDate: DateTime.parse("2021-02-10 20:21:30"),
   //   ),
   //   ChatMessage(
   //     messageContent: "Is there any thing wrong?",
-  //     messageSender: "5eb9628e015a6a5c21dd85c9",
+  //     messageSender: "5eb9628e1219965a9bed74af",
   //     messageReceiver: "5eb9628e08e7a36ab6141444",
-  //     messageDate: DateTime.parse("2021-02-17 20:22:00"),
+  //     messageDate: DateTime.parse("2021-02-11 20:22:00"),
   //   ),
   // ];
   final DataChatRepository qqeur = DataChatRepository();
@@ -117,7 +117,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
         children: <Widget>[
           StreamBuilder<Object>(
               stream: qqeur.fetchMessagesAsStream(
-                  "5eb9628e015a6a5c21dd85c9", "5eb9628e08e7a36ab6141444"),
+                  "5eb9628e1219965a9bed74af", "5eb9628e08e7a36ab6141444"),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   messages = snapshot.data;
@@ -134,14 +134,14 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                             left: 14, right: 14, top: 10, bottom: 10),
                         child: Align(
                           alignment: (messages[index].messageReceiver ==
-                                  "5eb9628e015a6a5c21dd85c9"
+                                  "5eb9628e1219965a9bed74af"
                               ? Alignment.topLeft
                               : Alignment.topRight),
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               color: (messages[index].messageReceiver ==
-                                      "5eb9628e015a6a5c21dd85c9"
+                                      "5eb9628e1219965a9bed74af"
                                   ? Colors.grey.shade200
                                   : Colors.blue[200]),
                             ),

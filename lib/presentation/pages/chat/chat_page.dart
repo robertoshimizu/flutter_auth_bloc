@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_bloc/data/repository/repositories.dart';
 
 import '../../../domain/entities/entities.dart';
 import '../pages.dart';
@@ -9,6 +10,40 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+  final DataChatRepository qqeur = DataChatRepository();
+
+  List<ChatMessage> messages = [
+    ChatMessage(
+      messageContent: "Hello, Harriet",
+      messageSender: "5eb9628e63f04e0d51d43da3",
+      messageReceiver: "5eb9628e17cb662d0ab6186e",
+      messageDate: DateTime.parse("2021-02-07 20:18:00"),
+    ),
+    ChatMessage(
+      messageContent: "How have you been?",
+      messageSender: "5eb9628e17cb662d0ab6186e",
+      messageReceiver: "5eb9628e63f04e0d51d43da3",
+      messageDate: DateTime.parse("2021-02-08 20:19:10"),
+    ),
+    ChatMessage(
+      messageContent: "Hey Leanna, I am doing fine dude. wbu?",
+      messageSender: "5eb9628e63f04e0d51d43da3",
+      messageReceiver: "5eb9628e17cb662d0ab6186e",
+      messageDate: DateTime.parse("2021-02-09 20:20:20"),
+    ),
+    ChatMessage(
+      messageContent: "ehhhh, doing OK.",
+      messageSender: "5eb9628e17cb662d0ab6186e",
+      messageReceiver: "5eb9628e63f04e0d51d43da3",
+      messageDate: DateTime.parse("2021-02-10 20:21:30"),
+    ),
+    ChatMessage(
+      messageContent: "Is there any thing wrong?",
+      messageSender: "5eb9628e63f04e0d51d43da3",
+      messageReceiver: "5eb9628e17cb662d0ab6186e",
+      messageDate: DateTime.parse("2021-02-11 20:22:00"),
+    ),
+  ];
   List<ChatUsers> chatUsers = [
     ChatUsers(
         name: "Jane Russel",
@@ -54,6 +89,13 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
+    // qqeur.registerChatId(
+    //     "5eb9628e63f04e0d51d43da3e", "5eb9628e17cb662d0ab6186e");
+    // messages.forEach((element) {
+    //   qqeur.sendMessage(element);
+    //   print(element.toJson());
+    // });
+    qqeur.fetchConversationsAsStream('5eb9628e015a6a5c21dd85c9');
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.red,
@@ -142,21 +184,37 @@ class _ChatPageState extends State<ChatPage> {
                 ),
               ),
             ),
-            ListView.builder(
-              itemCount: chatUsers.length,
-              shrinkWrap: true,
-              padding: EdgeInsets.only(top: 16),
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return ConversationList(
-                  name: chatUsers[index].name,
-                  messageText: chatUsers[index].messageText,
-                  imageUrl: chatUsers[index].imageURL,
-                  time: chatUsers[index].time,
-                  isMessageRead: (index == 0 || index == 3) ? true : false,
-                );
-              },
-            ),
+            StreamBuilder<Object>(
+                stream: null,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    print(snapshot.data);
+                    return ListView.builder(
+                      itemCount: chatUsers.length,
+                      shrinkWrap: true,
+                      padding: EdgeInsets.only(top: 16),
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return ConversationList(
+                          name: chatUsers[index].name,
+                          messageText: chatUsers[index].messageText,
+                          imageUrl: chatUsers[index].imageURL,
+                          time: chatUsers[index].time,
+                          isMessageRead:
+                              (index == 0 || index == 3) ? true : false,
+                        );
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text(
+                      'error',
+                      style: TextStyle(fontSize: 20.0),
+                    );
+                  } else {
+                    print('modo wait');
+                    return Text('Não há nenhuma conversa na plataforma');
+                  }
+                }),
           ],
         ),
       ),

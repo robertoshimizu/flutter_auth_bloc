@@ -34,14 +34,34 @@ class DataUserRepository with ChangeNotifier implements UserRepository {
 class DataChatRepository with ChangeNotifier {
   CollectionReference _api = FirebaseFirestore.instance.collection('messages');
   List<ChatMessage> chat;
+
+  Future<void> registerChatId(String sender, String receiver) {
+    var chatId = getChatId(sender, receiver);
+
+    _api
+        .doc(chatId)
+        .set({
+          'chatId': chatId,
+          'user1': sender,
+          'user2': receiver,
+          'createdAt': new DateTime.now()
+        })
+        .then((value) => print("ChatId Added"))
+        .catchError((error) => print("Failed to add user: $error"));
+
+    return null;
+  }
+
   Future<void> sendMessage(ChatMessage message) {
     var chatId = getChatId(message.messageSender, message.messageReceiver);
-    return _api
+    _api
         .doc(chatId)
         .collection(chatId)
         .add(message.toJson())
         .then((value) => print("Message Confirmed: $value"))
         .catchError((error) => print("Failed to send message: $error"));
+
+    return null;
   }
 
   Future<List<ChatMessage>> fetchMessages(
@@ -66,12 +86,39 @@ class DataChatRepository with ChangeNotifier {
 
     return requests;
   }
+
+  Future<List<String>> fetchConversationsAsStream(String currentId) async {
+    await FirebaseFirestore.instance
+        .collection('messages')
+        .where(field)
+        .get()
+        .then((querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        print('CHATS FOUND: ${querySnapshot.docs.length}');
+
+        querySnapshot.docs.forEach((element) {
+          List<String> lista;
+          if (element.id.toString().contains('${currentId.hashCode}')) {
+            print('Achei: ${element.id}');
+            lista.add(element.id);
+          }
+          return lista;
+        });
+      }
+    });
+    return null;
+
+    // var requests = result.map((event) =>
+    //     event.docs.map((doc) => ChatMessage.fromMap(doc.data())).toList());
+
+    // return requests;
+  }
 }
 
 getChatId(firstId, secondId) {
   if (firstId.hashCode <= secondId.hashCode) {
-    return '$firstId-$secondId';
+    return '${firstId.hashCode}-${secondId.hashCode}';
   } else {
-    return '$secondId-$firstId';
+    return '${secondId.hashCode}-${firstId.hashCode}';
   }
 }

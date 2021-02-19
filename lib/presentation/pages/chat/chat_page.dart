@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_bloc/data/repository/repositories.dart';
+import 'package:flutter_auth_bloc/domain/repository/repositories.dart';
 
 import '../../../domain/entities/entities.dart';
+import '../../../locator.dart';
 import '../pages.dart';
 
 class ChatPage extends StatefulWidget {
@@ -11,6 +13,7 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   final DataChatRepository qqeur = DataChatRepository();
+  final AuthRepository _authRepository = locator<DataAuthRepository>();
   List<Map<String, dynamic>> requests;
 
   List<ChatMessage> messages = [
@@ -90,6 +93,7 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
+    AppUser _user = _authRepository.user;
     // qqeur.registerChatId(
     //     "5eb9628e63f04e0d51d43da3e", "5eb9628e17cb662d0ab6186e");
     // messages.forEach((element) {
@@ -186,11 +190,10 @@ class _ChatPageState extends State<ChatPage> {
               ),
             ),
             StreamBuilder<Object>(
-                stream: qqeur
-                    .fetchConversationsAsStream('5eb9628e015a6a5c21dd85c9'),
+                stream: qqeur.fetchConversationsAsStream(_user.uid),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    print('Snapshot Data: ${snapshot.data}');
+                    // print('Snapshot Data: ${snapshot.data}');
                     requests = snapshot.data;
                     return ListView.builder(
                       itemCount: requests.length,
@@ -199,13 +202,14 @@ class _ChatPageState extends State<ChatPage> {
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
                         return ListTile(
-                          title: Text('${requests[index]}'),
+                          title: Text('${requests[index]['chatId']}'),
                           onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => ChatDetailPage(
-                                        chatId: '184763751-936641347')));
+                                        chatId:
+                                            '${requests[index]['chatId']}')));
                           },
                         );
                       },

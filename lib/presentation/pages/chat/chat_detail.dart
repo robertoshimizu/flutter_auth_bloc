@@ -16,31 +16,31 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   //   ChatMessage(
   //     messageContent: "Hello, Harriet",
   //     messageSender: "5eb9628e08e7a36ab6141444",
-  //     messageReceiver: "5eb9628e1219965a9bed74af",
+  //     messageReceiver: "5eb9628e4e07793d5a79908b",
   //     messageDate: DateTime.parse("2021-02-07 20:18:00"),
   //   ),
   //   ChatMessage(
   //     messageContent: "How have you been?",
-  //     messageSender: "5eb9628e08e7a36ab6141444",
-  //     messageReceiver: "5eb9628e1219965a9bed74af",
+  //     messageSender: "5eb9628e4e07793d5a79908b",
+  //     messageReceiver: "5eb9628e08e7a36ab6141444",
   //     messageDate: DateTime.parse("2021-02-08 20:19:10"),
   //   ),
   //   ChatMessage(
   //     messageContent: "Hey Leanna, I am doing fine dude. wbu?",
-  //     messageSender: "5eb9628e1219965a9bed74af",
-  //     messageReceiver: "5eb9628e08e7a36ab6141444",
+  //     messageSender: "5eb9628e08e7a36ab6141444",
+  //     messageReceiver: "5eb9628e4e07793d5a79908b",
   //     messageDate: DateTime.parse("2021-02-09 20:20:20"),
   //   ),
   //   ChatMessage(
   //     messageContent: "ehhhh, doing OK.",
-  //     messageSender: "5eb9628e08e7a36ab6141444",
-  //     messageReceiver: "5eb9628e1219965a9bed74af",
+  //     messageSender: "5eb9628e4e07793d5a79908b",
+  //     messageReceiver: "5eb9628e08e7a36ab6141444",
   //     messageDate: DateTime.parse("2021-02-10 20:21:30"),
   //   ),
   //   ChatMessage(
   //     messageContent: "Is there any thing wrong?",
-  //     messageSender: "5eb9628e1219965a9bed74af",
-  //     messageReceiver: "5eb9628e08e7a36ab6141444",
+  //     messageSender: "5eb9628e08e7a36ab6141444",
+  //     messageReceiver: "5eb9628e4e07793d5a79908b",
   //     messageDate: DateTime.parse("2021-02-11 20:22:00"),
   //   ),
   // ];
@@ -48,6 +48,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   @override
   Widget build(BuildContext context) {
     // print('to aqui');
+    // qqeur.registerChatId(
+    //     '5eb9628e08e7a36ab6141444', '5eb9628e4e07793d5a79908b');
     // messages.forEach((element) {
     //   qqeur.sendMessage(element);
     //   print(element.toJson());

@@ -8,7 +8,7 @@ import '../../../locator.dart';
 
 import '../../bloc/bloc.dart';
 import '../pages.dart';
-import '../pages.dart';
+
 import 'main_drawer.dart';
 
 class HomePage extends StatelessWidget {

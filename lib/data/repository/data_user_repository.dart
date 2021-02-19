@@ -70,7 +70,7 @@ class DataChatRepository with ChangeNotifier {
 
     chat = result.docs.map((doc) => ChatMessage.fromMap(doc.data())).toList();
 
-    print('chat length: ${chat.length}');
+    // print('chat length: ${chat.length}');
 
     return chat;
   }
@@ -88,32 +88,24 @@ class DataChatRepository with ChangeNotifier {
       String currentId) {
     var result = FirebaseFirestore.instance.collection('messages').snapshots();
 
-    // var requests =
-    //     result.map((event) => event.docs.map((doc) => doc.data()).toList());
-    var requests =
-        result.map((event) => event.docs.map((doc) => doc.data()).toList());
+    // filter to only chats in which currentID is in //
+    var requests = result.map((event) {
+      var lista = event.docs.map((doc) {
+        var chatId = (doc.data()['chatId']).toString();
+        if (chatId.contains(currentId.hashCode.toString())) {
+          return doc.data();
+        } else {
+          return null;
+        }
+      }).toList();
+      // print('lista ANTES: $lista');
+      lista.removeWhere((item) => item == null);
+      // print('lista DEPOIS: $lista');
+
+      return lista;
+    });
+
     return requests;
-
-    //     .then((querySnapshot) {
-    //   if (querySnapshot.docs.isNotEmpty) {
-    //     print('CHATS FOUND: ${querySnapshot.docs.length}');
-
-    //     querySnapshot.docs.forEach((element) {
-    //       List<String> lista;
-    //       if (element.id.toString().contains('${currentId.hashCode}')) {
-    //         print('Achei: ${element.id}');
-    //         lista.add(element.id);
-    //       }
-    //       return lista;
-    //     });
-    //   }
-    // });
-    // return null;
-
-    // var requests = result.map((event) =>
-    //     event.docs.map((doc) => ChatMessage.fromMap(doc.data())).toList());
-
-    // return requests;
   }
 }
 

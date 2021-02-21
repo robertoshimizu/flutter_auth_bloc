@@ -35,7 +35,7 @@ class DataChatRepository with ChangeNotifier {
   CollectionReference _api = FirebaseFirestore.instance.collection('messages');
   List<ChatMessage> chat;
 
-  Future<void> registerChatId(String sender, String receiver) {
+  String registerChatId(String sender, String receiver) {
     var chatId = getChatId(sender, receiver);
 
     _api
@@ -49,7 +49,7 @@ class DataChatRepository with ChangeNotifier {
         .then((value) => print("ChatId Added"))
         .catchError((error) => print("Failed to add user: $error"));
 
-    return null;
+    return chatId;
   }
 
   Future<void> sendMessage(ChatMessage message) {
@@ -107,12 +107,21 @@ class DataChatRepository with ChangeNotifier {
 
     return requests;
   }
-}
 
-getChatId(firstId, secondId) {
-  if (firstId.hashCode <= secondId.hashCode) {
-    return '${firstId.hashCode}-${secondId.hashCode}';
-  } else {
-    return '${secondId.hashCode}-${firstId.hashCode}';
+  String getChatId(firstId, secondId) {
+    if (firstId.hashCode <= secondId.hashCode) {
+      return '${firstId.hashCode}-${secondId.hashCode}';
+    } else {
+      return '${secondId.hashCode}-${firstId.hashCode}';
+    }
+  }
+
+  Future<bool> verifyChatId(String s, String t) async {
+    var chatId = getChatId(s, t);
+    var doc = await _api.doc(chatId).get();
+    if (!doc.exists) {
+      return false;
+    }
+    return true;
   }
 }

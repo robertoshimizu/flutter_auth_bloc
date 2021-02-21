@@ -4,6 +4,7 @@ import 'package:flutter_auth_bloc/data/repository/repositories.dart';
 import 'package:flutter_auth_bloc/domain/entities/entities.dart';
 import 'package:flutter_auth_bloc/domain/repository/repositories.dart';
 import 'package:flutter_auth_bloc/domain/repository/userFriends_repository.dart';
+import 'package:flutter_auth_bloc/presentation/pages/chat/chat_create_new.dart';
 import 'package:provider/provider.dart';
 
 import '../../../locator.dart';
@@ -30,7 +31,23 @@ class _SelectOneContactState extends State<SelectOneContact> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Selecione Um Contato'),
+        leading: new IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(
+          'Selecione Um Contato',
+          textAlign: TextAlign.center,
+        ),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.android_outlined),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
       ),
       body: Container(
         child: StreamBuilder<QuerySnapshot>(

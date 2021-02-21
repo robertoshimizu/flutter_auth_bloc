@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_bloc/data/repository/repositories.dart';
+import 'package:flutter_auth_bloc/presentation/pages/widgets/indicado_avatar.dart';
 import 'package:provider/provider.dart';
 
 import '../../../domain/entities/entities.dart';
@@ -76,7 +77,7 @@ class _MakeIndicationPageState extends State<MakeIndicationPage> {
                     width: 12,
                   ),
                   // Photo
-                  indicadoAvatar(photoList, name),
+                  IndicadoAvatar(photoList, name),
                 ],
               ),
               SizedBox(
@@ -145,27 +146,6 @@ class _MakeIndicationPageState extends State<MakeIndicationPage> {
         ),
       ),
     );
-  }
-
-  Widget indicadoAvatar(List photoList, String name) {
-    if (photoList.isNotEmpty) {
-      return Container(
-          child: Row(
-        children: <Widget>[
-          FittedBox(
-            fit: BoxFit.fitWidth,
-            child: CircleAvatar(
-              radius: 20,
-              backgroundImage: NetworkImage(photoList[0]),
-            ),
-          ),
-          Text(name),
-        ],
-      ));
-    } else
-      return Container(
-        child: Text(''),
-      );
   }
 }
 

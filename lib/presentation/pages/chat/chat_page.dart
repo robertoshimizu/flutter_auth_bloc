@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_bloc/data/repository/repositories.dart';
 import 'package:flutter_auth_bloc/domain/repository/repositories.dart';
+import 'package:flutter_auth_bloc/presentation/pages/chat/chat_create_new.dart';
 
 import '../../../domain/entities/entities.dart';
 import '../../../locator.dart';
@@ -157,10 +158,18 @@ class _ChatPageState extends State<ChatPage> {
                           SizedBox(
                             width: 2,
                           ),
-                          Text(
-                            "Add New",
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.bold),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => NewChat()));
+                            },
+                            child: Text(
+                              "Add New",
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ],
                       ),

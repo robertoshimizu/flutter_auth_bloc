@@ -210,15 +210,15 @@ class _ChatPageState extends State<ChatPage> {
                       padding: EdgeInsets.only(top: 16),
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
+                        var chat = Chat.fromMap(requests[index]);
                         return ListTile(
-                          title: Text('${requests[index]['chatId']}'),
+                          title: Text('${chat.chatId}'),
                           onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ChatDetailPage(
-                                        chatId:
-                                            '${requests[index]['chatId']}')));
+                                    builder: (context) =>
+                                        ChatDetailPage(chat: chat)));
                           },
                         );
                       },

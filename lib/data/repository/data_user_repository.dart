@@ -35,21 +35,22 @@ class DataChatRepository with ChangeNotifier {
   CollectionReference _api = FirebaseFirestore.instance.collection('messages');
   List<ChatMessage> chat;
 
-  String registerChatId(String sender, String receiver) {
+  Chat registerChatId(String sender, String receiver) {
     var chatId = getChatId(sender, receiver);
+    var chat = Chat(
+      chatId: chatId,
+      createdAt: new DateTime.now(),
+      user1: sender,
+      user2: receiver,
+    );
 
     _api
         .doc(chatId)
-        .set({
-          'chatId': chatId,
-          'user1': sender,
-          'user2': receiver,
-          'createdAt': new DateTime.now()
-        })
+        .set(chat.toJson())
         .then((value) => print("ChatId Added"))
         .catchError((error) => print("Failed to add user: $error"));
 
-    return chatId;
+    return chat;
   }
 
   Future<void> sendMessage(ChatMessage message) {
@@ -116,12 +117,12 @@ class DataChatRepository with ChangeNotifier {
     }
   }
 
-  Future<bool> verifyChatId(String s, String t) async {
+  Future<Chat> verifyChatId(String s, String t) async {
     var chatId = getChatId(s, t);
     var doc = await _api.doc(chatId).get();
     if (!doc.exists) {
-      return false;
+      return Chat.fromMap(doc.data());
     }
-    return true;
+    return Chat.fromMap(doc.data());
   }
 }

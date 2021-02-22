@@ -22,17 +22,17 @@ class NewChat extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data) {
-                var chatId =
-                    qqeur.getChatId('${selectedFriend[0]}', '${_user.uid}');
+                var chat = snapshot.data;
+
                 Provider.of<MyContactSelection>(context, listen: false)
                     .clearContactSelection();
-                return ChatDetailPage(chatId: chatId);
+                return ChatDetailPage(chat: chat);
               } else {
-                var chatId = qqeur.registerChatId(
+                var chat = qqeur.registerChatId(
                     '${selectedFriend[0]}', '${_user.uid}');
                 Provider.of<MyContactSelection>(context, listen: false)
                     .clearContactSelection();
-                return ChatDetailPage(chatId: chatId);
+                return ChatDetailPage(chat: chat);
               }
             } else if (snapshot.hasError) {
               return Text(

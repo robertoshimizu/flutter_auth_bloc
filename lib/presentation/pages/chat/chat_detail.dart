@@ -3,9 +3,9 @@ import 'package:flutter_auth_bloc/data/repository/repositories.dart';
 import 'package:flutter_auth_bloc/domain/entities/entities.dart';
 
 class ChatDetailPage extends StatefulWidget {
-  final String chatId;
+  final Chat chat;
 
-  const ChatDetailPage({Key key, @required this.chatId}) : super(key: key);
+  const ChatDetailPage({Key key, @required this.chat}) : super(key: key);
   @override
   _ChatDetailPageState createState() => _ChatDetailPageState();
 }
@@ -55,7 +55,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     //   print(element.toJson());
     // });
     // qqeur.sendMessage();
-    qqeur.fetchMessages(widget.chatId);
+    qqeur.fetchMessages(widget.chat.chatId);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -120,7 +120,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
           Padding(
             padding: const EdgeInsets.all(5),
             child: StreamBuilder<Object>(
-                stream: qqeur.fetchMessagesAsStream(widget.chatId),
+                stream: qqeur.fetchMessagesAsStream(widget.chat.toString()),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     messages = snapshot.data;
@@ -171,58 +171,84 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
           ),
           Align(
             alignment: Alignment.bottomLeft,
+            child: ChatMessageBlock(),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ChatMessageBlock extends StatefulWidget {
+  const ChatMessageBlock({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  _ChatMessageBlockState createState() => _ChatMessageBlockState();
+}
+
+class _ChatMessageBlockState extends State<ChatMessageBlock> {
+  final messageController = TextEditingController();
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    messageController.dispose();
+    super.dispose();
+  }
+
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(left: 10, right: 10),
+      width: double.infinity,
+      color: Colors.grey,
+      child: Row(
+        children: <Widget>[
+          GestureDetector(
+            onTap: () {},
             child: Container(
-              padding: EdgeInsets.only(left: 10, right: 10),
-              width: double.infinity,
-              color: Colors.grey,
-              child: Row(
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      height: 30,
-                      width: 30,
-                      decoration: BoxDecoration(
-                        color: Colors.lightBlue,
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: Icon(
-                        Icons.add,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 15,
-                  ),
-                  Expanded(
-                    child: TextField(
-                      minLines: 1,
-                      maxLines: 5,
-                      decoration: InputDecoration(
-                          hintText: "Write message...",
-                          hintStyle: TextStyle(color: Colors.black54),
-                          border: InputBorder.none),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 15,
-                  ),
-                  FloatingActionButton(
-                    onPressed: () {},
-                    mini: true,
-                    child: Icon(
-                      Icons.send,
-                      color: Colors.white,
-                      size: 18,
-                    ),
-                    backgroundColor: Colors.blue,
-                    elevation: 0,
-                  ),
-                ],
+              height: 30,
+              width: 30,
+              decoration: BoxDecoration(
+                color: Colors.lightBlue,
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: Icon(
+                Icons.add,
+                color: Colors.white,
+                size: 20,
               ),
             ),
+          ),
+          SizedBox(
+            width: 15,
+          ),
+          Expanded(
+            child: TextField(
+              controller: messageController,
+              minLines: 1,
+              maxLines: 5,
+              decoration: InputDecoration(
+                  hintText: "Write message...",
+                  hintStyle: TextStyle(color: Colors.black54),
+                  border: InputBorder.none),
+            ),
+          ),
+          SizedBox(
+            width: 15,
+          ),
+          FloatingActionButton(
+            onPressed: () {
+              print(messageController.text);
+            },
+            mini: true,
+            child: Icon(
+              Icons.send,
+              color: Colors.white,
+              size: 18,
+            ),
+            backgroundColor: Colors.blue,
+            elevation: 0,
           ),
         ],
       ),

@@ -66,17 +66,17 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                           padding: EdgeInsets.only(
                               left: 14, right: 14, top: 10, bottom: 10),
                           child: Align(
-                            alignment: (messages[index].messageReceiver ==
-                                    widget.chat.user1
-                                ? Alignment.topLeft
-                                : Alignment.topRight),
+                            alignment:
+                                (messages[index].messageReceiver == user.uid
+                                    ? Alignment.topLeft
+                                    : Alignment.topRight),
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                color: (messages[index].messageReceiver ==
-                                        widget.chat.user1
-                                    ? Colors.grey.shade200
-                                    : Colors.blue[200]),
+                                color:
+                                    (messages[index].messageReceiver == user.uid
+                                        ? Colors.grey.shade200
+                                        : Colors.blue[200]),
                               ),
                               padding: EdgeInsets.all(16),
                               child: Text(
@@ -101,7 +101,10 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
           ),
           Align(
             alignment: Alignment.bottomLeft,
-            child: ChatMessageBlock(),
+            child: ChatSendMessageBlock(
+              sender: user.uid,
+              receiver: otherUser,
+            ),
           ),
         ],
       ),
@@ -199,17 +202,20 @@ class ChatDetailHeadline extends StatelessWidget {
   }
 }
 
-class ChatMessageBlock extends StatefulWidget {
-  const ChatMessageBlock({
-    Key key,
-  }) : super(key: key);
+class ChatSendMessageBlock extends StatefulWidget {
+  final String sender;
+  final String receiver;
+  const ChatSendMessageBlock(
+      {Key key, @required this.sender, @required this.receiver})
+      : super(key: key);
 
   @override
-  _ChatMessageBlockState createState() => _ChatMessageBlockState();
+  _ChatSendMessageBlockState createState() => _ChatSendMessageBlockState();
 }
 
-class _ChatMessageBlockState extends State<ChatMessageBlock> {
+class _ChatSendMessageBlockState extends State<ChatSendMessageBlock> {
   final messageController = TextEditingController();
+  final DataChatRepository qqeur = DataChatRepository();
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -260,6 +266,16 @@ class _ChatMessageBlockState extends State<ChatMessageBlock> {
           FloatingActionButton(
             onPressed: () {
               print(messageController.text);
+              var element = ChatMessage(
+                messageContent: messageController.text,
+                messageSender: widget.sender,
+                messageReceiver: widget.receiver,
+                messageDate: new DateTime.now(),
+              );
+              qqeur.sendMessage(element);
+              setState(() {
+                messageController.text = "";
+              });
             },
             mini: true,
             child: Icon(

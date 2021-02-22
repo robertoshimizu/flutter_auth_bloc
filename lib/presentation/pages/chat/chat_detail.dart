@@ -117,62 +117,64 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
       ),
       body: Stack(
         children: <Widget>[
-          StreamBuilder<Object>(
-              stream: qqeur.fetchMessagesAsStream(widget.chatId),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  messages = snapshot.data;
-                  print('num of messages: ${messages.length}');
-                  return ListView.builder(
-                    reverse: true,
-                    itemCount: messages.length,
-                    shrinkWrap: true,
-                    padding: EdgeInsets.only(top: 10, bottom: 10),
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return Container(
-                        padding: EdgeInsets.only(
-                            left: 14, right: 14, top: 10, bottom: 10),
-                        child: Align(
-                          alignment: (messages[index].messageReceiver ==
-                                  "5eb9628e1219965a9bed74af"
-                              ? Alignment.topLeft
-                              : Alignment.topRight),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: (messages[index].messageReceiver ==
-                                      "5eb9628e1219965a9bed74af"
-                                  ? Colors.grey.shade200
-                                  : Colors.blue[200]),
-                            ),
-                            padding: EdgeInsets.all(16),
-                            child: Text(
-                              messages[index].messageContent,
-                              style: TextStyle(fontSize: 15),
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: StreamBuilder<Object>(
+                stream: qqeur.fetchMessagesAsStream(widget.chatId),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    messages = snapshot.data;
+                    print('num of messages: ${messages.length}');
+                    return ListView.builder(
+                      reverse: true,
+                      itemCount: messages.length,
+                      shrinkWrap: true,
+                      padding: EdgeInsets.only(top: 10, bottom: 10),
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return Container(
+                          padding: EdgeInsets.only(
+                              left: 14, right: 14, top: 10, bottom: 10),
+                          child: Align(
+                            alignment: (messages[index].messageReceiver ==
+                                    "5eb9628e1219965a9bed74af"
+                                ? Alignment.topLeft
+                                : Alignment.topRight),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: (messages[index].messageReceiver ==
+                                        "5eb9628e1219965a9bed74af"
+                                    ? Colors.grey.shade200
+                                    : Colors.blue[200]),
+                              ),
+                              padding: EdgeInsets.all(16),
+                              child: Text(
+                                messages[index].messageContent,
+                                style: TextStyle(fontSize: 15),
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  );
-                } else if (snapshot.hasError) {
-                  return Text(
-                    'error',
-                    style: TextStyle(fontSize: 20.0),
-                  );
-                } else {
-                  print('modo wait');
-                  return Text('Não há nenhuma requisição na plataforma');
-                }
-              }),
+                        );
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text(
+                      'error',
+                      style: TextStyle(fontSize: 20.0),
+                    );
+                  } else {
+                    print('modo wait');
+                    return Text('Não há nenhuma requisição na plataforma');
+                  }
+                }),
+          ),
           Align(
             alignment: Alignment.bottomLeft,
             child: Container(
-              padding: EdgeInsets.only(left: 10, bottom: 10, top: 10),
-              height: 60,
+              padding: EdgeInsets.only(left: 10, right: 10),
               width: double.infinity,
-              color: Colors.white,
+              color: Colors.grey,
               child: Row(
                 children: <Widget>[
                   GestureDetector(
@@ -196,6 +198,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                   ),
                   Expanded(
                     child: TextField(
+                      minLines: 1,
+                      maxLines: 5,
                       decoration: InputDecoration(
                           hintText: "Write message...",
                           hintStyle: TextStyle(color: Colors.black54),
@@ -207,6 +211,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                   ),
                   FloatingActionButton(
                     onPressed: () {},
+                    mini: true,
                     child: Icon(
                       Icons.send,
                       color: Colors.white,

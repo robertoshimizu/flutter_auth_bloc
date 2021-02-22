@@ -62,13 +62,13 @@ class UserData {
         mobilePhone1 = snapshot['mobile_phone1'] ?? '',
         phone1 = snapshot['phone1'] ?? '',
         photo = snapshot['photo'] ?? '',
-        // registered = DateTime.fromMicrosecondsSinceEpoch(
-        //         DateTime.parse(snapshot['registered'])
-        //             .microsecondsSinceEpoch) ??
-        //     '',
         registered = DateTime.fromMicrosecondsSinceEpoch(
-                snapshot['registered'].microsecondsSinceEpoch) ??
+                DateTime.parse(snapshot['registered'])
+                    .microsecondsSinceEpoch) ??
             '',
+        // registered = DateTime.fromMicrosecondsSinceEpoch(
+        //         snapshot['registered'].microsecondsSinceEpoch) ??
+        //     '',
         // This is when registerd is a timestamp. above is when it is a string
         address = snapshot['address'] ?? '',
         occupation = snapshot['occupation'] ?? '',

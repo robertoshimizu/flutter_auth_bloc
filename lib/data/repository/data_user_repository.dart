@@ -47,7 +47,7 @@ class DataChatRepository with ChangeNotifier {
     _api
         .doc(chatId)
         .set(chat.toJson())
-        .then((value) => print("ChatId Added"))
+        .then((value) => print("New Chat Added"))
         .catchError((error) => print("Failed to add user: $error"));
 
     return chat;

@@ -211,16 +211,7 @@ class _ChatPageState extends State<ChatPage> {
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
                         var chat = Chat.fromMap(requests[index]);
-                        return ListTile(
-                          title: Text('${chat.chatId}'),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        ChatDetailPage(chat: chat)));
-                          },
-                        );
+                        return ChatHeadLine(chat: chat);
                       },
                     );
                   } else if (snapshot.hasError) {
@@ -237,5 +228,62 @@ class _ChatPageState extends State<ChatPage> {
         ),
       ),
     );
+  }
+}
+
+class ChatHeadLine extends StatelessWidget {
+  final AuthRepository _authRepository = locator<DataAuthRepository>();
+  final UserRepository qqeur = locator<DataUserRepository>();
+  ChatHeadLine({
+    Key key,
+    @required this.chat,
+  }) : super(key: key);
+
+  final Chat chat;
+
+  @override
+  Widget build(BuildContext context) {
+    AppUser user = _authRepository.user;
+    var otherUser = user.uid == chat.user1 ? chat.user2 : chat.user1;
+    return FutureBuilder<Object>(
+        future: qqeur.getUserById(otherUser),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            var user2 = UserData.fromMap(snapshot.data, user.uid);
+            return ListTile(
+              leading: CircleAvatar(
+                backgroundImage: NetworkImage(user2.photo),
+              ),
+              title: new Text(user2.name),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ChatDetailPage(chat: chat)));
+              },
+            );
+          } else if (snapshot.hasError) {
+            return Text(
+              'error',
+              style: TextStyle(fontSize: 20.0),
+            );
+          } else
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    child: CircularProgressIndicator(),
+                    width: 60,
+                    height: 60,
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 16),
+                    child: Text('Awaiting result...'),
+                  )
+                ],
+              ),
+            );
+        });
   }
 }

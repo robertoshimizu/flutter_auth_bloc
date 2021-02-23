@@ -21,7 +21,7 @@ class NewChat extends StatelessWidget {
           future: qqeur.verifyChatId('${selectedFriend[0]}', '${_user.uid}'),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              if (snapshot.data) {
+              if (snapshot.data != null) {
                 var chat = snapshot.data;
 
                 Provider.of<MyContactSelection>(context, listen: false)

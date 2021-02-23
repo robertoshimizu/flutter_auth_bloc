@@ -121,7 +121,8 @@ class DataChatRepository with ChangeNotifier {
     var chatId = getChatId(s, t);
     var doc = await _api.doc(chatId).get();
     if (!doc.exists) {
-      return Chat.fromMap(doc.data());
+      print('Chat Não existe');
+      return null;
     }
     return Chat.fromMap(doc.data());
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auth_bloc/data/repository/repositories.dart';
 import 'package:flutter_auth_bloc/domain/entities/entities.dart';
 import 'package:flutter_auth_bloc/domain/repository/repositories.dart';
+import 'package:flutter_auth_bloc/presentation/pages/chat/chat_create_new.dart';
 import 'package:provider/provider.dart';
 
 class DisplayIndications extends StatelessWidget {
@@ -19,7 +20,7 @@ class DisplayIndications extends StatelessWidget {
     final qqeur = Provider.of<DataUserRepository>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Indications Page'),
+        title: Text('Indicações Recebidas'),
       ),
       body: Container(
         color: Colors.amber.shade100,
@@ -118,6 +119,25 @@ class DisplayIndications extends StatelessWidget {
                                     );
                                   }
                                 }),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    IconButton(
+                                        iconSize: 20,
+                                        icon: Icon(
+                                          Icons.chat,
+                                          color: Colors.black87,
+                                        ),
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) => NewChat(
+                                                      indications[index]
+                                                          .personIndicatedId)));
+                                        })
+                                  ],
+                                ),
                               ],
                             ),
                           ),

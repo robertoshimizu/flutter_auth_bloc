@@ -7,33 +7,35 @@ import 'package:provider/provider.dart';
 import '../../../locator.dart';
 
 class NewChat extends StatelessWidget {
+  final String friend;
+  NewChat(this.friend);
+
   final AuthRepository _authRepository = locator<DataAuthRepository>();
   final DataChatRepository qqeur = DataChatRepository();
   @override
   Widget build(BuildContext context) {
     var selectedFriend = Provider.of<MyContactSelection>(context).selectedId;
     var _user = _authRepository.user;
+    print('Friend: $friend');
 
-    if (selectedFriend.isEmpty) {
+    if (selectedFriend.isEmpty && friend == null) {
       return SelectOneContact();
-    } else
+    } else {
+      var s = (friend == null) ? '${selectedFriend[0]}' : friend;
+      print('S: $s');
       return FutureBuilder(
-          future: qqeur.verifyChatId('${selectedFriend[0]}', '${_user.uid}'),
+          future: qqeur.verifyChatId(s, _user.uid),
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              if (snapshot.data != null) {
-                var chat = snapshot.data;
-
-                Provider.of<MyContactSelection>(context, listen: false)
-                    .clearContactSelection();
-                return ChatDetailPage(chat: chat);
-              } else {
-                var chat = qqeur.registerChatId(
-                    '${selectedFriend[0]}', '${_user.uid}');
-                Provider.of<MyContactSelection>(context, listen: false)
-                    .clearContactSelection();
-                return ChatDetailPage(chat: chat);
-              }
+            if (!snapshot.hasData) {
+              var chat = qqeur.registerChatId(s, _user.uid);
+              Provider.of<MyContactSelection>(context, listen: false)
+                  .clearContactSelection();
+              return ChatDetailPage(chat: chat);
+            } else if (snapshot.hasData) {
+              var chat = snapshot.data;
+              Provider.of<MyContactSelection>(context, listen: false)
+                  .clearContactSelection();
+              return ChatDetailPage(chat: chat);
             } else if (snapshot.hasError) {
               return Text(
                 'error',
@@ -57,6 +59,7 @@ class NewChat extends StatelessWidget {
                 ),
               );
           });
+    }
   }
 }
 

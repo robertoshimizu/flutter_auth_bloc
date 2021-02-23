@@ -38,10 +38,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
         elevation: 0,
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
-        flexibleSpace: SafeArea(
-          child: ChatDetailHeadline(
-            user: otherUser,
-          ),
+        flexibleSpace: ChatDetailHeadline(
+          user: otherUser,
         ),
       ),
       body: Stack(
@@ -55,8 +53,10 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                   if (snapshot.hasData) {
                     messages = snapshot.data;
                     print('num of messages: ${messages.length}');
+                    messages
+                        .sort((a, b) => a.messageDate.compareTo(b.messageDate));
                     return ListView.builder(
-                      reverse: true,
+                      reverse: false,
                       itemCount: messages.length,
                       shrinkWrap: true,
                       padding: EdgeInsets.only(top: 10, bottom: 10),
@@ -65,25 +65,33 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                         return Container(
                           padding: EdgeInsets.only(
                               left: 14, right: 14, top: 10, bottom: 10),
-                          child: Align(
-                            alignment:
-                                (messages[index].messageReceiver == user.uid
-                                    ? Alignment.topLeft
-                                    : Alignment.topRight),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color:
+                          child: Column(
+                            children: [
+                              Align(
+                                alignment:
                                     (messages[index].messageReceiver == user.uid
+                                        ? Alignment.topLeft
+                                        : Alignment.topRight),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: (messages[index].messageReceiver ==
+                                            user.uid
                                         ? Colors.grey.shade200
                                         : Colors.blue[200]),
+                                  ),
+                                  padding: EdgeInsets.all(16),
+                                  child: Text(
+                                    messages[index].messageContent,
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                ),
                               ),
-                              padding: EdgeInsets.all(16),
-                              child: Text(
-                                messages[index].messageContent,
-                                style: TextStyle(fontSize: 15),
+                              Text(
+                                messages[index].messageDate.toUtc().toString(),
+                                style: TextStyle(fontSize: 10),
                               ),
-                            ),
+                            ],
                           ),
                         );
                       },

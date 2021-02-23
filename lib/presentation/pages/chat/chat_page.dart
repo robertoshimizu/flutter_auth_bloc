@@ -113,8 +113,8 @@ class _ChatPageState extends State<ChatPage> {
               color: Colors.white,
             ),
             onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => NewChat()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => NewChat(null)));
             },
           ),
         ],

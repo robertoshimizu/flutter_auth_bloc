@@ -31,4 +31,9 @@ class DataAllRequests with ChangeNotifier implements AllRequests {
     await _api.addDocument(data.toMap());
     return;
   }
+
+  @override
+  void deleteRequest(String requestId) async {
+    await _api.removeDocument(requestId);
+  }
 }

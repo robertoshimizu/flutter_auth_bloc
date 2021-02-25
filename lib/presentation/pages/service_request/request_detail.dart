@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_bloc/data/repository/repositories.dart';
+
+import 'package:flutter_auth_bloc/locator.dart';
 import 'package:intl/intl.dart';
 
 import '../../../domain/entities/entities.dart';
@@ -18,19 +21,28 @@ class RequestDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //final indicationProvider = Provider.of<IndicationRepository>(context);
-    print(request.requestId);
+    print('ID da solictação: ${request.requestId}');
     return Scaffold(
       appBar: AppBar(
-        title: Text('Request Details'),
+        title: Text('Detalhes da Solicitação'),
         actions: <Widget>[
           IconButton(
+            color: Colors.white,
             iconSize: 25,
-            icon: Icon(Icons.delete_forever),
-            onPressed: null,
+            icon: Icon(
+              Icons.delete_forever,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              _showCupertinoDialog(context, request.requestId);
+            },
           ),
           IconButton(
             iconSize: 25,
-            icon: Icon(Icons.edit),
+            icon: Icon(
+              Icons.edit,
+              color: Colors.white,
+            ),
             onPressed: null,
           ),
         ],
@@ -80,7 +92,7 @@ class RequestDetails extends StatelessWidget {
                   TextFormField(
                     enabled: false,
                     decoration: InputDecoration(
-                      labelText: 'Tipo de serviço',
+                      labelText: 'Tipo de indicação',
                     ),
                     controller: TextEditingController(
                       text: request.serviceClassification,
@@ -212,5 +224,52 @@ class RequestDetails extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  _showCupertinoDialog(BuildContext context, String requestId) {
+    print('Alert para confirmação deletar requestId: $requestId');
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text("Cancelar"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = TextButton(
+      child: Text("Continuar"),
+      onPressed: () {
+        // Navigator.pop(context);
+        // _addIndicationToFirestore(newIndication, requestId);
+        _deleteRequestFromFirestore(requestId);
+        Navigator.pushNamedAndRemoveUntil(context, 'home_screen', (_) => false);
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Confirmação"),
+      content: Text("Deseja mesmo deletar a sua solicitação de indicação?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  _deleteRequestFromFirestore(String requestId) {
+    var qquer = locator<DataAllRequests>();
+    try {
+      qquer.deleteRequest(requestId);
+
+      print("RequestId $requestId deleted!");
+    } catch (e) {
+      print(e);
+    }
   }
 }

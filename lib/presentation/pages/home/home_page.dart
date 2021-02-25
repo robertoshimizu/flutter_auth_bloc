@@ -28,7 +28,7 @@ class HomePage extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Home Page'),
+          title: Text('Página Principal'),
         ),
         drawer: Container(
           width: MediaQuery.of(context).size.width * 0.9,
@@ -55,7 +55,7 @@ class HomePage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            'Existing User: $username',
+                            'Usuário Logado: $username',
                             style: TextStyle(fontSize: 20.0),
                           ),
                           SizedBox(height: 15.0),
@@ -65,7 +65,7 @@ class HomePage extends StatelessWidget {
                             children: <Widget>[
                               new ElevatedButton(
                                 child: new Text(
-                                  'Requests',
+                                  'Solicitações de Indicações',
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 onPressed: () => Navigator.pushNamed(
@@ -73,7 +73,7 @@ class HomePage extends StatelessWidget {
                               ),
                               new ElevatedButton(
                                 child: new Text(
-                                  'Indications',
+                                  'Minhas Indicações',
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 onPressed: null,

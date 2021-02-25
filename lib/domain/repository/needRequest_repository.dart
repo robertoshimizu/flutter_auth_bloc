@@ -7,4 +7,6 @@ abstract class AllRequests extends ChangeNotifier {
   Stream<List<NeedRequest>> fetchRequestsAsStream();
 
   Future addRequest(NeedRequest data);
+
+  void deleteRequest(String requestId);
 }

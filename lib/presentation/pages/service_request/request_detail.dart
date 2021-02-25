@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_bloc/data/repository/repositories.dart';
+import 'package:flutter_auth_bloc/domain/repository/repositories.dart';
 
 import 'package:flutter_auth_bloc/locator.dart';
 import 'package:intl/intl.dart';
@@ -17,34 +18,22 @@ class RequestDetails extends StatelessWidget {
     @required this.name,
     @required this.photo,
   });
+  final AuthRepository _authRepository = locator<DataAuthRepository>();
 
   @override
   Widget build(BuildContext context) {
+    AppUser _user = _authRepository.user;
     //final indicationProvider = Provider.of<IndicationRepository>(context);
-    print('ID da solictação: ${request.requestId}');
+    // print('ID da solictação: ${request.requestId}');
+    // print('UserId do solicitante ${request.userId}');
+    // print('UserId do usuário logado ${_user.uid}');
+    bool sameUser = request.userId == _user.uid ? true : false;
     return Scaffold(
       appBar: AppBar(
         title: Text('Detalhes da Solicitação'),
         actions: <Widget>[
-          IconButton(
-            color: Colors.white,
-            iconSize: 25,
-            icon: Icon(
-              Icons.delete_forever,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              _showCupertinoDialog(context, request.requestId);
-            },
-          ),
-          IconButton(
-            iconSize: 25,
-            icon: Icon(
-              Icons.edit,
-              color: Colors.white,
-            ),
-            onPressed: null,
-          ),
+          DeleteButton(request.requestId, sameUser),
+          EditButton(request.requestId, sameUser),
         ],
       ),
       body: Column(
@@ -225,51 +214,98 @@ class RequestDetails extends StatelessWidget {
       ),
     );
   }
+}
 
-  _showCupertinoDialog(BuildContext context, String requestId) {
-    print('Alert para confirmação deletar requestId: $requestId');
-    // set up the buttons
-    Widget cancelButton = TextButton(
-      child: Text("Cancelar"),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
-    Widget continueButton = TextButton(
-      child: Text("Continuar"),
-      onPressed: () {
-        // Navigator.pop(context);
-        // _addIndicationToFirestore(newIndication, requestId);
-        _deleteRequestFromFirestore(requestId);
-        Navigator.pushNamedAndRemoveUntil(context, 'home_screen', (_) => false);
-      },
-    );
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("Confirmação"),
-      content: Text("Deseja mesmo deletar a sua solicitação de indicação?"),
-      actions: [
-        cancelButton,
-        continueButton,
-      ],
-    );
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
+class DeleteButton extends StatelessWidget {
+  final String requestId;
+  final bool visible;
+
+  DeleteButton(this.requestId, this.visible);
+
+  @override
+  Widget build(BuildContext context) {
+    if (visible == true) {
+      return IconButton(
+        color: Colors.white,
+        iconSize: 25,
+        icon: Icon(
+          Icons.delete_forever,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          _showCupertinoDialog(context, requestId);
+        },
+      );
+    } else
+      return SizedBox();
   }
+}
 
-  _deleteRequestFromFirestore(String requestId) {
-    var qquer = locator<DataAllRequests>();
-    try {
-      qquer.deleteRequest(requestId);
+class EditButton extends StatelessWidget {
+  final String requestId;
+  final bool visible;
 
-      print("RequestId $requestId deleted!");
-    } catch (e) {
-      print(e);
-    }
+  EditButton(this.requestId, this.visible);
+
+  @override
+  Widget build(BuildContext context) {
+    if (visible == true) {
+      return IconButton(
+        iconSize: 25,
+        icon: Icon(
+          Icons.edit,
+          color: Colors.white,
+        ),
+        onPressed: null,
+      );
+    } else
+      return SizedBox();
+  }
+}
+
+_showCupertinoDialog(BuildContext context, String requestId) {
+  print('Alert para confirmação deletar requestId: $requestId');
+  // set up the buttons
+  Widget cancelButton = TextButton(
+    child: Text("Cancelar"),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+  Widget continueButton = TextButton(
+    child: Text("Continuar"),
+    onPressed: () {
+      // Navigator.pop(context);
+      // _addIndicationToFirestore(newIndication, requestId);
+      _deleteRequestFromFirestore(requestId);
+      Navigator.pushNamedAndRemoveUntil(context, 'home_screen', (_) => false);
+    },
+  );
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Confirmação"),
+    content: Text("Deseja mesmo deletar a sua solicitação de indicação?"),
+    actions: [
+      cancelButton,
+      continueButton,
+    ],
+  );
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+_deleteRequestFromFirestore(String requestId) {
+  var qquer = locator<DataAllRequests>();
+  try {
+    qquer.deleteRequest(requestId);
+
+    print("RequestId $requestId deleted!");
+  } catch (e) {
+    print(e);
   }
 }

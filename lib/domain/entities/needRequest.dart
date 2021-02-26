@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class NeedRequest {
   String requestId;
   DateTime creationDate;
@@ -25,8 +27,8 @@ class NeedRequest {
 
   Map<String, dynamic> toMap() {
     return {
-      'creationDate': creationDate,
-      'expiringDate': expiringDate,
+      'creationDate': Timestamp.fromDate(creationDate),
+      'expiringDate': Timestamp.fromDate(expiringDate),
       'userId': userId,
       'description': description,
       'destinationFriends': destinationFriends,

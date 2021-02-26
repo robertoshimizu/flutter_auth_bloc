@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
@@ -62,10 +63,7 @@ class UserData {
         mobilePhone1 = snapshot['mobile_phone1'] ?? '',
         phone1 = snapshot['phone1'] ?? '',
         photo = snapshot['photo'] ?? '',
-        registered = DateTime.fromMicrosecondsSinceEpoch(
-                DateTime.parse(snapshot['registered'])
-                    .microsecondsSinceEpoch) ??
-            '',
+        registered = snapshot['registered'].toDate() ?? '',
         // registered = DateTime.fromMicrosecondsSinceEpoch(
         //         snapshot['registered'].microsecondsSinceEpoch) ??
         //     '',
@@ -88,7 +86,7 @@ class UserData {
       "mobile_phone1": mobilePhone1,
       "phone1": phone1,
       "photo": photo,
-      "registered": registered,
+      "registered": Timestamp.fromDate(registered),
       "address": address,
       "occupation": occupation,
       "idtype": idtype,

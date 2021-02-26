@@ -8,5 +8,7 @@ abstract class AllRequests extends ChangeNotifier {
 
   Future addRequest(NeedRequest data);
 
+  Future updateRequest(NeedRequest data);
+
   void deleteRequest(String requestId);
 }

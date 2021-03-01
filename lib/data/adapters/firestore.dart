@@ -23,6 +23,11 @@ class FirestoreService {
         .snapshots();
   }
 
+  Stream<QuerySnapshot> streamMyDataCollection(String param) {
+    print(param);
+    return collectionReference.where('userId', isEqualTo: param).snapshots();
+  }
+
   Future<DocumentSnapshot> getDocumentById(String id) {
     return collectionReference.doc(id).get();
   }

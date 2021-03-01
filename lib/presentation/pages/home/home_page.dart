@@ -65,11 +65,19 @@ class HomePage extends StatelessWidget {
                             children: <Widget>[
                               new ElevatedButton(
                                 child: new Text(
-                                  'Solicitações de Indicações',
+                                  'Solicitações de Indicações da rede',
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 onPressed: () => Navigator.pushNamed(
                                     context, 'needRequest_screen'),
+                              ),
+                              new ElevatedButton(
+                                child: new Text(
+                                  'Minhas solicitações de indicações',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                onPressed: () => Navigator.pushNamed(
+                                    context, 'myNeedRequest_screen'),
                               ),
                               new ElevatedButton(
                                 child: new Text(

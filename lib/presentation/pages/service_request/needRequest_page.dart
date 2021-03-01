@@ -55,14 +55,6 @@ class NeedRequestPage extends StatelessWidget {
               }
             }),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.pushNamed(
-          context,
-          'addRequest_screen',
-        ),
-        tooltip: 'Add New Request',
-        child: Icon(Icons.add),
-      ),
     );
   }
 }

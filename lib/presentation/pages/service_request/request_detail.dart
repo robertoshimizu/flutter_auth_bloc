@@ -224,23 +224,25 @@ class _RequestDetailsState extends State<RequestDetails> {
             ButtonBar(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                new ElevatedButton(
-                    child: new Text(
-                      'Fazer uma indicação',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MakeIndicationPage(
-                            requestId: widget.request.requestId,
+                sameUser
+                    ? SizedBox()
+                    : new ElevatedButton(
+                        child: new Text(
+                          'Fazer uma indicação',
+                          style: TextStyle(
+                            color: Colors.white,
                           ),
                         ),
-                      );
-                    }),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MakeIndicationPage(
+                                requestId: widget.request.requestId,
+                              ),
+                            ),
+                          );
+                        }),
                 new ElevatedButton(
                   child: new Text(
                     'Ver Indicações',

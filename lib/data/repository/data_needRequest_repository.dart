@@ -16,8 +16,8 @@ class DataAllRequests with ChangeNotifier implements AllRequests {
     return requests;
   }
 
-  Stream<List<NeedRequest>> fetchRequestsAsStream() {
-    var stream = _api.streamDataCollection();
+  Stream<List<NeedRequest>> fetchRequestsAsStream(String userId) {
+    var stream = _api.streamDataCollection(userId);
     var result = stream.map((event) => event.docs
         .map((doc) => NeedRequest.fromMap(
               doc.data(),
@@ -40,6 +40,12 @@ class DataAllRequests with ChangeNotifier implements AllRequests {
   @override
   Future updateRequest(NeedRequest data) async {
     await _api.updateDocument(data.toMap(), data.requestId);
+    return;
+  }
+
+  @override
+  Future addIndication(String requestId, String indicationId) async {
+    await _api.addNewIndication(requestId, 'indications', indicationId);
     return;
   }
 }

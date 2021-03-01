@@ -206,12 +206,12 @@ class _RequestDetailsState extends State<RequestDetails> {
                           ),
                         ),
                         // Photo
-                        Text(
-                          '# Aplicações:    ${widget.request.applications.length.toString()}',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
+                        // Text(
+                        //   '# Aplicações:    ${widget.request.applications.length.toString()}',
+                        //   style: TextStyle(
+                        //     fontSize: 16,
+                        //   ),
+                        // ),
                       ],
                     ),
                   ],

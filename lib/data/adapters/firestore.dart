@@ -16,8 +16,11 @@ class FirestoreService {
     return collectionReference.get();
   }
 
-  Stream<QuerySnapshot> streamDataCollection() {
-    return collectionReference.snapshots();
+  Stream<QuerySnapshot> streamDataCollection(String param) {
+    print(param);
+    return collectionReference
+        .where('destinationFriends', arrayContains: param)
+        .snapshots();
   }
 
   Future<DocumentSnapshot> getDocumentById(String id) {
@@ -38,5 +41,11 @@ class FirestoreService {
 
   Future<void> createFirestoreUser(Map data, String id) {
     return collectionReference.doc(id).set(data);
+  }
+
+  Future<void> addNewIndication(String id, String field, String elementId) {
+    return collectionReference.doc(id).update({
+      '$field': FieldValue.arrayUnion(['$elementId'])
+    });
   }
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_bloc/data/repository/repositories.dart';
 import 'package:flutter_auth_bloc/domain/entities/entities.dart';
+import 'package:flutter_auth_bloc/domain/repository/repositories.dart';
 import 'package:flutter_auth_bloc/presentation/pages/service_request/requests_card.dart';
 import 'package:provider/provider.dart';
+
+import '../../../locator.dart';
 
 class NeedRequestPage extends StatelessWidget {
   @override
@@ -11,6 +14,8 @@ class NeedRequestPage extends StatelessWidget {
     // AllRequests allRequests = AllRequests();
     List<NeedRequest> requests;
     final needRequestProvider = Provider.of<DataAllRequests>(context);
+    final AuthRepository _authRepository = locator<DataAuthRepository>();
+    AppUser _user = _authRepository.user;
 
     return Scaffold(
       appBar: AppBar(
@@ -22,7 +27,7 @@ class NeedRequestPage extends StatelessWidget {
       // ),
       body: Container(
         child: StreamBuilder(
-            stream: needRequestProvider.fetchRequestsAsStream(),
+            stream: needRequestProvider.fetchRequestsAsStream(_user.uid),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 // print('stream de needRequests tem data');

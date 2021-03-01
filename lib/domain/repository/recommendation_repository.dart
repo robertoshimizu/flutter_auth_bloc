@@ -15,9 +15,9 @@ class IndicationRepository extends ChangeNotifier {
         .collection('indications');
   }
 
-  Future addIndication(Map data) async {
-    await _api.add(data);
-    return;
+  Future<String> addIndication(Map data) async {
+    var result = await _api.add(data);
+    return result.id;
   }
 
   Stream<QuerySnapshot> fetchIndicationAsStream() {

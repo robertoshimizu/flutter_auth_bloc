@@ -192,8 +192,9 @@ _addIndicationToFirestore(Indication newIndication, String requestId) async {
   try {
     var result = await indicationRepo.addIndication(newIndication.toMap());
     //await needRequestProvider.addRequest(newRequest);
-
-    print(result);
+    AllRequests qqeur = locator<DataAllRequests>();
+    print('Id da indicação: $result');
+    qqeur.addIndication(requestId, result);
   } catch (e) {
     print(e);
   }

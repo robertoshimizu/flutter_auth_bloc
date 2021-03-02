@@ -11,16 +11,17 @@ import '../../../locator.dart';
 class DisplayIndications extends StatelessWidget {
   DisplayIndications({
     Key key,
-    this.requestId,
+    this.request,
   }) : super(key: key);
-  final String requestId;
+  final NeedRequest request;
 
   final AuthRepository _authRepository = locator<DataAuthRepository>();
 
   @override
   Widget build(BuildContext context) {
     AppUser _user = _authRepository.user;
-    IndicationRepository indicationrep = IndicationRepository(requestId);
+    IndicationRepository indicationrep =
+        IndicationRepository(request.requestId);
     List<Indication> indications;
     final qqeur = Provider.of<DataUserRepository>(context);
 
@@ -185,7 +186,7 @@ class DisplayIndications extends StatelessWidget {
                             SizedBox(
                               width: 20,
                             ),
-                            (_user.uid == indications[index].userId)
+                            (_user.uid == request.userId)
                                 ? IconButton(
                                     iconSize: 20,
                                     icon: Icon(

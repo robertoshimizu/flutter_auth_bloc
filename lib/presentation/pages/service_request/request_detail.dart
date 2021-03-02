@@ -255,7 +255,7 @@ class _RequestDetailsState extends State<RequestDetails> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => DisplayIndications(
-                          requestId: widget.request.requestId,
+                          request: widget.request,
                         ),
                       ),
                     );

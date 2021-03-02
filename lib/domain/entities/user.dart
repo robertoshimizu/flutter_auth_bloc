@@ -63,7 +63,9 @@ class UserData {
         mobilePhone1 = snapshot['mobile_phone1'] ?? '',
         phone1 = snapshot['phone1'] ?? '',
         photo = snapshot['photo'] ?? '',
-        registered = snapshot['registered'].toDate() ?? '',
+        registered = snapshot['registered'].runtimeType == String
+            ? DateTime.parse(snapshot['registered'])
+            : snapshot['registered'].toDate(),
         // registered = DateTime.fromMicrosecondsSinceEpoch(
         //         snapshot['registered'].microsecondsSinceEpoch) ??
         //     '',

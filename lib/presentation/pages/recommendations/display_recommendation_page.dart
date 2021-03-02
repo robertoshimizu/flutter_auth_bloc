@@ -6,18 +6,24 @@ import 'package:flutter_auth_bloc/domain/repository/repositories.dart';
 import 'package:flutter_auth_bloc/presentation/pages/chat/chat_create_new.dart';
 import 'package:provider/provider.dart';
 
+import '../../../locator.dart';
+
 class DisplayIndications extends StatelessWidget {
-  const DisplayIndications({
+  DisplayIndications({
     Key key,
     this.requestId,
   }) : super(key: key);
   final String requestId;
 
+  final AuthRepository _authRepository = locator<DataAuthRepository>();
+
   @override
   Widget build(BuildContext context) {
+    AppUser _user = _authRepository.user;
     IndicationRepository indicationrep = IndicationRepository(requestId);
     List<Indication> indications;
     final qqeur = Provider.of<DataUserRepository>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Indicações Recebidas'),
@@ -35,72 +41,95 @@ class DisplayIndications extends StatelessWidget {
                   itemCount: indications.length,
                   itemBuilder: (builContext, index) => Card(
                     margin: EdgeInsets.all(8.0),
-                    child: Container(
-                      padding: EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          CircleAvatar(
-                            radius: 20,
-                            backgroundImage: NetworkImage(
-                                indications[index].personIndicatedPhoto),
-                          ),
-                          Container(
-                            width: 250,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: Text(
-                                    indications[index].personIndicatedName,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w900,
-                                      fontSize: 18,
-                                      color: Colors.blue,
-                                    ),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                ),
-                                Row(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CircleAvatar(
+                                radius: 22,
+                                backgroundImage: NetworkImage(
+                                    indications[index].personIndicatedPhoto),
+                              ),
+                              SizedBox(
+                                width: 18,
+                              ),
+                              Container(
+                                width: 250,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      'indicado por ',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontStyle: FontStyle.italic,
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 8.0),
+                                      child: Text(
+                                        indications[index].personIndicatedName,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 16,
+                                          color: Colors.blue,
+                                        ),
+                                        textAlign: TextAlign.left,
                                       ),
-                                      textAlign: TextAlign.justify,
                                     ),
-                                    FutureBuilder(
-                                      future: qqeur.getUserById(
-                                          indications[index].userId),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.hasData) {
-                                          return Text(
-                                            snapshot.data["name"],
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontStyle: FontStyle.italic,
-                                              color: Colors.purple,
-                                            ),
-                                            textAlign: TextAlign.justify,
-                                          );
-                                        } else if (snapshot.hasError) {
-                                          return Text('error');
-                                        } else
-                                          return Text('');
-                                      },
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'indicado por ',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontStyle: FontStyle.italic,
+                                          ),
+                                          textAlign: TextAlign.justify,
+                                        ),
+                                        FutureBuilder(
+                                          future: qqeur.getUserById(
+                                              indications[index].userId),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.hasData) {
+                                              return Text(
+                                                snapshot.data["name"],
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontStyle: FontStyle.italic,
+                                                  color: Colors.purple,
+                                                ),
+                                                textAlign: TextAlign.justify,
+                                              );
+                                            } else if (snapshot.hasError) {
+                                              return Text('error');
+                                            } else
+                                              return Text('');
+                                          },
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 2, 8, 2),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
                                 Text(
                                   indications[index].knowledgeLevel,
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontStyle: FontStyle.italic,
                                   ),
-                                  textAlign: TextAlign.justify,
+                                  textAlign: TextAlign.left,
+                                ),
+                                SizedBox(
+                                  height: 8,
                                 ),
                                 Builder(builder: (context) {
                                   if (indications[index].comments == null) {
@@ -112,37 +141,72 @@ class DisplayIndications extends StatelessWidget {
                                         fontSize: 14,
                                         fontStyle: FontStyle.italic,
                                       ),
-                                      textAlign: TextAlign.justify,
+                                      textAlign: TextAlign.left,
                                       softWrap: false,
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 3,
                                     );
                                   }
                                 }),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    IconButton(
-                                        iconSize: 20,
-                                        icon: Icon(
-                                          Icons.chat,
-                                          color: Colors.black87,
-                                        ),
-                                        onPressed: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) => NewChat(
-                                                      indications[index]
-                                                          .personIndicatedId)));
-                                        })
-                                  ],
-                                ),
                               ],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.star_rate,
+                                  size: 18,
+                                ),
+                                Icon(
+                                  Icons.star_rate,
+                                  size: 18,
+                                ),
+                                Icon(
+                                  Icons.star_rate,
+                                  size: 18,
+                                ),
+                                Icon(
+                                  Icons.star_rate,
+                                  size: 18,
+                                ),
+                                Icon(
+                                  Icons.star_rate_outlined,
+                                  size: 18,
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            (_user.uid == indications[index].userId)
+                                ? IconButton(
+                                    iconSize: 20,
+                                    icon: Icon(
+                                      Icons.chat,
+                                      color: Colors.black87,
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => NewChat(
+                                                  indications[index]
+                                                      .personIndicatedId)));
+                                    })
+                                : SizedBox(
+                                    width: 48,
+                                    height: 38,
+                                  ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 );

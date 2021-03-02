@@ -51,7 +51,7 @@ class RequestCard extends StatelessWidget {
                                 requestDetails.serviceClassification,
                                 style: TextStyle(
                                   fontWeight: FontWeight.w900,
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   color: Colors.blue,
                                 ),
                                 textAlign: TextAlign.left,

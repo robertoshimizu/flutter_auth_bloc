@@ -24,11 +24,29 @@ class IndicationRepository extends ChangeNotifier {
     return _api.snapshots();
   }
 
+  Stream<QuerySnapshot> fetchMyIndicationAsStream() {
+    return _api.snapshots();
+  }
+
   Future<List<Indication>> fetchIndications() async {
     var result = await _api.get();
     indications = result.docs
         .map((doc) => Indication.fromMap(doc.data(), doc.id))
         .toList();
     return indications;
+  }
+}
+
+class MyIndicationRepository extends ChangeNotifier {
+  final FirebaseFirestore instance = FirebaseFirestore.instance;
+  CollectionReference _api;
+  List<Indication> indications;
+
+  MyIndicationRepository() {
+    _api = instance.collection('needRequest');
+  }
+
+  Stream<QuerySnapshot> fetchMyIndicationAsStream() {
+    return _api.snapshots();
   }
 }

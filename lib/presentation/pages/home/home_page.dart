@@ -84,7 +84,10 @@ class HomePage extends StatelessWidget {
                                   'Minhas Indicações',
                                   style: TextStyle(color: Colors.white),
                                 ),
-                                onPressed: null,
+                                onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MyIndications())),
                               ),
                               new ElevatedButton(
                                   child: new Text(

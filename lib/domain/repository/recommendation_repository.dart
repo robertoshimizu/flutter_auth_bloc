@@ -40,13 +40,77 @@ class IndicationRepository extends ChangeNotifier {
 class MyIndicationRepository extends ChangeNotifier {
   final FirebaseFirestore instance = FirebaseFirestore.instance;
   CollectionReference _api;
-  List<Indication> indications;
+  List<Indication> myindications = [];
 
   MyIndicationRepository() {
     _api = instance.collection('needRequest');
   }
 
-  Stream<QuerySnapshot> fetchMyIndicationAsStream() {
-    return _api.snapshots();
+  Future<List<Indication>> fetchMyIndications(String _user) async {
+    List listOfIndications = await _api.get().then((val) => val.docs);
+
+    for (int i = 0; i < listOfIndications.length; i++) {
+      _api
+          .doc(listOfIndications[i].documentID.toString())
+          .collection("indications")
+          .where('userId', isEqualTo: _user)
+          .snapshots()
+          .listen(createListofMyIndications);
+    }
+    return myindications;
+  }
+
+  createListofMyIndications(QuerySnapshot snapshot) {
+    var docs = snapshot.docs;
+    for (var doc in docs) {
+      myindications.add(Indication.fromMap(doc.data(), doc.id));
+    }
   }
 }
+
+// var query = _api.snapshots().forEach((val) {
+//   val.docs.forEach((element) {
+//     var subquery = _api
+//         .doc(element.id)
+//         .collection('indications')
+//         .where('userId', isEqualTo: '5eb9628e08e7a36ab6141444')
+//         .snapshots();
+// subquery.forEach((element) {
+//   element.docs.forEach((element) {
+//     var leite = element.data()['userId'];
+//     print('indications: $leite');
+//   });
+// });
+//   });
+// });
+
+// var lista1 = [];
+
+// var lista = await _api.get().then((value) => value.docs.forEach((element) {
+//       var indics = element.data()['indications'];
+//       print(indics);
+//       pissa.add(element.id);
+//     }));
+
+// var lista = await _api.get().then((value) {
+//   List<QueryDocumentSnapshot> lista2 = [];
+
+//   return value.docs.forEach((element) async {
+//     lista1.add(element.id);
+
+//     var indics = await _api
+//         .doc(element.id)
+//         .collection('indications')
+//         .where('userId', isEqualTo: '5eb9628e08e7a36ab6141444')
+//         .get()
+//         .then((value) => value.docs.forEach((element) {
+//               lista2.add(element);
+//               return lista2;
+//             }));
+//     print('lista2: $lista2');
+//     return indics;
+
+// lista3.addAll(lista2);
+//   });
+// });
+// print('lista1: $lista1');

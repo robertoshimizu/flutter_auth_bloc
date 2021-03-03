@@ -17,6 +17,7 @@ class MyIndications extends StatelessWidget {
   Widget build(BuildContext context) {
     AppUser _user = _authRepository.user;
     MyIndicationRepository myindicationrep = MyIndicationRepository();
+    final qqeur = Provider.of<DataUserRepository>(context);
     List<Indication> indications;
 
     return Scaffold(
@@ -82,26 +83,26 @@ class MyIndications extends StatelessWidget {
                                           ),
                                           textAlign: TextAlign.justify,
                                         ),
-                                        // FutureBuilder(
-                                        //   future: qqeur.getUserById(
-                                        //       indications[index].userId),
-                                        //   builder: (context, snapshot) {
-                                        //     if (snapshot.hasData) {
-                                        //       return Text(
-                                        //         snapshot.data["name"],
-                                        //         style: TextStyle(
-                                        //           fontSize: 14,
-                                        //           fontStyle: FontStyle.italic,
-                                        //           color: Colors.purple,
-                                        //         ),
-                                        //         textAlign: TextAlign.justify,
-                                        //       );
-                                        //     } else if (snapshot.hasError) {
-                                        //       return Text('error');
-                                        //     } else
-                                        //       return Text('');
-                                        //   },
-                                        // ),
+                                        FutureBuilder(
+                                          future: qqeur.getUserById(
+                                              indications[index].userId),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.hasData) {
+                                              return Text(
+                                                snapshot.data["name"],
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontStyle: FontStyle.italic,
+                                                  color: Colors.purple,
+                                                ),
+                                                textAlign: TextAlign.justify,
+                                              );
+                                            } else if (snapshot.hasError) {
+                                              return Text('error');
+                                            } else
+                                              return Text('');
+                                          },
+                                        ),
                                       ],
                                     ),
                                   ],
@@ -181,25 +182,6 @@ class MyIndications extends StatelessWidget {
                             SizedBox(
                               width: 20,
                             ),
-                            // (_user.uid == request.userId)
-                            //     ? IconButton(
-                            //         iconSize: 20,
-                            //         icon: Icon(
-                            //           Icons.chat,
-                            //           color: Colors.black87,
-                            //         ),
-                            //         onPressed: () {
-                            //           Navigator.push(
-                            //               context,
-                            //               MaterialPageRoute(
-                            //                   builder: (context) => NewChat(
-                            //                       indications[index]
-                            //                           .personIndicatedId)));
-                            //         })
-                            //     : SizedBox(
-                            //         width: 48,
-                            //         height: 38,
-                            //       ),
                           ],
                         ),
                       ],

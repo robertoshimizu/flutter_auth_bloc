@@ -16,6 +16,16 @@ class DataAllRequests with ChangeNotifier implements AllRequests {
     return requests;
   }
 
+  Future<NeedRequest> fetchOneRequest(String requestId) async {
+    var result = await _api.getDocumentById(requestId);
+    if (result.exists) {
+      var requests = NeedRequest.fromMap(result.data(), result.id);
+      return requests;
+    } else {
+      return null;
+    }
+  }
+
   Stream<List<NeedRequest>> fetchRequestsAsStream(String userId) {
     var stream = _api.streamDataCollection(userId);
     var result = stream.map((event) => event.docs

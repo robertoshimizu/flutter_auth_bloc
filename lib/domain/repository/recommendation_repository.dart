@@ -65,6 +65,7 @@ class MyIndicationRepository extends ChangeNotifier {
           .snapshots()
           .listen(createListofMyIndications);
     }
+    await Future.delayed(Duration(milliseconds: 300));
     return myindications;
   }
 

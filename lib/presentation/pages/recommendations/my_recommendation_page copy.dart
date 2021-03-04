@@ -18,6 +18,7 @@ class MyIndications extends StatelessWidget {
   Widget build(BuildContext context) {
     AppUser _user = _authRepository.user;
     MyIndicationRepository myindicationrep = MyIndicationRepository();
+    final needRequestProvider = Provider.of<DataAllRequests>(context);
     final qqeur = Provider.of<DataUserRepository>(context);
     List<Indication> indications;
 
@@ -54,7 +55,7 @@ class MyIndications extends StatelessWidget {
                                     indications[index].personIndicatedPhoto),
                               ),
                               SizedBox(
-                                width: 18,
+                                width: 38,
                               ),
                               Container(
                                 width: 250,
@@ -74,37 +75,84 @@ class MyIndications extends StatelessWidget {
                                         textAlign: TextAlign.left,
                                       ),
                                     ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'indicado por ',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontStyle: FontStyle.italic,
-                                          ),
-                                          textAlign: TextAlign.justify,
-                                        ),
-                                        FutureBuilder(
-                                          future: qqeur.getUserById(
-                                              indications[index].userId),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.hasData) {
-                                              return Text(
-                                                snapshot.data["name"],
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontStyle: FontStyle.italic,
-                                                  color: Colors.purple,
-                                                ),
-                                                textAlign: TextAlign.justify,
-                                              );
-                                            } else if (snapshot.hasError) {
-                                              return Text('error');
-                                            } else
-                                              return Text('');
-                                          },
-                                        ),
-                                      ],
+                                    FutureBuilder(
+                                      future:
+                                          needRequestProvider.fetchOneRequest(
+                                              indications[index].requestId),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasData) {
+                                          NeedRequest request = snapshot.data;
+                                          // print(request.serviceClassification);
+                                          return Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    'para  ',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontStyle:
+                                                          FontStyle.italic,
+                                                    ),
+                                                    textAlign:
+                                                        TextAlign.justify,
+                                                  ),
+                                                  Text(
+                                                    request
+                                                        .serviceClassification,
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontStyle:
+                                                          FontStyle.italic,
+                                                      color: Colors.purple,
+                                                    ),
+                                                    textAlign:
+                                                        TextAlign.justify,
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 8,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Text("solicitado por "),
+                                                  FutureBuilder(
+                                                    future: qqeur.getUserById(
+                                                        request.userId),
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      if (snapshot.hasData) {
+                                                        return Text(
+                                                          snapshot.data["name"],
+                                                          style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontStyle: FontStyle
+                                                                .italic,
+                                                            color:
+                                                                Colors.purple,
+                                                          ),
+                                                          textAlign:
+                                                              TextAlign.justify,
+                                                        );
+                                                      } else if (snapshot
+                                                          .hasError) {
+                                                        return Text('error');
+                                                      } else
+                                                        return Text('');
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          );
+                                        } else if (snapshot.hasError) {
+                                          return Text('error');
+                                        } else
+                                          return Text('');
+                                      },
                                     ),
                                   ],
                                 ),
@@ -221,7 +269,7 @@ class MyIndications extends StatelessWidget {
                     const Padding(
                       padding: EdgeInsets.only(top: 16),
                       child: Text('Awaiting result...'),
-                    )
+                    ),
                   ],
                 ));
               }

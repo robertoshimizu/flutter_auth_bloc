@@ -5,6 +5,7 @@ import 'package:flutter_auth_bloc/domain/repository/repositories.dart';
 import 'package:provider/provider.dart';
 
 import '../../../locator.dart';
+import '../pages.dart';
 
 class MyIndications extends StatelessWidget {
   MyIndications({
@@ -31,9 +32,9 @@ class MyIndications extends StatelessWidget {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 indications = snapshot.data.toList();
-                indications.forEach((element) {
-                  print(element.personIndicatedName);
-                });
+                // indications.forEach((element) {
+                //   print(element.personIndicatedName);
+                // });
                 return new ListView.builder(
                   itemCount: indications.length,
                   itemBuilder: (builContext, index) => Card(
@@ -182,6 +183,20 @@ class MyIndications extends StatelessWidget {
                             SizedBox(
                               width: 20,
                             ),
+                            IconButton(
+                              icon: Icon(
+                                Icons.delete,
+                                color: Colors.black26,
+                              ),
+                              onPressed: () {
+                                print(
+                                    'indication id: ${indications[index].indicationId}');
+                                var message =
+                                    'Deseja mesmo apagar esta indicação?';
+                                showAlertDialog(context, 'indication',
+                                    indications[index], message);
+                              },
+                            )
                           ],
                         ),
                       ],

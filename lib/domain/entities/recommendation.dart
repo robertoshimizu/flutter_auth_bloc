@@ -39,6 +39,7 @@ class Indication {
     if (map == null) return null;
 
     return Indication(
+      indicationId: indicationId,
       requestId: map['requestId'],
       indicationDate: DateTime.fromMillisecondsSinceEpoch(
           map['indicationDate'].millisecondsSinceEpoch),

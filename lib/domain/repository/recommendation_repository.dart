@@ -20,6 +20,14 @@ class IndicationRepository extends ChangeNotifier {
     return result.id;
   }
 
+  Future<void> deleteIndication(String docId) {
+    return _api
+        .doc(docId)
+        .delete()
+        .then((value) => print('indication ${this.requestId}  $docId deleted'))
+        .catchError((error) => print('Failed to delete indications: $error'));
+  }
+
   Stream<QuerySnapshot> fetchIndicationAsStream() {
     return _api.snapshots();
   }

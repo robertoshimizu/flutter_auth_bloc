@@ -28,3 +28,4 @@ export './widgets/loading_indicator.dart';
 export './widgets/rounded_button.dart';
 export './service_request/myNeedRequest_page.dart';
 export './recommendations/my_recommendation_page copy.dart';
+export 'widgets/alertDialog.dart';

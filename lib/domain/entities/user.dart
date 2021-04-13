@@ -88,7 +88,8 @@ class UserData {
       "mobile_phone1": mobilePhone1,
       "phone1": phone1,
       "photo": photo,
-      "registered": Timestamp.fromDate(registered),
+      "registered": Timestamp.fromDate(
+          registered), // IMPORTANTE, acomplando classe de Firebase!!!
       "address": address,
       "occupation": occupation,
       "idtype": idtype,

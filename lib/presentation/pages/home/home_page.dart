@@ -123,17 +123,18 @@ class HomePage extends StatelessWidget {
                       ),
                     );
                   } else {
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            'New User -> needs to fill profile',
-                            style: TextStyle(fontSize: 20.0),
-                          ),
-                        ],
-                      ),
-                    );
+                    Navigator.pushNamed(context, 'first_profile1');
+                    // return Center(
+                    //   child: Column(
+                    //     mainAxisAlignment: MainAxisAlignment.center,
+                    //     children: <Widget>[
+                    //       Text(
+                    //         'New User -> needs to fill profile',
+                    //         style: TextStyle(fontSize: 20.0),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // );
                   }
                 },
               ),

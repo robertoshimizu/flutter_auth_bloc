@@ -260,7 +260,26 @@ class _RequestDetailsState extends State<RequestDetails> {
                       ),
                     );
                   },
-                )
+                ),
+                sameUser
+                    ? SizedBox()
+                    : new ElevatedButton(
+                        child: new Text(
+                          'Propagar indicação',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MakeIndicationPage(
+                                requestId: widget.request.requestId,
+                              ),
+                            ),
+                          );
+                        }),
               ],
             ),
           ],

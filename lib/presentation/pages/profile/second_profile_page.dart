@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_auth_bloc/domain/repository/repositories.dart';
+import 'package:flutter_auth_bloc/domain/entities/user.dart';
 
-import '../../../data/repository/repositories.dart';
-import '../../../domain/entities/entities.dart';
-import '../../../locator.dart';
 import '../pages.dart';
 
-class FirstProfile2 extends StatefulWidget {
-  @override
-  _FirstProfile2State createState() => _FirstProfile2State();
-}
+class FirstProfile2 extends StatelessWidget {
+  final UserData user;
+  FirstProfile2({
+    Key key,
+    @required this.user,
+  }) : super(key: key);
 
-class _FirstProfile2State extends State<FirstProfile2> {
-  DataUserRepository api = locator<DataUserRepository>();
-  final AuthRepository _authRepository = locator<DataAuthRepository>();
   final _formKey = GlobalKey<FormState>();
-  String nickname;
+  static const routeName = '/first_profile2';
+
   @override
   Widget build(BuildContext context) {
-    AppUser user = _authRepository.user;
+    String nickname;
+    print('Passou User?????: ${user.name}');
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(),
@@ -81,14 +79,15 @@ class _FirstProfile2State extends State<FirstProfile2> {
                         shape: RoundedRectangleBorder(
                             borderRadius: new BorderRadius.circular(30)),
                         onPressed: () {
-                          // if (_formKey.currentState.validate()) {
-                          //   api.updateUserfield(
-                          //       id: user.uid, key: 'nickname', value: nickname);
-                          // }
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => FirstProfile3()));
+                          if (_formKey.currentState.validate()) {
+                            user.nick = nickname;
+                          }
+
+                          Navigator.pushNamed(
+                            context,
+                            'first_profile3',
+                            arguments: user,
+                          );
                         },
                         child: Text(
                           "Avançar",

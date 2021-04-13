@@ -2,21 +2,20 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_auth_bloc/domain/repository/repositories.dart';
 
+import '../../../data/repository/firestore_cloud_repository.dart';
 import '../../../data/repository/repositories.dart';
 import '../../../domain/entities/entities.dart';
 import '../../../locator.dart';
 import '../pages.dart';
 
 class FirstProfile4 extends StatelessWidget {
+  final UserData user;
   final String imagePath;
-  final AuthRepository _authRepository = locator<DataAuthRepository>();
-  FirstProfile4({Key key, this.imagePath}) : super(key: key);
 
+  FirstProfile4({Key key, this.imagePath, this.user}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    AppUser user = _authRepository.user;
     Size size = MediaQuery.of(context).size;
     DataUserRepository api = locator<DataUserRepository>();
     return Scaffold(
@@ -84,10 +83,11 @@ class FirstProfile4 extends StatelessWidget {
                     ),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => FirstProfile3()));
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => FirstProfile3()));
+                        Navigator.pop(context);
                       },
                       child: Center(
                         child: Text(
@@ -106,24 +106,29 @@ class FirstProfile4 extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(30)),
                     onPressed: () async {
-                      // var title = (user.uid).substring(0, 7);
-                      // var selectedImage = File(imagePath);
-                      // var cloudStorageService = CloudStorageService();
-                      // var storageResult = await cloudStorageService.uploadImage(
-                      //     imageToUpload: selectedImage, title: title);
+                      var title = (user.uid).substring(0, 7);
+                      var selectedImage = File(imagePath);
+                      var cloudStorageService = CloudStorageService();
+                      var storageResult = await cloudStorageService.uploadImage(
+                          imageToUpload: selectedImage, title: title);
 
-                      // var imageUrl = storageResult.imageUrl;
+                      var imageUrl = storageResult.imageUrl;
 
-                      // try {
-                      //   await api.updateUserfield(
-                      //     id: user.uid,
-                      //     key: 'photo',
-                      //     value: imageUrl,
-                      //   );
-                      // } catch (error) {}
+                      try {
+                        // create user with UserData
+                        //
+                        //
+                        // await api.updateUserfield(
+                        //   id: user.uid,
+                        //   key: 'photo',
+                        //   value: imageUrl,
+                        // );
+                      } catch (error) {}
 
-                      // Navigator.push(context,
-                      //     MaterialPageRoute(builder: (context) => HomePage()));
+                      // Remove all stack pages
+
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => HomePage()));
                     },
                     child: Text(
                       "Gostei",

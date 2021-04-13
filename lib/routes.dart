@@ -4,6 +4,7 @@ import 'presentation/pages/pages.dart';
 
 class Routeer {
   static Route<dynamic> generateRoute(RouteSettings settings) {
+    final args = settings.arguments;
     switch (settings.name) {
       case 'phoneLoginWrapper':
         return MaterialPageRoute(builder: (_) => PhoneLoginWrapper());
@@ -14,7 +15,20 @@ class Routeer {
       case 'first_profile1':
         return MaterialPageRoute(builder: (_) => FirstProfile1());
       case 'first_profile2':
-        return MaterialPageRoute(builder: (_) => FirstProfile2());
+        return MaterialPageRoute(
+            builder: (_) => FirstProfile2(
+                  user: args,
+                ));
+      case 'first_profile3':
+        return MaterialPageRoute(
+            builder: (_) => FirstProfile3(
+                  user: args,
+                ));
+      case 'take_picture':
+        return MaterialPageRoute(
+            builder: (_) => TakePictureScreen(
+                  user: args,
+                ));
       // case 'mycontacts_screen':
       //   return MaterialPageRoute(builder: (_) => Contacts());
       case 'needRequest_screen':

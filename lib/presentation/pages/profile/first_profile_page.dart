@@ -107,8 +107,12 @@ class _FirstProfile1State extends State<FirstProfile1> {
                               cpf: cpf,
                               registered: DateTime.now(),
                             );
-                            api.createUser(userdata.toJson());
-                            Navigator.pushNamed(context, 'first_profile2');
+
+                            Navigator.pushNamed(
+                              context,
+                              'first_profile2',
+                              arguments: userdata,
+                            );
                           }
                         },
                         child: const Text(

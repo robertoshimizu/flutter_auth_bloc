@@ -22,7 +22,7 @@ class AppUser extends Equatable with ChangeNotifier {
 class UserData {
   final String uid;
   final String name;
-  final String nickname;
+  String nickname;
   final String mobilePhone1;
   final String phone1;
   final String photo;
@@ -55,6 +55,10 @@ class UserData {
     this.companyName,
     this.birthdate,
   });
+
+  set nick(String nick) {
+    this.nickname = nick;
+  }
 
   UserData.fromMap(Map snapshot, String uid)
       : uid = uid ?? '',

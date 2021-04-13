@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_auth_bloc/domain/entities/user.dart';
 
 import 'take_picture_screen.dart';
 
-class FirstProfile3 extends StatefulWidget {
-  @override
-  _FirstProfile3State createState() => _FirstProfile3State();
-}
-
-class _FirstProfile3State extends State<FirstProfile3> {
+class FirstProfile3 extends StatelessWidget {
+  final UserData user;
+  FirstProfile3({
+    Key key,
+    @required this.user,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -75,6 +76,11 @@ class _FirstProfile3State extends State<FirstProfile3> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => TakePictureScreen()));
+                  Navigator.pushNamed(
+                    context,
+                    'take_picture',
+                    arguments: user,
+                  );
                 },
                 child: Text(
                   "Avançar",

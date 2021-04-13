@@ -53,4 +53,13 @@ class FirestoreService {
       '$field': FieldValue.arrayUnion(['$elementId'])
     });
   }
+
+  Future<void> updateDocumentField({String id, String key, dynamic value}) {
+    var objek = {'$key': value};
+    return collectionReference
+        .doc(id)
+        .update(objek)
+        .then((value) => print("User Updated"))
+        .catchError((error) => print("Failed to update user: $error"));
+  }
 }

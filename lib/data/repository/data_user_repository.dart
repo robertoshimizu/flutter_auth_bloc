@@ -29,6 +29,11 @@ class DataUserRepository with ChangeNotifier implements UserRepository {
     await _api.createFirestoreUser(values, uid);
     return;
   }
+
+  Future<void> updateUserfield({String id, String key, dynamic value}) async {
+    await _api.updateDocumentField(id: id, key: key, value: value);
+    return;
+  }
 }
 
 class DataChatRepository with ChangeNotifier {

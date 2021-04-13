@@ -13,8 +13,8 @@ class Routeer {
       //   return MaterialPageRoute(builder: (_) => Profile());
       case 'first_profile1':
         return MaterialPageRoute(builder: (_) => FirstProfile1());
-      // case 'first_profile2':
-      //   return MaterialPageRoute(builder: (_) => FirstProfile2());
+      case 'first_profile2':
+        return MaterialPageRoute(builder: (_) => FirstProfile2());
       // case 'mycontacts_screen':
       //   return MaterialPageRoute(builder: (_) => Contacts());
       case 'needRequest_screen':

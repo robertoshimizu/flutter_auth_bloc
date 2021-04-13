@@ -108,8 +108,8 @@ class _FirstProfile1State extends State<FirstProfile1> {
                               registered: DateTime.now(),
                             );
                             api.createUser(userdata.toJson());
+                            Navigator.pushNamed(context, 'first_profile2');
                           }
-                          Navigator.pushNamed(context, 'first_profile2');
                         },
                         child: const Text(
                           "Avançar",

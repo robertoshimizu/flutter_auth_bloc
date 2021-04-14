@@ -25,7 +25,7 @@ class UserData {
   String nickname;
   final String mobilePhone1;
   final String phone1;
-  final String photo;
+  String photo;
   final DateTime registered;
   final String occupation;
   final String address;

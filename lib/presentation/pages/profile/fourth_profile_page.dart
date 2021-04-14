@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 import '../../../data/repository/firestore_cloud_repository.dart';
 import '../../../data/repository/repositories.dart';
@@ -19,7 +20,7 @@ class FirstProfile4 extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     DataUserRepository api = locator<DataUserRepository>();
     return Scaffold(
-      appBar: AppBar(title: Text('Display the Picture')),
+      appBar: AppBar(title: Text('Step Bar')),
       body: Container(
         margin: EdgeInsets.only(
           top: 10,
@@ -113,22 +114,13 @@ class FirstProfile4 extends StatelessWidget {
                           imageToUpload: selectedImage, title: title);
 
                       var imageUrl = storageResult.imageUrl;
+                      user.photo = imageUrl;
 
                       try {
-                        // create user with UserData
-                        //
-                        //
-                        // await api.updateUserfield(
-                        //   id: user.uid,
-                        //   key: 'photo',
-                        //   value: imageUrl,
-                        // );
+                        await api.createUser(user.toJson());
                       } catch (error) {}
 
-                      // Remove all stack pages
-
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => HomePage()));
+                      Phoenix.rebirth(context);
                     },
                     child: Text(
                       "Gostei",

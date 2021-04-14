@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:provider/provider.dart';
 
 import 'data/repository/repositories.dart';
@@ -17,28 +18,30 @@ void main() async {
   Bloc.observer = SimpleBlocObserver();
 
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider.value(
-          value: locator<DataAuthRepository>().user,
+    Phoenix(
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider.value(
+            value: locator<DataAuthRepository>().user,
+          ),
+          ChangeNotifierProvider(
+            create: (_) => locator<DataUserRepository>(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => locator<DataAllRequests>(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => locator<MyContactSelection>(),
+          ),
+        ],
+        child: BlocProvider<AuthenticationBloc>(
+          create: (context) {
+            return AuthenticationBloc(
+                authRepository: locator<DataAuthRepository>())
+              ..add(AppStarted());
+          },
+          child: MyApp(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => locator<DataUserRepository>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => locator<DataAllRequests>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => locator<MyContactSelection>(),
-        ),
-      ],
-      child: BlocProvider<AuthenticationBloc>(
-        create: (context) {
-          return AuthenticationBloc(
-              authRepository: locator<DataAuthRepository>())
-            ..add(AppStarted());
-        },
-        child: MyApp(),
       ),
     ),
   );

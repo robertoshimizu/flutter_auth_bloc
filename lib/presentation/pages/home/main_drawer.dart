@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_auth_bloc/data/repository/repositories.dart';
-import 'package:flutter_auth_bloc/domain/entities/entities.dart';
-import 'package:flutter_auth_bloc/domain/repository/repositories.dart';
+import 'package:flutter_auth_bloc/presentation/pages/pages.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
-import 'package:flutter_auth_bloc/domain/repository/user_repository.dart';
-import 'package:flutter_auth_bloc/presentation/pages/contacts/mycontacts_page.dart';
-import 'package:flutter_auth_bloc/presentation/pages/profile/main_profile.dart';
-
+import '../../../data/repository/repositories.dart';
+import '../../../domain/entities/entities.dart';
+import '../../../domain/repository/repositories.dart';
+import '../../../domain/repository/user_repository.dart';
 import '../../../locator.dart';
+import '../contacts/mycontacts_page.dart';
+import '../profile/main_profile.dart';
 
 class MainDrawer extends StatelessWidget {
   final UserRepository qqeur = locator<DataUserRepository>();
@@ -222,11 +223,11 @@ class MainDrawer extends StatelessWidget {
                             ),
                           ),
                           onTap: () {
-                            // Navigator.of(context).pop();
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => InviteNewFriends()));
+                            Navigator.of(context).pop();
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => InviteNewFriends()));
                           },
                         ),
                         ListTile(
@@ -242,11 +243,8 @@ class MainDrawer extends StatelessWidget {
                             ),
                           ),
                           onTap: () async {
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => Splash()));
-                            // await _auth.signOut();
+                            await _authRepository.logout();
+                            Phoenix.rebirth(context);
                           },
                         ),
                       ],

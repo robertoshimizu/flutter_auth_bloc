@@ -72,73 +72,76 @@ class MainMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            'Usuário Logado: $username',
-            style: TextStyle(fontSize: 20.0),
-          ),
-          SizedBox(height: 15.0),
-          ButtonBar(
-            mainAxisSize: MainAxisSize
-                .min, // this will take space as minimum as posible(to center)
-            children: <Widget>[
-              new ElevatedButton(
-                child: new Text(
-                  'Solicitações de Indicações da rede',
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: () =>
-                    Navigator.pushNamed(context, 'needRequest_screen'),
-              ),
-              new ElevatedButton(
-                child: new Text(
-                  'Minhas solicitações de indicações',
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: () =>
-                    Navigator.pushNamed(context, 'myNeedRequest_screen'),
-              ),
-              new ElevatedButton(
-                child: new Text(
-                  'Minhas Indicações',
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MyIndications())),
-              ),
-              new ElevatedButton(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Página Principal'),
+      ),
+      drawer: Container(
+        width: MediaQuery.of(context).size.width * 0.9,
+        child: MainDrawer(),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'Usuário Logado: $username',
+              style: TextStyle(fontSize: 20.0),
+            ),
+            SizedBox(height: 15.0),
+            ButtonBar(
+              mainAxisSize: MainAxisSize
+                  .min, // this will take space as minimum as posible(to center)
+              children: <Widget>[
+                new ElevatedButton(
                   child: new Text(
-                    'Applications',
+                    'Solicitações de Indicações da rede',
                     style: TextStyle(color: Colors.white),
                   ),
-                  onPressed: null),
-              new ElevatedButton(
-                child: new Text(
-                  'Chat',
-                  style: TextStyle(color: Colors.white),
+                  onPressed: () =>
+                      Navigator.pushNamed(context, 'needRequest_screen'),
                 ),
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ChatPage())),
-              )
-            ],
-          ),
-        ],
+                new ElevatedButton(
+                  child: new Text(
+                    'Minhas solicitações de indicações',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () =>
+                      Navigator.pushNamed(context, 'myNeedRequest_screen'),
+                ),
+                new ElevatedButton(
+                  child: new Text(
+                    'Minhas Indicações',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MyIndications())),
+                ),
+                new ElevatedButton(
+                    child: new Text(
+                      'Applications',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: null),
+                new ElevatedButton(
+                  child: new Text(
+                    'Chat',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ChatPage())),
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
 // Scaffold(
-//         appBar: AppBar(
-//           title: Text('Página Principal'),
-//         ),
-//         drawer: Container(
-//           width: MediaQuery.of(context).size.width * 0.9,
-//           child: MainDrawer(),
-//         ),
+
 //         body: Container(
 //           child: Column(
 //             children: [

@@ -18,13 +18,6 @@ class MyNeedRequestPage extends StatelessWidget {
     AppUser _user = _authRepository.user;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Minhas Solicitações de Indicações'),
-      ),
-      // drawer: Container(
-      //   width: MediaQuery.of(context).size.width * 0.9,
-      //   child: MainDrawer(),
-      // ),
       body: Container(
         child: StreamBuilder(
             stream: needRequestProvider.fetchMyRequestsAsStream(_user.uid),

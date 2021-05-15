@@ -9,6 +9,7 @@ export './home/home_page.dart';
 export './home/main_drawer.dart';
 export './login/login_page.dart';
 export './login/otp_page.dart';
+export './mock/mock.dart';
 export './profile/first_profile_page.dart';
 export './profile/fourth_profile_page.dart';
 export './profile/main_profile.dart';

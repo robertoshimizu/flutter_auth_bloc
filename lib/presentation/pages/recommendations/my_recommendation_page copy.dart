@@ -22,259 +22,245 @@ class MyIndications extends StatelessWidget {
     final qqeur = Provider.of<DataUserRepository>(context);
     List<Indication> indications;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Minhas Indicações'),
-      ),
-      body: Container(
-        color: Colors.amber.shade100,
-        child: FutureBuilder<List<Indication>>(
-            future: myindicationrep.fetchMyIndications(_user.uid),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                indications = snapshot.data.toList();
-                // indications.forEach((element) {
-                //   print(element.personIndicatedName);
-                // });
-                return new ListView.builder(
-                  itemCount: indications.length,
-                  itemBuilder: (builContext, index) => Card(
-                    margin: EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+    return Container(
+      color: Colors.amber.shade100,
+      child: FutureBuilder<List<Indication>>(
+          future: myindicationrep.fetchMyIndications(_user.uid),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              indications = snapshot.data.toList();
+              // indications.forEach((element) {
+              //   print(element.personIndicatedName);
+              // });
+              return new ListView.builder(
+                itemCount: indications.length,
+                itemBuilder: (builContext, index) => Card(
+                  margin: EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                              radius: 22,
+                              backgroundImage: NetworkImage(
+                                  indications[index].personIndicatedPhoto),
+                            ),
+                            SizedBox(
+                              width: 38,
+                            ),
+                            Container(
+                              width: 250,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 8.0),
+                                    child: Text(
+                                      indications[index].personIndicatedName,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 16,
+                                        color: Colors.blue,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                  FutureBuilder(
+                                    future: needRequestProvider.fetchOneRequest(
+                                        indications[index].requestId),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        NeedRequest request = snapshot.data;
+                                        // print(request.serviceClassification);
+                                        return Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  'para  ',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontStyle: FontStyle.italic,
+                                                  ),
+                                                  textAlign: TextAlign.justify,
+                                                ),
+                                                Text(
+                                                  request.serviceClassification,
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontStyle: FontStyle.italic,
+                                                    color: Colors.purple,
+                                                  ),
+                                                  textAlign: TextAlign.justify,
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 8,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text("solicitado por "),
+                                                FutureBuilder(
+                                                  future: qqeur.getUserById(
+                                                      request.userId),
+                                                  builder: (context, snapshot) {
+                                                    if (snapshot.hasData) {
+                                                      return Text(
+                                                        snapshot.data["name"],
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontStyle:
+                                                              FontStyle.italic,
+                                                          color: Colors.purple,
+                                                        ),
+                                                        textAlign:
+                                                            TextAlign.justify,
+                                                      );
+                                                    } else if (snapshot
+                                                        .hasError) {
+                                                      return Text('error');
+                                                    } else
+                                                      return Text('');
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        );
+                                      } else if (snapshot.hasError) {
+                                        return Text('error');
+                                      } else
+                                        return Text('');
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 2, 8, 2),
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CircleAvatar(
-                                radius: 22,
-                                backgroundImage: NetworkImage(
-                                    indications[index].personIndicatedPhoto),
+                              Text(
+                                indications[index].knowledgeLevel,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontStyle: FontStyle.italic,
+                                ),
+                                textAlign: TextAlign.left,
                               ),
                               SizedBox(
-                                width: 38,
+                                height: 8,
                               ),
-                              Container(
-                                width: 250,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 8.0),
-                                      child: Text(
-                                        indications[index].personIndicatedName,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 16,
-                                          color: Colors.blue,
-                                        ),
-                                        textAlign: TextAlign.left,
-                                      ),
+                              Builder(builder: (context) {
+                                if (indications[index].comments == null) {
+                                  return Text(' ');
+                                } else {
+                                  return Text(
+                                    '${indications[index].comments}',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontStyle: FontStyle.italic,
                                     ),
-                                    FutureBuilder(
-                                      future:
-                                          needRequestProvider.fetchOneRequest(
-                                              indications[index].requestId),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.hasData) {
-                                          NeedRequest request = snapshot.data;
-                                          // print(request.serviceClassification);
-                                          return Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    'para  ',
-                                                    style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontStyle:
-                                                          FontStyle.italic,
-                                                    ),
-                                                    textAlign:
-                                                        TextAlign.justify,
-                                                  ),
-                                                  Text(
-                                                    request
-                                                        .serviceClassification,
-                                                    style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontStyle:
-                                                          FontStyle.italic,
-                                                      color: Colors.purple,
-                                                    ),
-                                                    textAlign:
-                                                        TextAlign.justify,
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                height: 8,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Text("solicitado por "),
-                                                  FutureBuilder(
-                                                    future: qqeur.getUserById(
-                                                        request.userId),
-                                                    builder:
-                                                        (context, snapshot) {
-                                                      if (snapshot.hasData) {
-                                                        return Text(
-                                                          snapshot.data["name"],
-                                                          style: TextStyle(
-                                                            fontSize: 14,
-                                                            fontStyle: FontStyle
-                                                                .italic,
-                                                            color:
-                                                                Colors.purple,
-                                                          ),
-                                                          textAlign:
-                                                              TextAlign.justify,
-                                                        );
-                                                      } else if (snapshot
-                                                          .hasError) {
-                                                        return Text('error');
-                                                      } else
-                                                        return Text('');
-                                                    },
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          );
-                                        } else if (snapshot.hasError) {
-                                          return Text('error');
-                                        } else
-                                          return Text('');
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
+                                    textAlign: TextAlign.left,
+                                    softWrap: false,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 3,
+                                  );
+                                }
+                              }),
                             ],
                           ),
                         ),
-                        Container(
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 2, 8, 2),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  indications[index].knowledgeLevel,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontStyle: FontStyle.italic,
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
-                                SizedBox(
-                                  height: 8,
-                                ),
-                                Builder(builder: (context) {
-                                  if (indications[index].comments == null) {
-                                    return Text(' ');
-                                  } else {
-                                    return Text(
-                                      '${indications[index].comments}',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontStyle: FontStyle.italic,
-                                      ),
-                                      textAlign: TextAlign.left,
-                                      softWrap: false,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 3,
-                                    );
-                                  }
-                                }),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.star_rate,
-                                  size: 18,
-                                ),
-                                Icon(
-                                  Icons.star_rate,
-                                  size: 18,
-                                ),
-                                Icon(
-                                  Icons.star_rate,
-                                  size: 18,
-                                ),
-                                Icon(
-                                  Icons.star_rate,
-                                  size: 18,
-                                ),
-                                Icon(
-                                  Icons.star_rate_outlined,
-                                  size: 18,
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            IconButton(
-                              icon: Icon(
-                                Icons.delete,
-                                color: Colors.black26,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.star_rate,
+                                size: 18,
                               ),
-                              onPressed: () {
-                                print(
-                                    'indication id: ${indications[index].indicationId}');
-                                var message =
-                                    'Deseja mesmo apagar esta indicação?';
-                                showAlertDialog(context, 'indication',
-                                    indications[index], message);
-                              },
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
+                              Icon(
+                                Icons.star_rate,
+                                size: 18,
+                              ),
+                              Icon(
+                                Icons.star_rate,
+                                size: 18,
+                              ),
+                              Icon(
+                                Icons.star_rate,
+                                size: 18,
+                              ),
+                              Icon(
+                                Icons.star_rate_outlined,
+                                size: 18,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.delete,
+                              color: Colors.black26,
+                            ),
+                            onPressed: () {
+                              print(
+                                  'indication id: ${indications[index].indicationId}');
+                              var message =
+                                  'Deseja mesmo apagar esta indicação?';
+                              showAlertDialog(context, 'indication',
+                                  indications[index], message);
+                            },
+                          )
+                        ],
+                      ),
+                    ],
                   ),
-                );
-              } else if (snapshot.hasError) {
-                return Text(
-                  'error',
-                  style: TextStyle(fontSize: 20.0),
-                );
-              } else {
-                return Center(
-                    child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                      child: CircularProgressIndicator(),
-                      width: 60,
-                      height: 60,
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(top: 16),
-                      child: Text('Awaiting result...'),
-                    ),
-                  ],
-                ));
-              }
-            }),
-      ),
+                ),
+              );
+            } else if (snapshot.hasError) {
+              return Text(
+                'error',
+                style: TextStyle(fontSize: 20.0),
+              );
+            } else {
+              return Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    child: CircularProgressIndicator(),
+                    width: 60,
+                    height: 60,
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 16),
+                    child: Text('Awaiting result...'),
+                  ),
+                ],
+              ));
+            }
+          }),
     );
   }
 }

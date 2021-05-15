@@ -17,43 +17,35 @@ class NeedRequestPage extends StatelessWidget {
     final AuthRepository _authRepository = locator<DataAuthRepository>();
     AppUser _user = _authRepository.user;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Solicitações de Indicações'),
-      ),
-      // drawer: Container(
-      //   width: MediaQuery.of(context).size.width * 0.9,
-      //   child: MainDrawer(),
-      // ),
-      body: Container(
-        child: StreamBuilder(
-            stream: needRequestProvider.fetchRequestsAsStream(_user.uid),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                // print('stream de needRequests tem data');
-                requests = snapshot.data;
-                return new ListView.builder(
-                  itemCount: requests.length,
-                  itemBuilder: (buildContext, index) =>
-                      RequestCard(requestDetails: requests[index]),
-                  // children:
-                  //     snapshot.data.documents.map((DocumentSnapshot document) {
-                  //   return new ListTile(
-                  //     title: new Text(document['description']),
-                  //     subtitle: new Text(document['serviceClassification']),
-                  //   );
-                  // }).toList(),
-                );
-              } else if (snapshot.hasError) {
-                return Text(
-                  'error',
-                  style: TextStyle(fontSize: 20.0),
-                );
-              } else {
-                print('modo wait');
-                return Text('Não há nenhuma requisição na plataforma');
-              }
-            }),
+    return Container(
+      child: StreamBuilder(
+        stream: needRequestProvider.fetchRequestsAsStream(_user.uid),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            // print('stream de needRequests tem data');
+            requests = snapshot.data;
+            return new ListView.builder(
+              itemCount: requests.length,
+              itemBuilder: (buildContext, index) =>
+                  RequestCard(requestDetails: requests[index]),
+              // children:
+              //     snapshot.data.documents.map((DocumentSnapshot document) {
+              //   return new ListTile(
+              //     title: new Text(document['description']),
+              //     subtitle: new Text(document['serviceClassification']),
+              //   );
+              // }).toList(),
+            );
+          } else if (snapshot.hasError) {
+            return Text(
+              'error',
+              style: TextStyle(fontSize: 20.0),
+            );
+          } else {
+            print('modo wait');
+            return Text('Não há nenhuma requisição na plataforma');
+          }
+        },
       ),
     );
   }

@@ -11,8 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_bloc: ^6.1.1
-  equatable: ^1.2.5
+  flutter_bloc:
+  equatable:
   mask_text_input_formatter: ^1.2.1
   date_text_masked: ^1.0.0
   provider: ^4.3.2+1
@@ -38,7 +38,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  bloc_test: ^7.1.0
+  bloc_test:
   test: ^1.3.0
   mockito: ^4.1.3
 

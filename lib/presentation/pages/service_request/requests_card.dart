@@ -32,60 +32,69 @@ class RequestCard extends StatelessWidget {
                   ),
                 );
               },
+
+              // height: MediaQuery.of(context).size.height * 0.45,
+              // width: MediaQuery.of(context).size.width * 0.9,
               child: Padding(
-                padding: EdgeInsets.all(8),
+                padding: EdgeInsets.all(6),
                 child: Card(
-                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    side: BorderSide(
+                      color: Color(0xffEE6B12),
+                      width: .5,
+                    ),
+                  ),
+                  elevation: 4,
                   child: Container(
-                    // height: MediaQuery.of(context).size.height * 0.45,
-                    // width: MediaQuery.of(context).size.width * 0.9,
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(8),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              // Title
-                              Text(
-                                requestDetails.serviceClassification,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 16,
-                                  color: Colors.blue,
-                                ),
-                                textAlign: TextAlign.left,
-                              ),
-                              // Description
-                              Text(
-                                requestDetails.serviceClassification,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontStyle: FontStyle.italic,
-                                ),
-                                textAlign: TextAlign.justify,
-                                maxLines: 2,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  // Photo
-                                  CircleAvatar(
-                                    radius: 20,
-                                    backgroundImage: NetworkImage(photo),
-                                  ),
-                                  // UserName
-                                  Text(
-                                    name,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                    child: Row(
+                      children: [
+                        // Photo
+                        SizedBox(
+                          height: 90,
+                          child: Image(
+                            fit: BoxFit.fill,
+                            image: NetworkImage(photo),
                           ),
-                        )
+                        ),
+
+                        Flexible(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  '$name precisa de ',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold),
+                                ),
+
+                                // Title
+                                Text(
+                                  requestDetails.serviceClassification,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 14,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                                // Description
+                                Text(
+                                  requestDetails.description,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                  textAlign: TextAlign.justify,
+                                  maxLines: 2,
+                                  softWrap: true,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),

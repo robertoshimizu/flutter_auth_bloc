@@ -28,13 +28,6 @@ class NeedRequestPage extends StatelessWidget {
               itemCount: requests.length,
               itemBuilder: (buildContext, index) =>
                   RequestCard(requestDetails: requests[index]),
-              // children:
-              //     snapshot.data.documents.map((DocumentSnapshot document) {
-              //   return new ListTile(
-              //     title: new Text(document['description']),
-              //     subtitle: new Text(document['serviceClassification']),
-              //   );
-              // }).toList(),
             );
           } else if (snapshot.hasError) {
             return Text(

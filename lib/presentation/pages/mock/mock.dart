@@ -8,7 +8,7 @@ class Master extends StatefulWidget {
 }
 
 class _MasterState extends State<Master> {
-  List<bool> bottomNavigationItemStatus = [true, false, false, false];
+  List<bool> bottomNavigationItemStatus = [true, false, false, false, false];
 
   Widget currentWidgetView;
   @override
@@ -23,16 +23,19 @@ class _MasterState extends State<Master> {
     setState(() {
       switch (index) {
         case 0:
-          currentWidgetView = HomePage();
+          currentWidgetView = NeedRequestPage();
           break;
         case 1:
           currentWidgetView = MyIndications();
           break;
         case 2:
-          currentWidgetView = MyNeedRequestPage();
+          currentWidgetView = HomePage();
           break;
         case 3:
-          currentWidgetView = NeedRequestPage();
+          currentWidgetView = MyNeedRequestPage();
+          break;
+        case 4:
+          currentWidgetView = RankingMainPage();
           break;
       }
 
@@ -40,7 +43,8 @@ class _MasterState extends State<Master> {
         index == 0,
         index == 1,
         index == 2,
-        index == 3
+        index == 3,
+        index == 4
       ];
     });
   }
@@ -76,7 +80,7 @@ class _MasterState extends State<Master> {
                   children: [
                     BottomNavigationItem(
                       icon_name: Icons.home_outlined,
-                      text: "Inicial",
+                      text: "pedidos",
                       selected: bottomNavigationItemStatus[0],
                       onPress: () {
                         setCurrentWidgetView(0);
@@ -84,7 +88,7 @@ class _MasterState extends State<Master> {
                     ),
                     BottomNavigationItem(
                       icon_name: Icons.event_available_outlined,
-                      text: "Minhas indicações",
+                      text: "fiz indicação",
                       selected: bottomNavigationItemStatus[1],
                       onPress: () {
                         setCurrentWidgetView(1);
@@ -92,7 +96,7 @@ class _MasterState extends State<Master> {
                     ),
                     BottomNavigationItem(
                       icon_name: Icons.event_note_outlined,
-                      text: "Meus pedidos",
+                      text: "Meu perfil",
                       selected: bottomNavigationItemStatus[2],
                       onPress: () {
                         setCurrentWidgetView(2);
@@ -100,10 +104,18 @@ class _MasterState extends State<Master> {
                     ),
                     BottomNavigationItem(
                       icon_name: Icons.new_releases_outlined,
-                      text: "Solicitações rede",
+                      text: "pedi indicação",
                       selected: bottomNavigationItemStatus[3],
                       onPress: () {
                         setCurrentWidgetView(3);
+                      },
+                    ),
+                    BottomNavigationItem(
+                      icon_name: Icons.new_releases_outlined,
+                      text: "ranking",
+                      selected: bottomNavigationItemStatus[4],
+                      onPress: () {
+                        setCurrentWidgetView(4);
                       },
                     ),
                   ],

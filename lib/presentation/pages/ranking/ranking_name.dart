@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_auth_bloc/data/repository/repositories.dart';
 import 'package:flutter_auth_bloc/domain/entities/user.dart';
 import 'package:flutter_auth_bloc/presentation/pages/pages.dart';
@@ -46,6 +47,10 @@ class RankingNamePage extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
+                            StarRanking(
+                              rating: 2.7,
+                            ),
+
                             Text(
                               requests[index].name,
                               style: TextStyle(
@@ -87,5 +92,72 @@ class RankingNamePage extends StatelessWidget {
           return LoadingIndicator();
       },
     );
+  }
+}
+
+class StarRanking extends StatelessWidget {
+  final double rating;
+  const StarRanking({
+    Key key,
+    @required this.rating,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (rating <= 5.0 && rating >= 0) {
+      // print(
+      //     "rate: $rating, parte inteira: ${rating.toInt()}, parte decimal ${rating.remainder(rating.toInt())}");
+      var vetor = [];
+      for (var i = 0; i < rating.toInt(); i++) {
+        vetor.add(
+          Icons.star,
+        );
+      }
+      if (rating.remainder(rating.toInt()) < 0.5 ||
+          rating.remainder(rating.toInt()).isNaN) {
+        vetor.add(
+          Icons.star_outline_outlined,
+        );
+      } else
+        vetor.add(
+          Icons.star_half_outlined,
+        );
+      for (var i = rating.toInt() + 1; i <= 5 - 1; i++) {
+        vetor.add(
+          Icons.star_outline_outlined,
+        );
+      }
+
+      return Row(
+        children: [
+          Icon(
+            vetor[0],
+            color: Colors.black87,
+            size: 12.0,
+          ),
+          Icon(
+            vetor[1],
+            color: Colors.black87,
+            size: 12.0,
+          ),
+          Icon(
+            vetor[2],
+            color: Colors.black87,
+            size: 12.0,
+          ),
+          Icon(
+            vetor[3],
+            color: Colors.black87,
+            size: 12.0,
+          ),
+          Icon(
+            vetor[4],
+            color: Colors.black87,
+            size: 12.0,
+          ),
+        ],
+      );
+    } else
+      return SizedBox();
   }
 }

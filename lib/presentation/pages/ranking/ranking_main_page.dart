@@ -28,17 +28,19 @@ class _RankingMainPageState extends State<RankingMainPage>
           CatalogTabBar(
             tabController: _tabController,
           ),
-          BlocBuilder<RankingblocBloc, RankingblocState>(
-              builder: (context, state) {
-            if (state is RankingblocNome) {
-              return RankingNamePage();
-            } else if (state is RankingblocRanking) {
-              return RankingRankingPage();
-            } else if (state is RankingblocRelacionamento) {
-              return RankingRelacionamentoPage();
-            } else
-              return RankingNamePage();
-          }),
+          Flexible(
+            child: BlocBuilder<RankingblocBloc, RankingblocState>(
+                builder: (context, state) {
+              if (state is RankingblocNome) {
+                return RankingNamePage();
+              } else if (state is RankingblocRanking) {
+                return RankingRankingPage();
+              } else if (state is RankingblocRelacionamento) {
+                return RankingRelacionamentoPage();
+              } else
+                return RankingNamePage();
+            }),
+          ),
         ],
       ),
     );

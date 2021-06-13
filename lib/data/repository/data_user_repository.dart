@@ -34,6 +34,15 @@ class DataUserRepository with ChangeNotifier implements UserRepository {
     await _api.updateDocumentField(id: id, key: key, value: value);
     return;
   }
+
+  @override
+  Future<List<UserData>> fetchUsers() async {
+    var result = await _api.getDataCollection();
+    var lista = result.docs
+        .map((element) => UserData.fromMap(element.data(), ''))
+        .toList();
+    return lista;
+  }
 }
 
 class DataChatRepository with ChangeNotifier {

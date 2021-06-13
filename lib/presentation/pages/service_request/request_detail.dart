@@ -46,14 +46,10 @@ class _RequestDetailsState extends State<RequestDetails> {
   @override
   Widget build(BuildContext context) {
     AppUser _user = _authRepository.user;
-    //final indicationProvider = Provider.of<IndicationRepository>(context);
-    // print('ID da solictação: ${request.requestId}');
-    // print('UserId do solicitante ${request.userId}');
-    // print('UserId do usuário logado ${_user.uid}');
+
     bool sameUser = widget.request.userId == _user.uid ? true : false;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detalhes da Solicitação'),
         actions: <Widget>[
           DeleteButton(widget.request.requestId, sameUser),
           (sameUser == true)
@@ -91,22 +87,12 @@ class _RequestDetailsState extends State<RequestDetails> {
               child: Container(
                 margin: EdgeInsets.all(5),
                 padding: EdgeInsets.all(10),
-                color: Colors.yellow[100].withOpacity(0.8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          'Solicitante:    ',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 12,
-                        ),
                         // Photo
                         CircleAvatar(
                           radius: 20,
@@ -130,22 +116,29 @@ class _RequestDetailsState extends State<RequestDetails> {
                     TextFormField(
                       enabled: _categories[index]['enabled'],
                       decoration: InputDecoration(
-                        labelText: 'Indicação',
+                        labelText: 'Precisa de '.toUpperCase(),
+                        labelStyle: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       initialValue: widget.request.serviceClassification,
                       onChanged: (value) => setState(
                         () => widget.request.serviceClassification = value,
                       ),
                       style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 18,
+                        fontSize: 16,
                       ),
                     ),
                     TextFormField(
-                      maxLines: 8,
+                      maxLines: 4,
                       enabled: _categories[index]['enabled'],
                       decoration: InputDecoration(
-                        labelText: 'Descrição',
+                        labelText: 'Descrição'.toUpperCase(),
+                        labelStyle: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       initialValue: widget.request.description,
                       onChanged: (value) => setState(
@@ -156,132 +149,171 @@ class _RequestDetailsState extends State<RequestDetails> {
                         fontSize: 16,
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Expanded(
-                          child: TextFormField(
-                            enabled: false,
-                            decoration: InputDecoration(
-                              labelText: 'Data de criação',
-                            ),
-                            controller: TextEditingController(
-                              text: DateFormat('dd-MM-yyyy')
-                                  .format(widget.request.creationDate),
-                            ),
-                            style: TextStyle(
-                              fontWeight: FontWeight.w900,
-                              fontSize: 18,
-                            ),
-                          ),
+                    TextFormField(
+                      enabled: false,
+                      decoration: InputDecoration(
+                        labelText: 'Data da solicitação'.toUpperCase(),
+                        labelStyle: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
                         ),
-                        Expanded(
-                          child: TextFormField(
-                            enabled: false,
-                            decoration: InputDecoration(
-                              labelText: 'Data de expiração',
-                            ),
-                            controller: TextEditingController(
-                              text: DateFormat('dd-MM-yyyy')
-                                  .format(widget.request.expiringDate),
-                            ),
-                            style: TextStyle(
-                              fontWeight: FontWeight.w900,
-                              fontSize: 18,
-                            ),
-                          ),
+                      ),
+                      controller: TextEditingController(
+                        text: DateFormat('dd-MM-yyyy')
+                            .format(widget.request.creationDate),
+                      ),
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                    TextFormField(
+                      enabled: false,
+                      decoration: InputDecoration(
+                        labelText: 'Prazo'.toUpperCase(),
+                        labelStyle: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ],
+                      ),
+                      controller: TextEditingController(
+                        text: DateFormat('dd-MM-yyyy')
+                            .format(widget.request.expiringDate),
+                      ),
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
                     ),
                     SizedBox(
                       height: 12,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          '# Indicações:    ${widget.request.indications.length.toString()}',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        widget.request.indications.length > 0
+                            ? '${widget.request.indications.length.toString()} indicações'
+                            : '',
+                        style: TextStyle(
+                          fontSize: 16,
                         ),
-                        // Photo
-                        // Text(
-                        //   '# Aplicações:    ${widget.request.applications.length.toString()}',
-                        //   style: TextStyle(
-                        //     fontSize: 16,
-                        //   ),
-                        // ),
-                      ],
+                        textAlign: TextAlign.end,
+                      ),
                     ),
                   ],
                 ),
               ),
             ),
             SizedBox(
-              height: 15,
+              height: 45,
             ),
-            ButtonBar(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                sameUser
-                    ? SizedBox()
-                    : new ElevatedButton(
-                        child: new Text(
-                          'Fazer uma indicação',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MakeIndicationPage(
-                                requestId: widget.request.requestId,
-                              ),
-                            ),
-                          );
-                        }),
-                new ElevatedButton(
-                  child: new Text(
-                    'Ver Indicações',
-                    style: TextStyle(
-                      color: Colors.white,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DisplayIndications(
+                      request: widget.request,
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DisplayIndications(
-                          request: widget.request,
-                        ),
-                      ),
-                    );
-                  },
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  vertical: 12,
                 ),
-                sameUser
-                    ? SizedBox()
-                    : new ElevatedButton(
-                        child: new Text(
-                          'Propagar indicação',
-                          style: TextStyle(
-                            color: Colors.white,
+                height: 50,
+                width: 350,
+                decoration: BoxDecoration(
+                    color: Color(0xff00B878),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(40),
+                    ),
+                    border: Border.all(
+                      color: Color(0xff00B878),
+                    )),
+                child: Center(
+                  child: Text(
+                    'ver indicações'.toUpperCase(),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 12,
+            ),
+            sameUser
+                ? SizedBox()
+                : GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MakeIndicationPage(
+                            requestId: widget.request.requestId,
                           ),
                         ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MakeIndicationPage(
-                                requestId: widget.request.requestId,
-                              ),
-                            ),
-                          );
-                        }),
-              ],
+                      );
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 12,
+                      ),
+                      height: 50,
+                      width: 350,
+                      decoration: BoxDecoration(
+                          color: Color(0xff00B878),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(40),
+                          ),
+                          border: Border.all(
+                            color: Color(0xff00B878),
+                          )),
+                      child: Center(
+                        child: Text(
+                          'Indique Alguém'.toUpperCase(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+            SizedBox(
+              height: 12,
             ),
+            sameUser
+                ? SizedBox()
+                : GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      height: 50,
+                      width: 350,
+                      decoration: BoxDecoration(
+                          color: Color(0xff00B878),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(40),
+                          ),
+                          border: Border.all(
+                            color: Color(0xff00B878),
+                          )),
+                      child: Center(
+                        child: Text(
+                          'Encaminhe'.toUpperCase(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
           ],
         ),
       ),

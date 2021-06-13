@@ -75,7 +75,7 @@ class _MasterState extends State<Master> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     BottomNavigationItem(
-                      imageUrl: "assets/icons/tile.png",
+                      icon_name: Icons.home_outlined,
                       text: "Inicial",
                       selected: bottomNavigationItemStatus[0],
                       onPress: () {
@@ -83,7 +83,7 @@ class _MasterState extends State<Master> {
                       },
                     ),
                     BottomNavigationItem(
-                      imageUrl: "assets/icons/send_money.png",
+                      icon_name: Icons.event_available_outlined,
                       text: "Minhas indicações",
                       selected: bottomNavigationItemStatus[1],
                       onPress: () {
@@ -91,7 +91,7 @@ class _MasterState extends State<Master> {
                       },
                     ),
                     BottomNavigationItem(
-                      imageUrl: "assets/icons/request_money.png",
+                      icon_name: Icons.event_note_outlined,
                       text: "Meus pedidos",
                       selected: bottomNavigationItemStatus[2],
                       onPress: () {
@@ -99,7 +99,7 @@ class _MasterState extends State<Master> {
                       },
                     ),
                     BottomNavigationItem(
-                      imageUrl: "assets/icons/settings.png",
+                      icon_name: Icons.new_releases_outlined,
                       text: "Feed",
                       selected: bottomNavigationItemStatus[3],
                       onPress: () {
@@ -118,13 +118,13 @@ class _MasterState extends State<Master> {
 }
 
 class BottomNavigationItem extends StatelessWidget {
-  final String imageUrl;
+  final IconData icon_name;
   final String text;
   final bool selected;
   final Function onPress;
 
   BottomNavigationItem({
-    @required this.imageUrl,
+    @required this.icon_name,
     @required this.text,
     @required this.selected,
     this.onPress,
@@ -145,8 +145,8 @@ class BottomNavigationItem extends StatelessWidget {
           SizedBox(
             height: 24,
             width: 24,
-            child: Image.asset(
-              imageUrl,
+            child: Icon(
+              icon_name,
               color: selected ? kPrimaryColor : Colors.grey[400],
             ),
           ),

@@ -100,7 +100,7 @@ class _MasterState extends State<Master> {
                     ),
                     BottomNavigationItem(
                       icon_name: Icons.new_releases_outlined,
-                      text: "Feed",
+                      text: "Solicitações rede",
                       selected: bottomNavigationItemStatus[3],
                       onPress: () {
                         setCurrentWidgetView(3);

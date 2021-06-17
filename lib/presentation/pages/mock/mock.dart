@@ -79,7 +79,7 @@ class _MasterState extends State<Master> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     BottomNavigationItem(
-                      icon_name: Icons.home_outlined,
+                      color: Color(0xff71196F),
                       text: "pedidos",
                       selected: bottomNavigationItemStatus[0],
                       onPress: () {
@@ -87,7 +87,7 @@ class _MasterState extends State<Master> {
                       },
                     ),
                     BottomNavigationItem(
-                      icon_name: Icons.event_available_outlined,
+                      color: Color(0xff84BC75),
                       text: "fiz indicação",
                       selected: bottomNavigationItemStatus[1],
                       onPress: () {
@@ -95,7 +95,7 @@ class _MasterState extends State<Master> {
                       },
                     ),
                     BottomNavigationItem(
-                      icon_name: Icons.event_note_outlined,
+                      color: Color(0xffD61C80),
                       text: "Meu perfil",
                       selected: bottomNavigationItemStatus[2],
                       onPress: () {
@@ -103,7 +103,7 @@ class _MasterState extends State<Master> {
                       },
                     ),
                     BottomNavigationItem(
-                      icon_name: Icons.new_releases_outlined,
+                      color: Color(0xff008FCA),
                       text: "pedi indicação",
                       selected: bottomNavigationItemStatus[3],
                       onPress: () {
@@ -111,7 +111,7 @@ class _MasterState extends State<Master> {
                       },
                     ),
                     BottomNavigationItem(
-                      icon_name: Icons.new_releases_outlined,
+                      color: Color(0xffEE6B12),
                       text: "ranking",
                       selected: bottomNavigationItemStatus[4],
                       onPress: () {
@@ -130,13 +130,13 @@ class _MasterState extends State<Master> {
 }
 
 class BottomNavigationItem extends StatelessWidget {
-  final IconData icon_name;
+  final Color color;
   final String text;
   final bool selected;
   final Function onPress;
 
   BottomNavigationItem({
-    @required this.icon_name,
+    @required this.color,
     @required this.text,
     @required this.selected,
     this.onPress,
@@ -145,36 +145,62 @@ class BottomNavigationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color kPrimaryColor = Color(0xFF111F5C);
-    Color kSecondaryColor = Color(0xFF139AD6);
-    Color kGreyColor = Color(0xFF888888);
-    return GestureDetector(
-      onTap: () {
-        onPress();
-      },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: 24,
-            width: 24,
-            child: Icon(
-              icon_name,
-              color: selected ? kPrimaryColor : Colors.grey[400],
+    return selected
+        ? GestureDetector(
+            onTap: () {
+              onPress();
+            },
+            child: Stack(
+              children: [
+                Container(
+                  width: 50.0,
+                  height: 50.0,
+                  decoration: new BoxDecoration(
+                    color: color,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                Positioned(
+                  child: Text(
+                    text.toUpperCase(),
+                    softWrap: true,
+                    style: TextStyle(
+                      fontSize: 9,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  top: 19,
+                  left: 7,
+                )
+              ],
             ),
-          ),
-          SizedBox(
-            height: 12,
-          ),
-          Text(
-            text,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              color: selected ? kPrimaryColor : Colors.grey[400],
+          )
+        : GestureDetector(
+            onTap: () {
+              onPress();
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  text.toUpperCase(),
+                  style: TextStyle(
+                    fontSize: 9,
+                    fontWeight: FontWeight.bold,
+                    color: kPrimaryColor,
+                  ),
+                ),
+                Container(
+                  width: 50.0,
+                  height: 50.0,
+                  decoration: new BoxDecoration(
+                    color: color,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
-    );
+          );
   }
 }

@@ -18,71 +18,113 @@ class RankingNamePage extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<UserData> requests = snapshot.data;
+          requests.sort((a, b) => (a.name).compareTo(b.name));
           return new ListView.builder(
             itemCount: requests.length,
             itemBuilder: (buildContext, index) => Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
                 side: BorderSide(
-                  color: Color(0xffEE6B12),
-                  width: .5,
+                  color: Color(0xffFFFFFF),
+                  width: .3,
                 ),
               ),
-              elevation: 4,
-              child: Container(
-                child: Row(
-                  children: [
-                    // Photo
-                    SizedBox(
-                      height: 90,
-                      child: Image(
-                        fit: BoxFit.fill,
-                        image: NetworkImage(requests[index].photo),
+              elevation: 2,
+              child: Row(
+                children: [
+                  // Photo
+                  ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10.0),
+                      bottomLeft: Radius.circular(10.0),
+                    ),
+                    child: Image(
+                      fit: BoxFit.none,
+                      image: NetworkImage(requests[index].photo),
+                      height: 80,
+                    ),
+                  ),
+
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          StarRanking(
+                            rating: 2.7,
+                          ),
+
+                          Text(
+                            requests[index].name,
+                            style: TextStyle(
+                                fontSize: 12, fontWeight: FontWeight.bold),
+                          ),
+
+                          // Title
+                          Text(
+                            requests[index].occupation,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 10,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                          // Description
+                          Text(
+                            'Indicado por Júlio Macedo Valério e mais 5 pessoas',
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontStyle: FontStyle.normal,
+                            ),
+                            textAlign: TextAlign.justify,
+                            maxLines: 2,
+                            softWrap: true,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.baseline,
+                                children: [
+                                  Text(
+                                    '6',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    'indicações'.toUpperCase(),
+                                    style: TextStyle(
+                                      fontSize: 8,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.baseline,
+                                children: [
+                                  Text(
+                                    'ranking'.toUpperCase(),
+                                    style: TextStyle(
+                                      fontSize: 8,
+                                    ),
+                                  ),
+                                  Text(
+                                    '95',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
                       ),
                     ),
-
-                    Flexible(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8, right: 8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            StarRanking(
-                              rating: 2.7,
-                            ),
-
-                            Text(
-                              requests[index].name,
-                              style: TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.bold),
-                            ),
-
-                            // Title
-                            Text(
-                              requests[index].occupation,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w900,
-                                fontSize: 14,
-                              ),
-                              textAlign: TextAlign.left,
-                            ),
-                            // Description
-                            Text(
-                              requests[index].companyName,
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontStyle: FontStyle.italic,
-                              ),
-                              textAlign: TextAlign.justify,
-                              maxLines: 2,
-                              softWrap: true,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           );

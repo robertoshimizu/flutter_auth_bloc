@@ -170,7 +170,6 @@ class BottomNavigationItem extends StatelessWidget {
     if (text == "meu perfil") {
       doubleChar = false;
     }
-    print(doubleChar);
     return selected
         ? GestureDetector(
             onTap: () {
@@ -180,33 +179,34 @@ class BottomNavigationItem extends StatelessWidget {
               alignment: AlignmentDirectional.topStart,
               children: [
                 Container(
-                  width: 70.0,
-                  height: 70.0,
+                  width: 50.0,
+                  height: 50.0,
                   decoration: new BoxDecoration(
                     color: color,
                     shape: BoxShape.circle,
                   ),
                 ),
                 Positioned(
+                  top: 30,
+                  left: 6,
                   child: Container(
                     width: 55,
                     child: Wrap(
-                        direction: Axis.horizontal,
-                        alignment: WrapAlignment.center,
-                        children: [
-                          Text(
-                            text.toUpperCase(),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 9,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
+                      direction: Axis.horizontal,
+                      alignment: WrapAlignment.center,
+                      children: [
+                        Text(
+                          text.toUpperCase(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 9,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
                           ),
-                        ]),
+                        ),
+                      ],
+                    ),
                   ),
-                  top: (doubleChar) ? 23 : 30,
-                  left: 6,
                 )
               ],
             ),

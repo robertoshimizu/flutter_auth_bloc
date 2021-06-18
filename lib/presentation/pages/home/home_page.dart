@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 import '../../../data/repository/repositories.dart';
 import '../../../domain/entities/entities.dart';
@@ -218,7 +219,31 @@ class MyProfile extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 55.0),
+        Container(
+          padding: EdgeInsets.fromLTRB(12, 8, 12, 18),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'especialidades'.toUpperCase(),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(user.about),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                    'Membro desde ${DateFormat.yM('pt_BR').format(user.registered)}'),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 5.0),
         new ColoredRoundedButton(
           text: 'PAINEL DE SOLICITAÇÕES',
           onPress: () {},

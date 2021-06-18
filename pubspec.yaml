@@ -35,6 +35,10 @@ dependencies:
 
   cupertino_icons:
 
+  flutter_localizations:
+    sdk: flutter
+  intl:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

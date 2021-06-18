@@ -218,39 +218,30 @@ class MyProfile extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 25.0),
-        ButtonBar(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            new RoundedButton(
-              text: 'PAINEL DE SOLICITAÇÕES',
-              onPress: () {},
-              enabled: false,
-            ),
-            new RoundedButton(
-              text: 'INDICAÇÕES QUE EU PEDI',
-              onPress: () {},
-              enabled: false,
-            ),
-            new RoundedButton(
-              text: 'INDICAÇÕES QUE EU FIZ',
-              onPress: () {},
-              enabled: false,
-            ),
-            new RoundedButton(
-              text: 'RANKING DE INDICADOS',
-              onPress: () {},
-              enabled: false,
-            ),
-            // new ElevatedButton(
-            //   child: new Text(
-            //     'Chat',
-            //     style: TextStyle(color: Colors.white),
-            //   ),
-            //   onPressed: () => Navigator.push(
-            //       context, MaterialPageRoute(builder: (context) => ChatPage())),
-            // )
-          ],
+        SizedBox(height: 55.0),
+        new ColoredRoundedButton(
+          text: 'PAINEL DE SOLICITAÇÕES',
+          onPress: () {},
+          enabled: true,
+          color: Color(0xff71196F),
+        ),
+        new ColoredRoundedButton(
+          text: 'INDICAÇÕES QUE EU PEDI',
+          onPress: () {},
+          enabled: true,
+          color: Color(0xff84BC75),
+        ),
+        new ColoredRoundedButton(
+          text: 'INDICAÇÕES QUE EU FIZ',
+          onPress: () {},
+          enabled: true,
+          color: Color(0xff008FCA),
+        ),
+        new ColoredRoundedButton(
+          text: 'RANKING DE INDICADOS',
+          onPress: () {},
+          enabled: true,
+          color: Color(0xffEE6B12),
         ),
       ],
     );

@@ -145,33 +145,48 @@ class BottomNavigationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color kPrimaryColor = Color(0xFF111F5C);
+    bool doubleChar = text.contains(" ");
+
+    if (text == "meu perfil") {
+      doubleChar = false;
+    }
+    print(doubleChar);
     return selected
         ? GestureDetector(
             onTap: () {
               onPress();
             },
             child: Stack(
+              alignment: AlignmentDirectional.topStart,
               children: [
                 Container(
-                  width: 50.0,
-                  height: 50.0,
+                  width: 70.0,
+                  height: 70.0,
                   decoration: new BoxDecoration(
                     color: color,
                     shape: BoxShape.circle,
                   ),
                 ),
                 Positioned(
-                  child: Text(
-                    text.toUpperCase(),
-                    softWrap: true,
-                    style: TextStyle(
-                      fontSize: 9,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
+                  child: Container(
+                    width: 55,
+                    child: Wrap(
+                        direction: Axis.horizontal,
+                        alignment: WrapAlignment.center,
+                        children: [
+                          Text(
+                            text.toUpperCase(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 9,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ]),
                   ),
-                  top: 19,
-                  left: 7,
+                  top: (doubleChar) ? 23 : 30,
+                  left: 6,
                 )
               ],
             ),
@@ -183,13 +198,23 @@ class BottomNavigationItem extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  text.toUpperCase(),
-                  style: TextStyle(
-                    fontSize: 9,
-                    fontWeight: FontWeight.bold,
-                    color: kPrimaryColor,
-                  ),
+                Container(
+                  width: 60,
+                  height: 24,
+                  child: Wrap(
+                      direction: Axis.horizontal,
+                      alignment: WrapAlignment.center,
+                      children: [
+                        Text(
+                          text.toUpperCase(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 9,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ]),
                 ),
                 Container(
                   width: 50.0,

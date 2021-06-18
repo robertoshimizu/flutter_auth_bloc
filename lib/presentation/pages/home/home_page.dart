@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_auth_bloc/presentation/pages/mock/mock.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/repository/repositories.dart';
 import '../../../domain/entities/entities.dart';
 import '../../../domain/repository/repositories.dart';
 import '../../../locator.dart';
-
 import '../../bloc/bloc.dart';
 import '../pages.dart';
 
@@ -74,63 +72,187 @@ class MyProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            'Usuário Logado: ${user.name}',
-            style: TextStyle(fontSize: 20.0),
-          ),
-          SizedBox(height: 15.0),
-          ButtonBar(
-            mainAxisSize: MainAxisSize
-                .min, // this will take space as minimum as posible(to center)
-            children: <Widget>[
-              new ElevatedButton(
-                child: new Text(
-                  'Solicitações de Indicações da rede',
-                  style: TextStyle(color: Colors.white),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(
+              top: 20.0, left: 12.0, right: 12.0, bottom: 12.0),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    StarRanking(
+                      rating: 2.7,
+                      size: 16.0,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      children: [
+                        Text(
+                          'ranking'.toUpperCase(),
+                          style: TextStyle(
+                            fontSize: 8,
+                          ),
+                        ),
+                        Text(
+                          '95',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                onPressed: () =>
-                    Navigator.pushNamed(context, 'needRequest_screen'),
               ),
-              new ElevatedButton(
-                child: new Text(
-                  'Minhas solicitações de indicações',
-                  style: TextStyle(color: Colors.white),
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  side: BorderSide(
+                    color: Color(0xffFFFFFF),
+                    width: .3,
+                  ),
                 ),
-                onPressed: () =>
-                    Navigator.pushNamed(context, 'myNeedRequest_screen'),
+                elevation: 2,
+                child: Row(
+                  children: [
+                    // Photo
+                    ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10.0),
+                        bottomLeft: Radius.circular(10.0),
+                      ),
+                      child: Image(
+                        fit: BoxFit.fill,
+                        image: NetworkImage(user.photo),
+                        height: 180,
+                      ),
+                    ),
+
+                    Flexible(
+                      child: Container(
+                        height: 150,
+                        padding: const EdgeInsets.only(left: 8, right: 8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                              width: 100,
+                              child: Wrap(
+                                  direction: Axis.horizontal,
+                                  alignment: WrapAlignment.start,
+                                  children: [
+                                    Text(
+                                      user.name,
+                                      style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ]),
+                            ),
+
+                            // Title
+                            Text(
+                              user.occupation,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w900,
+                                fontSize: 10,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.baseline,
+                              children: [
+                                Text(
+                                  '44',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  'indicações feitas'.toUpperCase(),
+                                  style: TextStyle(
+                                    fontSize: 8,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.baseline,
+                              children: [
+                                Text(
+                                  '12',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  'indicações recebidas'.toUpperCase(),
+                                  style: TextStyle(
+                                    fontSize: 8,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Text(
+                              'Indicado por Júlio Macedo Valério e mais 5 pessoas',
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontStyle: FontStyle.normal,
+                              ),
+                              textAlign: TextAlign.justify,
+                              maxLines: 2,
+                              softWrap: true,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              new ElevatedButton(
-                child: new Text(
-                  'Minhas Indicações',
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MyIndications())),
-              ),
-              new ElevatedButton(
-                child: new Text(
-                  'Master',
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: () => Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Master())),
-              ),
-              new ElevatedButton(
-                child: new Text(
-                  'Chat',
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ChatPage())),
-              )
             ],
           ),
-        ],
-      ),
+        ),
+        SizedBox(height: 25.0),
+        ButtonBar(
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            new RoundedButton(
+              text: 'PAINEL DE SOLICITAÇÕES',
+              onPress: () {},
+              enabled: false,
+            ),
+            new RoundedButton(
+              text: 'INDICAÇÕES QUE EU PEDI',
+              onPress: () {},
+              enabled: false,
+            ),
+            new RoundedButton(
+              text: 'INDICAÇÕES QUE EU FIZ',
+              onPress: () {},
+              enabled: false,
+            ),
+            new RoundedButton(
+              text: 'RANKING DE INDICADOS',
+              onPress: () {},
+              enabled: false,
+            ),
+            // new ElevatedButton(
+            //   child: new Text(
+            //     'Chat',
+            //     style: TextStyle(color: Colors.white),
+            //   ),
+            //   onPressed: () => Navigator.push(
+            //       context, MaterialPageRoute(builder: (context) => ChatPage())),
+            // )
+          ],
+        ),
+      ],
     );
   }
 }

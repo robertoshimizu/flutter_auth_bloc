@@ -9,6 +9,11 @@ class Master extends StatefulWidget {
 
 class _MasterState extends State<Master> {
   List<bool> bottomNavigationItemStatus = [true, false, false, false, false];
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void _openDrawer() {
+    _scaffoldKey.currentState.openDrawer();
+  }
 
   Widget currentWidgetView;
   @override
@@ -52,14 +57,29 @@ class _MasterState extends State<Master> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Página Principal'),
+        backgroundColor: Colors.white,
+        elevation: 0.0,
+        leadingWidth: 0.0,
+        centerTitle: false,
+        title: Image.asset(
+          'assets/icons/logo-eu-indico.png',
+        ),
+        actions: [
+          GestureDetector(
+            child: Image.asset(
+              'assets/icons/menu-bar.png',
+            ),
+            onTap: () => _openDrawer(),
+          ),
+        ],
       ),
       drawer: Container(
         width: MediaQuery.of(context).size.width * 0.9,
         child: MainDrawer(),
       ),
-      backgroundColor: Colors.blueGrey[50],
+      backgroundColor: Colors.white,
       body: AnimatedSwitcher(
         duration: Duration(milliseconds: 250),
         child: currentWidgetView,

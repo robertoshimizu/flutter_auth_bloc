@@ -53,6 +53,7 @@ class RankingNamePage extends StatelessWidget {
                         children: <Widget>[
                           StarRanking(
                             rating: 2.7,
+                            size: 12.0,
                           ),
 
                           Text(
@@ -139,9 +140,11 @@ class RankingNamePage extends StatelessWidget {
 
 class StarRanking extends StatelessWidget {
   final double rating;
+  final double size;
   const StarRanking({
     Key key,
     @required this.rating,
+    @required this.size,
   }) : super(key: key);
 
   @override
@@ -175,27 +178,27 @@ class StarRanking extends StatelessWidget {
           Icon(
             vetor[0],
             color: Colors.black87,
-            size: 12.0,
+            size: size,
           ),
           Icon(
             vetor[1],
             color: Colors.black87,
-            size: 12.0,
+            size: size,
           ),
           Icon(
             vetor[2],
             color: Colors.black87,
-            size: 12.0,
+            size: size,
           ),
           Icon(
             vetor[3],
             color: Colors.black87,
-            size: 12.0,
+            size: size,
           ),
           Icon(
             vetor[4],
             color: Colors.black87,
-            size: 12.0,
+            size: size,
           ),
         ],
       );

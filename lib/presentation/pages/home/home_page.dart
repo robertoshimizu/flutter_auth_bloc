@@ -29,8 +29,10 @@ class HomePage extends StatelessWidget {
         future: _userRepository.getUserById(_user.uid),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            var username = snapshot.data['name'];
-            return MainMenu(username: username);
+            UserData user = UserData.fromMap(snapshot.data, _user.uid);
+            return MyProfile(
+              user: user,
+            );
           } else if (snapshot.hasError) {
             return ErrorMenu();
           } else {
@@ -63,13 +65,12 @@ class ErrorMenu extends StatelessWidget {
   }
 }
 
-class MainMenu extends StatelessWidget {
-  const MainMenu({
+class MyProfile extends StatelessWidget {
+  final UserData user;
+  const MyProfile({
     Key key,
-    @required this.username,
+    @required this.user,
   }) : super(key: key);
-
-  final username;
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +79,7 @@ class MainMenu extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            'Usuário Logado: $username',
+            'Usuário Logado: ${user.name}',
             style: TextStyle(fontSize: 20.0),
           ),
           SizedBox(height: 15.0),
@@ -133,3 +134,95 @@ class MainMenu extends StatelessWidget {
     );
   }
 }
+
+// class MainMenu extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Multi-Styled text'),
+//       ),
+//       body: Center(
+//         child: Container(
+//           color: Colors.yellow[50],
+//           width: 100,
+//           margin: EdgeInsets.all(10),
+//           child: createPrivacyPolicyMultiStyledTextWidget(),
+//           //child:  createSignUpWiget(),
+//         ),
+//       ),
+//     );
+//   }
+
+//   Widget createSignUpWiget() {
+//     List<StyleModel> styledText = [
+//       StyleModel(text: 'Don’t have an account?'),
+//       StyleModel(
+//           text: 'Sign Up',
+//           hasAction: true,
+//           style: TextStyle(
+//               fontSize: 18,
+//               color: Colors.blueAccent,
+//               fontWeight: FontWeight.w700))
+//     ];
+//     return createMultiStyledTextWidget(styledText);
+//   }
+
+//   Widget createPrivacyPolicyMultiStyledTextWidget() {
+//     List<StyleModel> styledText = [
+//       StyleModel(text: 'I accept'),
+//       StyleModel(
+//           text: 'Terms of Service',
+//           hasAction: true,
+//           style: TextStyle(
+//               fontSize: 18,
+//               color: Colors.blueAccent,
+//               fontWeight: FontWeight.w700)),
+//       StyleModel(text: 'and'),
+//       StyleModel(
+//           text: 'Privacy Policy.',
+//           hasAction: true,
+//           style: TextStyle(
+//               fontSize: 18,
+//               color: Colors.blueAccent,
+//               fontWeight: FontWeight.w700)),
+//     ];
+//     return createMultiStyledTextWidget(styledText);
+//   }
+
+//   Wrap createMultiStyledTextWidget(List<StyleModel> modelList) {
+//     List<Widget> wrapWidgets = [];
+//     for (StyleModel model in modelList) {
+//       wrapWidgets.add(getTextWidget(styleModel: model));
+//     }
+//     return Wrap(
+//       spacing: 3.0,
+//       direction: Axis.horizontal,
+//       alignment: WrapAlignment.start,
+//       children: wrapWidgets,
+//     );
+//   }
+
+//   Widget getTextWidget({@required StyleModel styleModel}) {
+//     if (styleModel.hasAction) {
+//       return InkWell(
+//         onTap: () {
+//           print('Actions:- ${styleModel.text}');
+//         },
+//         child: Text(styleModel.text, style: styleModel.style),
+//       );
+//     } else {
+//       return Text(styleModel.text, style: styleModel.style);
+//     }
+//   }
+// }
+
+// class StyleModel {
+//   StyleModel(
+//       {@required this.text,
+//       this.style = const TextStyle(fontSize: 18),
+//       this.hasAction = false});
+//   final String text;
+//   final TextStyle style;
+//   final bool hasAction;
+// }

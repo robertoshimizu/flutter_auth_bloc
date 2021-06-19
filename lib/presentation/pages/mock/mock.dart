@@ -12,7 +12,13 @@ class Master extends StatelessWidget {
     @required this.user,
   }) : super(key: key);
 
-  final List<bool> bottomNavigationItemStatus = [true, true, true, true, true];
+  final List<bool> bottomNavigationItemStatus = [
+    false,
+    true,
+    false,
+    false,
+    false,
+  ];
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void _openDrawer() {
@@ -100,7 +106,7 @@ class MasterNavigationBar extends StatelessWidget {
       builder: (context, state) {
         return SafeArea(
           child: Container(
-            height: 60,
+            height: 62,
             color: Colors.blueGrey[50],
             child: Column(
               children: [
@@ -196,37 +202,37 @@ class BottomNavigationItem extends StatelessWidget {
               onPress();
             },
             child: Stack(
-              alignment: Alignment.topCenter,
+              alignment: Alignment.center,
               clipBehavior: Clip.none,
               children: [
-                Container(
-                  width: 58.0,
-                  height: 58.0,
-                  decoration: new BoxDecoration(
-                    color: color,
-                    shape: BoxShape.circle,
+                Positioned(
+                  child: Container(
+                    width: 58.0,
+                    height: 58.0,
+                    decoration: new BoxDecoration(
+                      color: color,
+                      shape: BoxShape.circle,
+                    ),
                   ),
                 ),
                 Positioned(
-                  top: doubleChar ? 14 : 21,
                   child: Container(
                     width: 53,
                     height: 24,
                     child: Wrap(
-                      direction: Axis.horizontal,
-                      alignment: WrapAlignment.center,
-                      children: [
-                        Text(
-                          text.toUpperCase(),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 9,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                        direction: Axis.horizontal,
+                        alignment: WrapAlignment.center,
+                        children: [
+                          Text(
+                            text.toUpperCase(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 9,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ]),
                   ),
                 ),
               ],
@@ -242,7 +248,7 @@ class BottomNavigationItem extends StatelessWidget {
               children: [
                 Positioned(
                   child: Container(
-                    width: 60,
+                    width: 53,
                     height: 24,
                     child: Wrap(
                         direction: Axis.horizontal,

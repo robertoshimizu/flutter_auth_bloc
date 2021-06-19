@@ -12,13 +12,7 @@ class Master extends StatelessWidget {
     @required this.user,
   }) : super(key: key);
 
-  final List<bool> bottomNavigationItemStatus = [
-    true,
-    false,
-    false,
-    false,
-    false
-  ];
+  final List<bool> bottomNavigationItemStatus = [true, true, true, true, true];
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void _openDrawer() {
@@ -53,95 +47,124 @@ class Master extends StatelessWidget {
           child: MainDrawer(),
         ),
         backgroundColor: Colors.white,
-        body: BlocBuilder<PagesBloc, PagesState>(
-          builder: (context, state) {
-            if (state is PagesOne) {
-              return NeedRequestPage();
-            } else if (state is PagesTwo) {
-              return MyIndications();
-            } else if (state is PagesThree) {
-              return MyProfile(
-                user: user,
-              );
-            } else if (state is PagesFour) {
-              return MyNeedRequestPage();
-            } else if (state is PagesFive) {
-              return RankingMainPage();
-            } else
-              return HomePage();
-          },
-        ),
-        bottomNavigationBar: BlocBuilder<PagesBloc, PagesState>(
-          builder: (context, state) {
-            return SafeArea(
-              child: Container(
-                height: 80,
-                color: Colors.blueGrey[50],
-                child: Column(
-                  children: [
-                    Container(
-                      height: 2,
-                      color: Colors.grey[300],
-                    ),
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          BottomNavigationItem(
-                            color: Color(0xff71196F),
-                            text: "pedidos",
-                            selected: bottomNavigationItemStatus[0],
-                            onPress: () {
-                              BlocProvider.of<PagesBloc>(context)
-                                  .add(PagesEvent.one);
-                            },
-                          ),
-                          BottomNavigationItem(
-                            color: Color(0xff84BC75),
-                            text: "fiz indicação",
-                            selected: bottomNavigationItemStatus[1],
-                            onPress: () {
-                              BlocProvider.of<PagesBloc>(context)
-                                  .add(PagesEvent.two);
-                            },
-                          ),
-                          BottomNavigationItem(
-                            color: Color(0xffD61C80),
-                            text: "Meu perfil",
-                            selected: bottomNavigationItemStatus[2],
-                            onPress: () {
-                              BlocProvider.of<PagesBloc>(context)
-                                  .add(PagesEvent.three);
-                            },
-                          ),
-                          BottomNavigationItem(
-                            color: Color(0xff008FCA),
-                            text: "pedi indicação",
-                            selected: bottomNavigationItemStatus[3],
-                            onPress: () {
-                              BlocProvider.of<PagesBloc>(context)
-                                  .add(PagesEvent.four);
-                            },
-                          ),
-                          BottomNavigationItem(
-                            color: Color(0xffEE6B12),
-                            text: "ranking",
-                            selected: bottomNavigationItemStatus[4],
-                            onPress: () {
-                              BlocProvider.of<PagesBloc>(context)
-                                  .add(PagesEvent.five);
-                            },
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
+        body: MasterBody(user: user),
+        bottomNavigationBar: MasterNavigationBar(
+            bottomNavigationItemStatus: bottomNavigationItemStatus),
       ),
+    );
+  }
+}
+
+class MasterBody extends StatelessWidget {
+  const MasterBody({
+    Key key,
+    @required this.user,
+  }) : super(key: key);
+
+  final UserData user;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<PagesBloc, PagesState>(
+      builder: (context, state) {
+        if (state is PagesOne) {
+          return NeedRequestPage();
+        } else if (state is PagesTwo) {
+          return MyIndications();
+        } else if (state is PagesThree) {
+          return MyProfile(
+            user: user,
+          );
+        } else if (state is PagesFour) {
+          return MyNeedRequestPage();
+        } else if (state is PagesFive) {
+          return RankingMainPage();
+        } else
+          return HomePage();
+      },
+    );
+  }
+}
+
+class MasterNavigationBar extends StatelessWidget {
+  const MasterNavigationBar({
+    Key key,
+    @required this.bottomNavigationItemStatus,
+  }) : super(key: key);
+
+  final List<bool> bottomNavigationItemStatus;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<PagesBloc, PagesState>(
+      builder: (context, state) {
+        return SafeArea(
+          child: Container(
+            height: 60,
+            color: Colors.blueGrey[50],
+            child: Column(
+              children: [
+                Container(
+                  height: 2,
+                  color: Colors.grey[300],
+                ),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      BottomNavigationItem(
+                        color: Color(0xff71196F),
+                        text: "pedidos",
+                        selected: bottomNavigationItemStatus[0],
+                        onPress: () {
+                          BlocProvider.of<PagesBloc>(context)
+                              .add(PagesEvent.one);
+                        },
+                      ),
+                      BottomNavigationItem(
+                        color: Color(0xff84BC75),
+                        text: "fiz indicação",
+                        selected: bottomNavigationItemStatus[1],
+                        onPress: () {
+                          BlocProvider.of<PagesBloc>(context)
+                              .add(PagesEvent.two);
+                        },
+                      ),
+                      BottomNavigationItem(
+                        color: Color(0xffD61C80),
+                        text: "Meu perfil",
+                        selected: bottomNavigationItemStatus[2],
+                        onPress: () {
+                          BlocProvider.of<PagesBloc>(context)
+                              .add(PagesEvent.three);
+                        },
+                      ),
+                      BottomNavigationItem(
+                        color: Color(0xff008FCA),
+                        text: "pedi indicação",
+                        selected: bottomNavigationItemStatus[3],
+                        onPress: () {
+                          BlocProvider.of<PagesBloc>(context)
+                              .add(PagesEvent.four);
+                        },
+                      ),
+                      BottomNavigationItem(
+                        color: Color(0xffEE6B12),
+                        text: "ranking",
+                        selected: bottomNavigationItemStatus[4],
+                        onPress: () {
+                          BlocProvider.of<PagesBloc>(context)
+                              .add(PagesEvent.five);
+                        },
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -173,21 +196,22 @@ class BottomNavigationItem extends StatelessWidget {
               onPress();
             },
             child: Stack(
-              alignment: AlignmentDirectional.topStart,
+              alignment: Alignment.topCenter,
+              clipBehavior: Clip.none,
               children: [
                 Container(
-                  width: 50.0,
-                  height: 50.0,
+                  width: 58.0,
+                  height: 58.0,
                   decoration: new BoxDecoration(
                     color: color,
                     shape: BoxShape.circle,
                   ),
                 ),
                 Positioned(
-                  top: 30,
-                  left: 6,
+                  top: doubleChar ? 14 : 21,
                   child: Container(
-                    width: 55,
+                    width: 53,
+                    height: 24,
                     child: Wrap(
                       direction: Axis.horizontal,
                       alignment: WrapAlignment.center,
@@ -198,13 +222,13 @@ class BottomNavigationItem extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 9,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                            color: Colors.white,
                           ),
                         ),
                       ],
                     ),
                   ),
-                )
+                ),
               ],
             ),
           )
@@ -212,61 +236,43 @@ class BottomNavigationItem extends StatelessWidget {
             onTap: () {
               onPress();
             },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Stack(
+              alignment: Alignment.topCenter,
+              clipBehavior: Clip.none,
               children: [
-                Container(
-                  width: 60,
-                  height: 24,
-                  child: Wrap(
-                      direction: Axis.horizontal,
-                      alignment: WrapAlignment.center,
-                      children: [
-                        Text(
-                          text.toUpperCase(),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 9,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                Positioned(
+                  child: Container(
+                    width: 60,
+                    height: 24,
+                    child: Wrap(
+                        direction: Axis.horizontal,
+                        alignment: WrapAlignment.center,
+                        children: [
+                          Text(
+                            text.toUpperCase(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 9,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
                           ),
-                        ),
-                      ]),
+                        ]),
+                  ),
                 ),
-                Container(
-                  width: 50.0,
-                  height: 50.0,
-                  decoration: new BoxDecoration(
-                    color: color,
-                    shape: BoxShape.circle,
+                Positioned(
+                  top: 30,
+                  child: Container(
+                    width: 58.0,
+                    height: 58.0,
+                    decoration: new BoxDecoration(
+                      color: color,
+                      shape: BoxShape.circle,
+                    ),
                   ),
                 ),
               ],
             ),
           );
-  }
-}
-
-class WidgetView extends StatelessWidget {
-  const WidgetView({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<PagesBloc, PagesState>(
-      builder: (context, state) {
-        if (state is PagesOne) {
-          return NeedRequestPage();
-        } else if (state is PagesTwo) {
-          return MyIndications();
-        } else if (state is PagesThree) {
-          return HomePage();
-        } else if (state is PagesFour) {
-          return MyNeedRequestPage();
-        } else if (state is PagesFive) {
-          return RankingMainPage();
-        } else
-          return HomePage();
-      },
-    );
   }
 }

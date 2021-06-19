@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
             return Splash();
           } else if (state is Authenticated) {
             // print(state.getUser().props);
-            return Master();
+            return HomePage();
           } else if (state is Unauthenticated) {
             return PhoneLoginWrapper();
           } else {

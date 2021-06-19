@@ -1,148 +1,145 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_bloc/domain/entities/entities.dart';
+import '../../bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../pages.dart';
 
-class Master extends StatefulWidget {
-  @override
-  _MasterState createState() => _MasterState();
-}
+class Master extends StatelessWidget {
+  final UserData user;
+  Master({
+    Key key,
+    @required this.user,
+  }) : super(key: key);
 
-class _MasterState extends State<Master> {
-  List<bool> bottomNavigationItemStatus = [true, false, false, false, false];
+  final List<bool> bottomNavigationItemStatus = [
+    true,
+    false,
+    false,
+    false,
+    false
+  ];
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void _openDrawer() {
     _scaffoldKey.currentState.openDrawer();
   }
 
-  Widget currentWidgetView;
-  @override
-  void initState() {
-    super.initState();
-    setState(() {
-      currentWidgetView = HomePage();
-    });
-  }
-
-  setCurrentWidgetView(int index) {
-    setState(() {
-      switch (index) {
-        case 0:
-          currentWidgetView = NeedRequestPage();
-          break;
-        case 1:
-          currentWidgetView = MyIndications();
-          break;
-        case 2:
-          currentWidgetView = HomePage();
-          break;
-        case 3:
-          currentWidgetView = MyNeedRequestPage();
-          break;
-        case 4:
-          currentWidgetView = RankingMainPage();
-          break;
-      }
-
-      bottomNavigationItemStatus = [
-        index == 0,
-        index == 1,
-        index == 2,
-        index == 3,
-        index == 4
-      ];
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.0,
-        leadingWidth: 0.0,
-        centerTitle: false,
-        title: Image.asset(
-          'assets/icons/logo-eu-indico.png',
-        ),
-        actions: [
-          GestureDetector(
-            child: Image.asset(
-              'assets/icons/menu-bar.png',
-            ),
-            onTap: () => _openDrawer(),
+    return BlocProvider(
+      create: (context) => PagesBloc(),
+      child: Scaffold(
+        key: _scaffoldKey,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0.0,
+          leadingWidth: 0.0,
+          centerTitle: false,
+          title: Image.asset(
+            'assets/icons/logo-eu-indico.png',
           ),
-        ],
-      ),
-      drawer: Container(
-        width: MediaQuery.of(context).size.width * 0.9,
-        child: MainDrawer(),
-      ),
-      backgroundColor: Colors.white,
-      body: AnimatedSwitcher(
-        duration: Duration(milliseconds: 250),
-        child: currentWidgetView,
-      ),
-      bottomNavigationBar: SafeArea(
-        child: Container(
-          height: 80,
-          color: Colors.blueGrey[50],
-          child: Column(
-            children: [
-              Container(
-                height: 2,
-                color: Colors.grey[300],
+          actions: [
+            GestureDetector(
+              child: Image.asset(
+                'assets/icons/menu-bar.png',
               ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              onTap: () => _openDrawer(),
+            ),
+          ],
+        ),
+        drawer: Container(
+          width: MediaQuery.of(context).size.width * 0.9,
+          child: MainDrawer(),
+        ),
+        backgroundColor: Colors.white,
+        body: BlocBuilder<PagesBloc, PagesState>(
+          builder: (context, state) {
+            if (state is PagesOne) {
+              return NeedRequestPage();
+            } else if (state is PagesTwo) {
+              return MyIndications();
+            } else if (state is PagesThree) {
+              return MyProfile(
+                user: user,
+              );
+            } else if (state is PagesFour) {
+              return MyNeedRequestPage();
+            } else if (state is PagesFive) {
+              return RankingMainPage();
+            } else
+              return HomePage();
+          },
+        ),
+        bottomNavigationBar: BlocBuilder<PagesBloc, PagesState>(
+          builder: (context, state) {
+            return SafeArea(
+              child: Container(
+                height: 80,
+                color: Colors.blueGrey[50],
+                child: Column(
                   children: [
-                    BottomNavigationItem(
-                      color: Color(0xff71196F),
-                      text: "pedidos",
-                      selected: bottomNavigationItemStatus[0],
-                      onPress: () {
-                        setCurrentWidgetView(0);
-                      },
+                    Container(
+                      height: 2,
+                      color: Colors.grey[300],
                     ),
-                    BottomNavigationItem(
-                      color: Color(0xff84BC75),
-                      text: "fiz indicação",
-                      selected: bottomNavigationItemStatus[1],
-                      onPress: () {
-                        setCurrentWidgetView(1);
-                      },
-                    ),
-                    BottomNavigationItem(
-                      color: Color(0xffD61C80),
-                      text: "Meu perfil",
-                      selected: bottomNavigationItemStatus[2],
-                      onPress: () {
-                        setCurrentWidgetView(2);
-                      },
-                    ),
-                    BottomNavigationItem(
-                      color: Color(0xff008FCA),
-                      text: "pedi indicação",
-                      selected: bottomNavigationItemStatus[3],
-                      onPress: () {
-                        setCurrentWidgetView(3);
-                      },
-                    ),
-                    BottomNavigationItem(
-                      color: Color(0xffEE6B12),
-                      text: "ranking",
-                      selected: bottomNavigationItemStatus[4],
-                      onPress: () {
-                        setCurrentWidgetView(4);
-                      },
-                    ),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          BottomNavigationItem(
+                            color: Color(0xff71196F),
+                            text: "pedidos",
+                            selected: bottomNavigationItemStatus[0],
+                            onPress: () {
+                              BlocProvider.of<PagesBloc>(context)
+                                  .add(PagesEvent.one);
+                            },
+                          ),
+                          BottomNavigationItem(
+                            color: Color(0xff84BC75),
+                            text: "fiz indicação",
+                            selected: bottomNavigationItemStatus[1],
+                            onPress: () {
+                              BlocProvider.of<PagesBloc>(context)
+                                  .add(PagesEvent.two);
+                            },
+                          ),
+                          BottomNavigationItem(
+                            color: Color(0xffD61C80),
+                            text: "Meu perfil",
+                            selected: bottomNavigationItemStatus[2],
+                            onPress: () {
+                              BlocProvider.of<PagesBloc>(context)
+                                  .add(PagesEvent.three);
+                            },
+                          ),
+                          BottomNavigationItem(
+                            color: Color(0xff008FCA),
+                            text: "pedi indicação",
+                            selected: bottomNavigationItemStatus[3],
+                            onPress: () {
+                              BlocProvider.of<PagesBloc>(context)
+                                  .add(PagesEvent.four);
+                            },
+                          ),
+                          BottomNavigationItem(
+                            color: Color(0xffEE6B12),
+                            text: "ranking",
+                            selected: bottomNavigationItemStatus[4],
+                            onPress: () {
+                              BlocProvider.of<PagesBloc>(context)
+                                  .add(PagesEvent.five);
+                            },
+                          ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
-              )
-            ],
-          ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -247,5 +244,29 @@ class BottomNavigationItem extends StatelessWidget {
               ],
             ),
           );
+  }
+}
+
+class WidgetView extends StatelessWidget {
+  const WidgetView({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<PagesBloc, PagesState>(
+      builder: (context, state) {
+        if (state is PagesOne) {
+          return NeedRequestPage();
+        } else if (state is PagesTwo) {
+          return MyIndications();
+        } else if (state is PagesThree) {
+          return HomePage();
+        } else if (state is PagesFour) {
+          return MyNeedRequestPage();
+        } else if (state is PagesFive) {
+          return RankingMainPage();
+        } else
+          return HomePage();
+      },
+    );
   }
 }

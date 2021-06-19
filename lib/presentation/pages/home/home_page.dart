@@ -29,7 +29,7 @@ class HomePage extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             UserData user = UserData.fromMap(snapshot.data, _user.uid);
-            return MyProfile(
+            return Master(
               user: user,
             );
           } else if (snapshot.hasError) {
@@ -246,25 +246,33 @@ class MyProfile extends StatelessWidget {
         SizedBox(height: 5.0),
         new ColoredRoundedButton(
           text: 'PAINEL DE SOLICITAÇÕES',
-          onPress: () {},
+          onPress: () {
+            BlocProvider.of<PagesBloc>(context).add(PagesEvent.one);
+          },
           enabled: true,
           color: Color(0xff71196F),
         ),
         new ColoredRoundedButton(
           text: 'INDICAÇÕES QUE EU PEDI',
-          onPress: () {},
+          onPress: () {
+            BlocProvider.of<PagesBloc>(context).add(PagesEvent.four);
+          },
           enabled: true,
           color: Color(0xff84BC75),
         ),
         new ColoredRoundedButton(
           text: 'INDICAÇÕES QUE EU FIZ',
-          onPress: () {},
+          onPress: () {
+            BlocProvider.of<PagesBloc>(context).add(PagesEvent.two);
+          },
           enabled: true,
           color: Color(0xff008FCA),
         ),
         new ColoredRoundedButton(
           text: 'RANKING DE INDICADOS',
-          onPress: () {},
+          onPress: () {
+            BlocProvider.of<PagesBloc>(context).add(PagesEvent.five);
+          },
           enabled: true,
           color: Color(0xffEE6B12),
         ),

@@ -39,50 +39,71 @@ class _MasterState extends State<Master> {
     bottomNavigationItemStatus[index] = true;
   }
 
+  int stateIndex(PagesState state) {
+    if (state is PagesOne) {
+      return 0;
+    } else if (state is PagesTwo) {
+      return 1;
+    } else if (state is PagesThree) {
+      return 2;
+    } else if (state is PagesFour) {
+      return 3;
+    } else if (state is PagesFive) {
+      return 4;
+    } else
+      return 1;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => PagesBloc(),
-      child: SafeArea(
-        left: true,
-        top: true,
-        right: true,
-        bottom: true,
-        child: Scaffold(
-          resizeToAvoidBottomInset: true,
-          key: _scaffoldKey,
-          appBar: AppBar(
-            backgroundColor: Colors.white,
-            elevation: 0.0,
-            leadingWidth: 0.0,
-            centerTitle: false,
-            title: Image.asset(
-              'assets/icons/logo-eu-indico.png',
-            ),
-            actions: [
-              GestureDetector(
-                child: Image.asset(
-                  'assets/icons/menu-bar.png',
+      child: BlocBuilder<PagesBloc, PagesState>(
+        builder: (context, state) {
+          return SafeArea(
+            left: true,
+            top: true,
+            right: true,
+            bottom: true,
+            child: Scaffold(
+              resizeToAvoidBottomInset: true,
+              key: _scaffoldKey,
+              appBar: AppBar(
+                backgroundColor: Colors.white,
+                elevation: 0.0,
+                leadingWidth: 0.0,
+                centerTitle: false,
+                title: Image.asset(
+                  'assets/icons/logo-eu-indico.png',
                 ),
-                onTap: () => _openDrawer(),
+                actions: [
+                  GestureDetector(
+                    child: Image.asset(
+                      'assets/icons/menu-bar.png',
+                    ),
+                    onTap: () => _openDrawer(),
+                  ),
+                ],
               ),
-            ],
-          ),
-          drawer: Container(
-            width: MediaQuery.of(context).size.width * 0.9,
-            child: MainDrawer(),
-          ),
-          backgroundColor: Colors.white,
-          body: MasterBody(user: widget.user),
-          bottomNavigationBar: MasterNavigationBar(
-            bottomNavigationItemStatus: bottomNavigationItemStatus,
-            callback: (value) {
-              setState(() {
-                changeState(value);
-              });
-            },
-          ),
-        ),
+              drawer: Container(
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: MainDrawer(),
+              ),
+              backgroundColor: Colors.white,
+              body: MasterBody(user: widget.user),
+              bottomNavigationBar: MasterNavigationBar(
+                bottomNavigationItemStatus: bottomNavigationItemStatus,
+                callback: (value) {
+                  var stateNum =
+                      stateIndex(BlocProvider.of<PagesBloc>(context).state);
+                  setState(() {
+                    changeState(stateNum);
+                  });
+                },
+              ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -134,7 +155,6 @@ class MasterNavigationBar extends StatefulWidget {
 
 class _MasterNavigationBarState extends State<MasterNavigationBar> {
   @override
-  @override
   Widget build(BuildContext context) {
     return BlocBuilder<PagesBloc, PagesState>(
       builder: (context, state) {
@@ -149,6 +169,7 @@ class _MasterNavigationBarState extends State<MasterNavigationBar> {
                 selected: widget.bottomNavigationItemStatus[0],
                 onPress: () {
                   BlocProvider.of<PagesBloc>(context).add(PagesEvent.one);
+
                   setState(() {
                     widget.callback(0);
                   });
@@ -253,7 +274,7 @@ class BottomNavigationItem extends StatelessWidget {
                   Positioned(
                     top: 4,
                     child: Container(
-                      width: 53,
+                      width: 50,
                       height: 58,
                       child: Wrap(
                           direction: Axis.horizontal,
@@ -278,7 +299,6 @@ class BottomNavigationItem extends StatelessWidget {
         : GestureDetector(
             onTap: () {
               onPress();
-              print('clique de baixo');
             },
             child: Container(
               height: 12,

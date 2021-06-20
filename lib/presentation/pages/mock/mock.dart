@@ -29,33 +29,40 @@ class Master extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => PagesBloc(),
-      child: Scaffold(
-        key: _scaffoldKey,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0.0,
-          leadingWidth: 0.0,
-          centerTitle: false,
-          title: Image.asset(
-            'assets/icons/logo-eu-indico.png',
-          ),
-          actions: [
-            GestureDetector(
-              child: Image.asset(
-                'assets/icons/menu-bar.png',
-              ),
-              onTap: () => _openDrawer(),
+      child: SafeArea(
+        left: true,
+        top: true,
+        right: true,
+        bottom: true,
+        child: Scaffold(
+          resizeToAvoidBottomInset: true,
+          key: _scaffoldKey,
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            elevation: 0.0,
+            leadingWidth: 0.0,
+            centerTitle: false,
+            title: Image.asset(
+              'assets/icons/logo-eu-indico.png',
             ),
-          ],
+            actions: [
+              GestureDetector(
+                child: Image.asset(
+                  'assets/icons/menu-bar.png',
+                ),
+                onTap: () => _openDrawer(),
+              ),
+            ],
+          ),
+          drawer: Container(
+            width: MediaQuery.of(context).size.width * 0.9,
+            child: MainDrawer(),
+          ),
+          backgroundColor: Colors.white,
+          body: MasterBody(user: user),
+          bottomNavigationBar: MasterNavigationBar(
+              bottomNavigationItemStatus: bottomNavigationItemStatus),
         ),
-        drawer: Container(
-          width: MediaQuery.of(context).size.width * 0.9,
-          child: MainDrawer(),
-        ),
-        backgroundColor: Colors.white,
-        body: MasterBody(user: user),
-        bottomNavigationBar: MasterNavigationBar(
-            bottomNavigationItemStatus: bottomNavigationItemStatus),
       ),
     );
   }
@@ -104,70 +111,52 @@ class MasterNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PagesBloc, PagesState>(
       builder: (context, state) {
-        return SafeArea(
-          child: Container(
-            height: 62,
-            color: Colors.blueGrey[50],
-            child: Column(
-              children: [
-                Container(
-                  height: 2,
-                  color: Colors.grey[300],
-                ),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      BottomNavigationItem(
-                        color: Color(0xff71196F),
-                        text: "pedidos",
-                        selected: bottomNavigationItemStatus[0],
-                        onPress: () {
-                          BlocProvider.of<PagesBloc>(context)
-                              .add(PagesEvent.one);
-                        },
-                      ),
-                      BottomNavigationItem(
-                        color: Color(0xff84BC75),
-                        text: "fiz indicação",
-                        selected: bottomNavigationItemStatus[1],
-                        onPress: () {
-                          BlocProvider.of<PagesBloc>(context)
-                              .add(PagesEvent.two);
-                        },
-                      ),
-                      BottomNavigationItem(
-                        color: Color(0xffD61C80),
-                        text: "Meu perfil",
-                        selected: bottomNavigationItemStatus[2],
-                        onPress: () {
-                          BlocProvider.of<PagesBloc>(context)
-                              .add(PagesEvent.three);
-                        },
-                      ),
-                      BottomNavigationItem(
-                        color: Color(0xff008FCA),
-                        text: "pedi indicação",
-                        selected: bottomNavigationItemStatus[3],
-                        onPress: () {
-                          BlocProvider.of<PagesBloc>(context)
-                              .add(PagesEvent.four);
-                        },
-                      ),
-                      BottomNavigationItem(
-                        color: Color(0xffEE6B12),
-                        text: "ranking",
-                        selected: bottomNavigationItemStatus[4],
-                        onPress: () {
-                          BlocProvider.of<PagesBloc>(context)
-                              .add(PagesEvent.five);
-                        },
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
+        return Container(
+          height: 62,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              BottomNavigationItem(
+                color: Color(0xff71196F),
+                text: "pedidos",
+                selected: bottomNavigationItemStatus[0],
+                onPress: () {
+                  BlocProvider.of<PagesBloc>(context).add(PagesEvent.one);
+                },
+              ),
+              BottomNavigationItem(
+                color: Color(0xff84BC75),
+                text: "fiz indicação",
+                selected: bottomNavigationItemStatus[1],
+                onPress: () {
+                  BlocProvider.of<PagesBloc>(context).add(PagesEvent.two);
+                },
+              ),
+              BottomNavigationItem(
+                color: Color(0xffD61C80),
+                text: "Meu perfil",
+                selected: bottomNavigationItemStatus[2],
+                onPress: () {
+                  BlocProvider.of<PagesBloc>(context).add(PagesEvent.three);
+                },
+              ),
+              BottomNavigationItem(
+                color: Color(0xff008FCA),
+                text: "pedi indicação",
+                selected: bottomNavigationItemStatus[3],
+                onPress: () {
+                  BlocProvider.of<PagesBloc>(context).add(PagesEvent.four);
+                },
+              ),
+              BottomNavigationItem(
+                color: Color(0xffEE6B12),
+                text: "ranking",
+                selected: bottomNavigationItemStatus[4],
+                onPress: () {
+                  BlocProvider.of<PagesBloc>(context).add(PagesEvent.five);
+                },
+              ),
+            ],
           ),
         );
       },
@@ -190,7 +179,6 @@ class BottomNavigationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color kPrimaryColor = Color(0xFF111F5C);
     bool doubleChar = text.contains(" ");
 
     if (text == "meu perfil") {
@@ -201,83 +189,94 @@ class BottomNavigationItem extends StatelessWidget {
             onTap: () {
               onPress();
             },
-            child: Stack(
-              alignment: Alignment.center,
-              clipBehavior: Clip.none,
-              children: [
-                Positioned(
-                  child: Container(
-                    width: 58.0,
-                    height: 58.0,
-                    decoration: new BoxDecoration(
-                      color: color,
-                      shape: BoxShape.circle,
+            child: Container(
+              height: 12,
+              width: 80,
+              child: Stack(
+                alignment: Alignment.center,
+                overflow: Overflow.visible,
+                children: [
+                  Positioned(
+                    top: -10,
+                    child: Container(
+                      width: 58.0,
+                      height: 58.0,
+                      decoration: new BoxDecoration(
+                        color: color,
+                        shape: BoxShape.circle,
+                      ),
                     ),
                   ),
-                ),
-                Positioned(
-                  child: Container(
-                    width: 53,
-                    height: 24,
-                    child: Wrap(
-                        direction: Axis.horizontal,
-                        alignment: WrapAlignment.center,
-                        children: [
-                          Text(
-                            text.toUpperCase(),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 9,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                  Positioned(
+                    top: 4,
+                    child: Container(
+                      width: 53,
+                      height: 58,
+                      child: Wrap(
+                          direction: Axis.horizontal,
+                          alignment: WrapAlignment.center,
+                          children: [
+                            Text(
+                              text.toUpperCase(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 9,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                        ]),
+                          ]),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           )
         : GestureDetector(
             onTap: () {
               onPress();
             },
-            child: Stack(
-              alignment: Alignment.topCenter,
-              clipBehavior: Clip.none,
-              children: [
-                Positioned(
-                  child: Container(
-                    width: 53,
-                    height: 24,
-                    child: Wrap(
-                        direction: Axis.horizontal,
-                        alignment: WrapAlignment.center,
-                        children: [
-                          Text(
-                            text.toUpperCase(),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 9,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
+            child: Container(
+              height: 12,
+              width: 80,
+              child: Stack(
+                alignment: Alignment.bottomCenter,
+                overflow: Overflow.visible,
+                children: [
+                  Positioned(
+                    bottom: -14,
+                    // Container somente para provocar wrap no titulo
+                    child: Container(
+                      width: 48,
+                      child: Wrap(
+                          direction: Axis.horizontal,
+                          alignment: WrapAlignment.center,
+                          children: [
+                            Text(
+                              text.toUpperCase(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 9,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
                             ),
-                          ),
-                        ]),
-                  ),
-                ),
-                Positioned(
-                  top: 30,
-                  child: Container(
-                    width: 58.0,
-                    height: 58.0,
-                    decoration: new BoxDecoration(
-                      color: color,
-                      shape: BoxShape.circle,
+                          ]),
                     ),
                   ),
-                ),
-              ],
+                  Positioned(
+                    top: 28,
+                    child: Container(
+                      width: 58.0,
+                      height: 58.0,
+                      decoration: new BoxDecoration(
+                        color: color,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
   }

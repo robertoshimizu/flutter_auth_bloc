@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_auth_bloc/domain/entities/entities.dart';
-import '../../bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:flutter_auth_bloc/domain/entities/entities.dart';
+
+import '../../bloc/bloc.dart';
 import '../pages.dart';
 
-class Master extends StatelessWidget {
+class Master extends StatefulWidget {
   final UserData user;
   Master({
     Key key,
     @required this.user,
   }) : super(key: key);
 
+  @override
+  _MasterState createState() => _MasterState();
+}
+
+class _MasterState extends State<Master> {
   final List<bool> bottomNavigationItemStatus = [
     false,
     true,
@@ -23,6 +29,14 @@ class Master extends StatelessWidget {
 
   void _openDrawer() {
     _scaffoldKey.currentState.openDrawer();
+  }
+
+  void changeState(int index) {
+    var tam = bottomNavigationItemStatus.length;
+    for (int i = 0; i < tam; i++) {
+      bottomNavigationItemStatus[i] = false;
+    }
+    bottomNavigationItemStatus[index] = true;
   }
 
   @override
@@ -59,9 +73,15 @@ class Master extends StatelessWidget {
             child: MainDrawer(),
           ),
           backgroundColor: Colors.white,
-          body: MasterBody(user: user),
+          body: MasterBody(user: widget.user),
           bottomNavigationBar: MasterNavigationBar(
-              bottomNavigationItemStatus: bottomNavigationItemStatus),
+            bottomNavigationItemStatus: bottomNavigationItemStatus,
+            callback: (value) {
+              setState(() {
+                changeState(value);
+              });
+            },
+          ),
         ),
       ),
     );
@@ -99,14 +119,21 @@ class MasterBody extends StatelessWidget {
   }
 }
 
-class MasterNavigationBar extends StatelessWidget {
+class MasterNavigationBar extends StatefulWidget {
+  final Function callback;
+  final List<bool> bottomNavigationItemStatus;
   const MasterNavigationBar({
     Key key,
     @required this.bottomNavigationItemStatus,
+    @required this.callback,
   }) : super(key: key);
 
-  final List<bool> bottomNavigationItemStatus;
+  @override
+  _MasterNavigationBarState createState() => _MasterNavigationBarState();
+}
 
+class _MasterNavigationBarState extends State<MasterNavigationBar> {
+  @override
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PagesBloc, PagesState>(
@@ -119,41 +146,56 @@ class MasterNavigationBar extends StatelessWidget {
               BottomNavigationItem(
                 color: Color(0xff71196F),
                 text: "pedidos",
-                selected: bottomNavigationItemStatus[0],
+                selected: widget.bottomNavigationItemStatus[0],
                 onPress: () {
                   BlocProvider.of<PagesBloc>(context).add(PagesEvent.one);
+                  setState(() {
+                    widget.callback(0);
+                  });
                 },
               ),
               BottomNavigationItem(
                 color: Color(0xff84BC75),
                 text: "fiz indicação",
-                selected: bottomNavigationItemStatus[1],
+                selected: widget.bottomNavigationItemStatus[1],
                 onPress: () {
                   BlocProvider.of<PagesBloc>(context).add(PagesEvent.two);
+                  setState(() {
+                    widget.callback(1);
+                  });
                 },
               ),
               BottomNavigationItem(
                 color: Color(0xffD61C80),
                 text: "Meu perfil",
-                selected: bottomNavigationItemStatus[2],
+                selected: widget.bottomNavigationItemStatus[2],
                 onPress: () {
                   BlocProvider.of<PagesBloc>(context).add(PagesEvent.three);
+                  setState(() {
+                    widget.callback(2);
+                  });
                 },
               ),
               BottomNavigationItem(
                 color: Color(0xff008FCA),
                 text: "pedi indicação",
-                selected: bottomNavigationItemStatus[3],
+                selected: widget.bottomNavigationItemStatus[3],
                 onPress: () {
                   BlocProvider.of<PagesBloc>(context).add(PagesEvent.four);
+                  setState(() {
+                    widget.callback(3);
+                  });
                 },
               ),
               BottomNavigationItem(
                 color: Color(0xffEE6B12),
                 text: "ranking",
-                selected: bottomNavigationItemStatus[4],
+                selected: widget.bottomNavigationItemStatus[4],
                 onPress: () {
                   BlocProvider.of<PagesBloc>(context).add(PagesEvent.five);
+                  setState(() {
+                    widget.callback(4);
+                  });
                 },
               ),
             ],
@@ -188,6 +230,7 @@ class BottomNavigationItem extends StatelessWidget {
         ? GestureDetector(
             onTap: () {
               onPress();
+              print('clique de baixo');
             },
             child: Container(
               height: 12,
@@ -235,6 +278,7 @@ class BottomNavigationItem extends StatelessWidget {
         : GestureDetector(
             onTap: () {
               onPress();
+              print('clique de baixo');
             },
             child: Container(
               height: 12,

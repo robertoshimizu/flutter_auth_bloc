@@ -73,210 +73,212 @@ class MyProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(
-              top: 20.0, left: 12.0, right: 12.0, bottom: 12.0),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    StarRanking(
-                      rating: 2.7,
-                      size: 16.0,
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.baseline,
-                      children: [
-                        Text(
-                          'ranking'.toUpperCase(),
-                          style: TextStyle(
-                            fontSize: 8,
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(
+                top: 20.0, left: 12.0, right: 12.0, bottom: 12.0),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      StarRanking(
+                        rating: 2.7,
+                        size: 16.0,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.baseline,
+                        children: [
+                          Text(
+                            'ranking'.toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 8,
+                            ),
                           ),
-                        ),
-                        Text(
-                          '95',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  side: BorderSide(
-                    color: Color(0xffFFFFFF),
-                    width: .3,
+                          Text(
+                            '95',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-                elevation: 2,
-                child: Row(
-                  children: [
-                    // Photo
-                    ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10.0),
-                        bottomLeft: Radius.circular(10.0),
-                      ),
-                      child: Image(
-                        fit: BoxFit.fill,
-                        image: NetworkImage(user.photo),
-                        height: 180,
-                      ),
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    side: BorderSide(
+                      color: Color(0xffFFFFFF),
+                      width: .3,
                     ),
-
-                    Flexible(
-                      child: Container(
-                        height: 150,
-                        padding: const EdgeInsets.only(left: 8, right: 8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Container(
-                              width: 100,
-                              child: Wrap(
-                                  direction: Axis.horizontal,
-                                  alignment: WrapAlignment.start,
-                                  children: [
-                                    Text(
-                                      user.name,
-                                      style: TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ]),
-                            ),
-
-                            // Title
-                            Text(
-                              user.occupation,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w900,
-                                fontSize: 10,
-                              ),
-                              textAlign: TextAlign.left,
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.baseline,
-                              children: [
-                                Text(
-                                  '44',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  'indicações feitas'.toUpperCase(),
-                                  style: TextStyle(
-                                    fontSize: 8,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.baseline,
-                              children: [
-                                Text(
-                                  '12',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  'indicações recebidas'.toUpperCase(),
-                                  style: TextStyle(
-                                    fontSize: 8,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Text(
-                              'Indicado por Júlio Macedo Valério e mais 5 pessoas',
-                              style: TextStyle(
-                                fontSize: 10,
-                                fontStyle: FontStyle.normal,
-                              ),
-                              textAlign: TextAlign.justify,
-                              maxLines: 2,
-                              softWrap: true,
-                            ),
-                          ],
+                  ),
+                  elevation: 2,
+                  child: Row(
+                    children: [
+                      // Photo
+                      ClipRRect(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10.0),
+                          bottomLeft: Radius.circular(10.0),
+                        ),
+                        child: Image(
+                          fit: BoxFit.fill,
+                          image: NetworkImage(user.photo),
+                          height: 180,
                         ),
                       ),
-                    ),
-                  ],
+
+                      Flexible(
+                        child: Container(
+                          height: 150,
+                          padding: const EdgeInsets.only(left: 8, right: 8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Container(
+                                width: 100,
+                                child: Wrap(
+                                    direction: Axis.horizontal,
+                                    alignment: WrapAlignment.start,
+                                    children: [
+                                      Text(
+                                        user.name,
+                                        style: TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ]),
+                              ),
+
+                              // Title
+                              Text(
+                                user.occupation,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 10,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.baseline,
+                                children: [
+                                  Text(
+                                    '44',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    'indicações feitas'.toUpperCase(),
+                                    style: TextStyle(
+                                      fontSize: 8,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.baseline,
+                                children: [
+                                  Text(
+                                    '12',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    'indicações recebidas'.toUpperCase(),
+                                    style: TextStyle(
+                                      fontSize: 8,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                'Indicado por Júlio Macedo Valério e mais 5 pessoas',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontStyle: FontStyle.normal,
+                                ),
+                                textAlign: TextAlign.justify,
+                                maxLines: 2,
+                                softWrap: true,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        Container(
-          padding: EdgeInsets.fromLTRB(12, 8, 12, 18),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  'especialidades'.toUpperCase(),
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          Container(
+            padding: EdgeInsets.fromLTRB(12, 8, 12, 18),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'especialidades'.toUpperCase(),
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(user.about),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                    'Membro desde ${DateFormat.yM('pt_BR').format(user.registered)}'),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(user.about),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                      'Membro desde ${DateFormat.yM('pt_BR').format(user.registered)}'),
+                ),
+              ],
+            ),
           ),
-        ),
-        SizedBox(height: 5.0),
-        new ColoredRoundedButton(
-          text: 'PAINEL DE SOLICITAÇÕES',
-          onPress: () {
-            BlocProvider.of<PagesBloc>(context).add(PagesEvent.one);
-          },
-          enabled: true,
-          color: Color(0xff71196F),
-        ),
-        new ColoredRoundedButton(
-          text: 'INDICAÇÕES QUE EU PEDI',
-          onPress: () {
-            BlocProvider.of<PagesBloc>(context).add(PagesEvent.four);
-          },
-          enabled: true,
-          color: Color(0xff84BC75),
-        ),
-        new ColoredRoundedButton(
-          text: 'INDICAÇÕES QUE EU FIZ',
-          onPress: () {
-            BlocProvider.of<PagesBloc>(context).add(PagesEvent.two);
-          },
-          enabled: true,
-          color: Color(0xff008FCA),
-        ),
-        new ColoredRoundedButton(
-          text: 'RANKING DE INDICADOS',
-          onPress: () {
-            BlocProvider.of<PagesBloc>(context).add(PagesEvent.five);
-          },
-          enabled: true,
-          color: Color(0xffEE6B12),
-        ),
-      ],
+          SizedBox(height: 5.0),
+          new ColoredRoundedButton(
+            text: 'PAINEL DE SOLICITAÇÕES',
+            onPress: () {
+              BlocProvider.of<PagesBloc>(context).add(PagesEvent.one);
+            },
+            enabled: true,
+            color: Color(0xff71196F),
+          ),
+          new ColoredRoundedButton(
+            text: 'INDICAÇÕES QUE EU PEDI',
+            onPress: () {
+              BlocProvider.of<PagesBloc>(context).add(PagesEvent.four);
+            },
+            enabled: true,
+            color: Color(0xff84BC75),
+          ),
+          new ColoredRoundedButton(
+            text: 'INDICAÇÕES QUE EU FIZ',
+            onPress: () {
+              BlocProvider.of<PagesBloc>(context).add(PagesEvent.two);
+            },
+            enabled: true,
+            color: Color(0xff008FCA),
+          ),
+          new ColoredRoundedButton(
+            text: 'RANKING DE INDICADOS',
+            onPress: () {
+              BlocProvider.of<PagesBloc>(context).add(PagesEvent.five);
+            },
+            enabled: true,
+            color: Color(0xffEE6B12),
+          ),
+        ],
+      ),
     );
   }
 }

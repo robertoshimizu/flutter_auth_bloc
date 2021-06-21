@@ -8,7 +8,7 @@ part 'pages_state.dart';
 enum PagesEvent { one, two, three, four, five }
 
 class PagesBloc extends Bloc<PagesEvent, PagesState> {
-  PagesBloc() : super(PagesOne());
+  PagesBloc() : super(PagesThree());
 
   @override
   Stream<PagesState> mapEventToState(

@@ -14,21 +14,30 @@ class _SplashState extends State<Splash> {
   final int _totalPages = 4;
   int _currentPage = 0;
 
-  List<Widget> _buildPageIndicator() {
+  List<Widget> _buildPageIndicator(int pageNum) {
+    var color = getPageItems()[pageNum];
     List<Widget> list = [];
     for (var i = 0; i < _totalPages; i++) {
-      list.add(i == _currentPage ? _indicator(true) : _indicator(false));
+      list.add(i == _currentPage
+          ? _indicator(
+              true,
+              color.buttomColor,
+            )
+          : _indicator(
+              false,
+              color.buttomColor,
+            ));
     }
     return list;
   }
 
-  Widget _indicator(bool isActive) {
+  Widget _indicator(bool isActive, Color color) {
     return AnimatedContainer(
       duration: Duration(milliseconds: 150),
       height: 6.0,
       width: isActive ? 24.0 : 16.0,
       decoration: BoxDecoration(
-        color: isActive ? Colors.black : Colors.grey[400],
+        color: isActive ? color : Colors.grey[400],
         shape: BoxShape.circle,
       ),
     );
@@ -64,12 +73,12 @@ class _SplashState extends State<Splash> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: _buildPageIndicator(),
+                children: _buildPageIndicator(_currentPage),
               ),
               SizedBox(
                 height: size.height * 0.05,
               ),
-              startButtons(),
+              startButtons(_currentPage),
               // Text('This is a Splash Screen.button to start a session'),
               // Text('it should have a carrousel'),
               // Text('Button to register or login a user'),
@@ -80,22 +89,23 @@ class _SplashState extends State<Splash> {
     );
   }
 
-  Widget startButtons() {
+  Widget startButtons(int pageNum) {
+    var color = getPageItems()[pageNum];
     return Container(
       margin: EdgeInsets.all(10),
       child: Column(
         children: [
           Container(
-            width: MediaQuery.of(context).size.width * 0.85,
+            width: MediaQuery.of(context).size.width * 0.55,
             height: 55, // Will take 50% of screen space
             decoration: BoxDecoration(
-                color: Color(0xFF00B878),
+                color: color.buttomColor,
                 borderRadius: BorderRadius.all(
                   Radius.circular(25),
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Color(0xFF00B878).withOpacity(0.2),
+                    color: (color.buttomColor).withOpacity(0.2),
                     spreadRadius: 3,
                     blurRadius: 4,
                     offset: Offset(0, 3),
@@ -108,9 +118,9 @@ class _SplashState extends State<Splash> {
               },
               child: Center(
                 child: Text(
-                  'Entrar',
+                  'Pular'.toUpperCase(),
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 18,
                     color: Colors.white,
                   ),
                 ),
@@ -128,39 +138,51 @@ class _SplashState extends State<Splash> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SizedBox(
-          height: size.height * 0.05,
-        ),
-        Center(
-          child: Text(
-            item.title,
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 20.0,
+            bottom: 38.0,
+          ),
+          child: Center(
+            child: Image(
+              image: AssetImage(item.imageUrl),
+              height: size.height * 0.16,
             ),
           ),
         ),
         SizedBox(
           height: size.height * 0.05,
+        ),
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 50.0,
+            ),
+            child: Text(
+              (item.title).toUpperCase(),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: size.height * 0.07,
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 54.0),
           child: Text(
-            item.description,
+            (item.description),
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 18,
             ),
           ),
         ),
         SizedBox(
-          height: size.height * 0.05,
-        ),
-        Center(
-          child: Image(
-            image: AssetImage(item.imageUrl),
-            height: size.height * 0.35,
-          ),
+          height: size.height * 0.02,
         ),
       ],
     );

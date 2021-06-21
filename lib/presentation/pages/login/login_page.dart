@@ -10,12 +10,46 @@ import '../pages.dart';
 class PhoneLoginWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return BlocProvider<PhoneloginBloc>(
       create: (context) =>
           PhoneloginBloc(authRepository: locator<DataAuthRepository>()),
       child: Scaffold(
-        appBar: AppBar(),
-        body: LoginForm(),
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+        ),
+        body: SafeArea(
+          child: CustomScrollView(
+            slivers: [
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 20.0,
+                        bottom: 38.0,
+                      ),
+                      child: Center(
+                        child: Image(
+                          image:
+                              AssetImage('assets/images/lockup-eu-indico.png'),
+                          height: size.height * 0.16,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: size.height * 0.05,
+                    ),
+                    LoginForm(),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -94,80 +128,71 @@ class PhoneFormPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String _phoneNumber;
-    return Scaffold(
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: Padding(
-                padding: EdgeInsets.all(34),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Text(
-                      "Phone Auth",
-                      style: Theme.of(context).textTheme.headline5,
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    TextFormField(
-                      keyboardType: TextInputType.phone,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      style: TextStyle(fontSize: 17, color: Colors.black),
-                      decoration: const InputDecoration(
-                          icon: Icon(Icons.phone),
-                          labelText: '(DDD) + Celular',
-                          labelStyle: TextStyle(
-                              fontSize: 12, color: Color(0xff6A7B86))),
-                      inputFormatters: [
-                        mobileFormatter,
-                      ],
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Por favor entre com um valor';
-                        }
-                        if (value.length < 15) {
-                          return 'Numero incompleto';
-                        }
-                        _phoneNumber = value;
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 36),
-                      child: Text(
-                        "Enviaremos um código SMS para validar sua conta.",
-                        style: Theme.of(context).textTheme.caption,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    RoundedButton(
-                      text: 'Avançar',
-                      onPress: () {
-                        BlocProvider.of<PhoneloginBloc>(context).add(
-                          SendOtpEvent(
-                            phoNo: _phoneNumber,
-                          ),
-                        );
-                      },
-                      enabled: true,
-                    )
-                  ],
-                ),
+    return Container(
+      child: Padding(
+        padding: EdgeInsets.all(34),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 16,
+            ),
+            Text(
+              "Vamos começar".toUpperCase(),
+              style: Theme.of(context).textTheme.headline5,
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            TextFormField(
+              keyboardType: TextInputType.phone,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              style: TextStyle(fontSize: 17, color: Colors.black),
+              decoration: const InputDecoration(
+                  icon: Icon(Icons.phone),
+                  labelText: '(DDD) + Celular',
+                  labelStyle:
+                      TextStyle(fontSize: 12, color: Color(0xff6A7B86))),
+              inputFormatters: [
+                mobileFormatter,
+              ],
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Por favor entre com um valor';
+                }
+                if (value.length < 15) {
+                  return 'Numero incompleto';
+                }
+                _phoneNumber = value;
+                return null;
+              },
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 36),
+              child: Text(
+                "Enviaremos um código SMS para validar sua conta.",
+                style: Theme.of(context).textTheme.caption,
+                textAlign: TextAlign.center,
               ),
             ),
+            SizedBox(
+              height: 16,
+            ),
+            RoundedButton(
+              text: 'Avançar',
+              onPress: () {
+                BlocProvider.of<PhoneloginBloc>(context).add(
+                  SendOtpEvent(
+                    phoNo: _phoneNumber,
+                  ),
+                );
+              },
+              enabled: true,
+            )
           ],
         ),
       ),

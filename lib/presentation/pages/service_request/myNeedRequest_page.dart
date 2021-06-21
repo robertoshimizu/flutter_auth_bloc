@@ -43,7 +43,6 @@ class MyNeedRequestPage extends StatelessWidget {
                   style: TextStyle(fontSize: 20.0),
                 );
               } else {
-                print('modo wait');
                 return Text('Não há nenhuma requisição na plataforma');
               }
             }),

@@ -18,7 +18,8 @@ class Master extends StatefulWidget {
 }
 
 class _MasterState extends State<Master> {
-  final List<bool> bottomNavigationItemStatus = [
+  // List<bool> bottomNavigationItemStatus;
+  List<bool> bottomNavigationItemStatus = [
     false,
     true,
     false,
@@ -48,62 +49,52 @@ class _MasterState extends State<Master> {
       return 2;
     } else if (state is PagesFour) {
       return 3;
-    } else if (state is PagesFive) {
-      return 4;
     } else
-      return 1;
+      return 4;
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => PagesBloc(),
-      child: BlocBuilder<PagesBloc, PagesState>(
-        builder: (context, state) {
-          return SafeArea(
-            left: true,
-            top: true,
-            right: true,
-            bottom: true,
-            child: Scaffold(
-              resizeToAvoidBottomInset: true,
-              key: _scaffoldKey,
-              appBar: AppBar(
-                backgroundColor: Colors.white,
-                elevation: 0.0,
-                leadingWidth: 0.0,
-                centerTitle: false,
-                title: Image.asset(
-                  'assets/icons/logo-eu-indico.png',
-                ),
-                actions: [
-                  GestureDetector(
-                    child: Image.asset(
-                      'assets/icons/menu-bar.png',
-                    ),
-                    onTap: () => _openDrawer(),
-                  ),
-                ],
+    var stateNum = stateIndex(BlocProvider.of<PagesBloc>(context).state);
+    changeState(stateNum);
+    return SafeArea(
+      left: true,
+      top: true,
+      right: true,
+      bottom: true,
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        key: _scaffoldKey,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0.0,
+          leadingWidth: 0.0,
+          centerTitle: false,
+          title: Image.asset(
+            'assets/icons/logo-eu-indico.png',
+          ),
+          actions: [
+            GestureDetector(
+              child: Image.asset(
+                'assets/icons/menu-bar.png',
               ),
-              drawer: Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                child: MainDrawer(),
-              ),
-              backgroundColor: Colors.white,
-              body: MasterBody(user: widget.user),
-              bottomNavigationBar: MasterNavigationBar(
-                bottomNavigationItemStatus: bottomNavigationItemStatus,
-                callback: (value) {
-                  var stateNum =
-                      stateIndex(BlocProvider.of<PagesBloc>(context).state);
-                  setState(() {
-                    changeState(stateNum);
-                  });
-                },
-              ),
+              onTap: () => _openDrawer(),
             ),
-          );
-        },
+          ],
+        ),
+        drawer: Container(
+          width: MediaQuery.of(context).size.width * 0.9,
+          child: MainDrawer(),
+        ),
+        backgroundColor: Colors.white,
+        body: MasterBody(user: widget.user),
+        bottomNavigationBar: BlocBuilder<PagesBloc, PagesState>(
+          builder: (context, state) {
+            return MasterNavigationBar(
+              bottomNavigationItemStatus: bottomNavigationItemStatus,
+            );
+          },
+        ),
       ),
     );
   }
@@ -141,12 +132,10 @@ class MasterBody extends StatelessWidget {
 }
 
 class MasterNavigationBar extends StatefulWidget {
-  final Function callback;
   final List<bool> bottomNavigationItemStatus;
   const MasterNavigationBar({
     Key key,
     @required this.bottomNavigationItemStatus,
-    @required this.callback,
   }) : super(key: key);
 
   @override
@@ -170,9 +159,9 @@ class _MasterNavigationBarState extends State<MasterNavigationBar> {
                 onPress: () {
                   BlocProvider.of<PagesBloc>(context).add(PagesEvent.one);
 
-                  setState(() {
-                    widget.callback(0);
-                  });
+                  // setState(() {
+                  //   widget.callback(0);
+                  // });
                 },
               ),
               BottomNavigationItem(
@@ -181,9 +170,9 @@ class _MasterNavigationBarState extends State<MasterNavigationBar> {
                 selected: widget.bottomNavigationItemStatus[1],
                 onPress: () {
                   BlocProvider.of<PagesBloc>(context).add(PagesEvent.two);
-                  setState(() {
-                    widget.callback(1);
-                  });
+                  // setState(() {
+                  //   widget.callback(1);
+                  // });
                 },
               ),
               BottomNavigationItem(
@@ -192,9 +181,9 @@ class _MasterNavigationBarState extends State<MasterNavigationBar> {
                 selected: widget.bottomNavigationItemStatus[2],
                 onPress: () {
                   BlocProvider.of<PagesBloc>(context).add(PagesEvent.three);
-                  setState(() {
-                    widget.callback(2);
-                  });
+                  // setState(() {
+                  //   widget.callback(2);
+                  // });
                 },
               ),
               BottomNavigationItem(
@@ -203,9 +192,9 @@ class _MasterNavigationBarState extends State<MasterNavigationBar> {
                 selected: widget.bottomNavigationItemStatus[3],
                 onPress: () {
                   BlocProvider.of<PagesBloc>(context).add(PagesEvent.four);
-                  setState(() {
-                    widget.callback(3);
-                  });
+                  // setState(() {
+                  //   widget.callback(3);
+                  // });
                 },
               ),
               BottomNavigationItem(
@@ -214,9 +203,9 @@ class _MasterNavigationBarState extends State<MasterNavigationBar> {
                 selected: widget.bottomNavigationItemStatus[4],
                 onPress: () {
                   BlocProvider.of<PagesBloc>(context).add(PagesEvent.five);
-                  setState(() {
-                    widget.callback(4);
-                  });
+                  // setState(() {
+                  //   widget.callback(4);
+                  // });
                 },
               ),
             ],
@@ -248,52 +237,47 @@ class BottomNavigationItem extends StatelessWidget {
       doubleChar = false;
     }
     return selected
-        ? GestureDetector(
-            onTap: () {
-              onPress();
-              print('clique de baixo');
-            },
-            child: Container(
-              height: 12,
-              width: 80,
-              child: Stack(
-                alignment: Alignment.center,
-                overflow: Overflow.visible,
-                children: [
-                  Positioned(
-                    top: -10,
-                    child: Container(
-                      width: 58.0,
-                      height: 58.0,
-                      decoration: new BoxDecoration(
-                        color: color,
-                        shape: BoxShape.circle,
-                      ),
+        ? Container(
+            height: 12,
+            width: 80,
+            child: Stack(
+              alignment: Alignment.center,
+              overflow: Overflow.visible,
+              children: [
+                Positioned(
+                  top: -10,
+                  child: Container(
+                    width: 58.0,
+                    height: 58.0,
+                    decoration: new BoxDecoration(
+                      color: color,
+                      shape: BoxShape.circle,
                     ),
                   ),
-                  Positioned(
-                    top: 4,
-                    child: Container(
-                      width: 50,
-                      height: 58,
-                      child: Wrap(
-                          direction: Axis.horizontal,
-                          alignment: WrapAlignment.center,
-                          children: [
-                            Text(
-                              text.toUpperCase(),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 9,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
+                ),
+                Positioned(
+                  top: 4,
+                  child: Container(
+                    alignment: Alignment.bottomCenter,
+                    width: 50,
+                    height: 22,
+                    child: Wrap(
+                        direction: Axis.horizontal,
+                        alignment: WrapAlignment.center,
+                        children: [
+                          Text(
+                            text.toUpperCase(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 9,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
-                          ]),
-                    ),
+                          ),
+                        ]),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           )
         : GestureDetector(
@@ -311,7 +295,9 @@ class BottomNavigationItem extends StatelessWidget {
                     bottom: -14,
                     // Container somente para provocar wrap no titulo
                     child: Container(
+                      alignment: Alignment.bottomCenter,
                       width: 48,
+                      height: 30,
                       child: Wrap(
                           direction: Axis.horizontal,
                           alignment: WrapAlignment.center,

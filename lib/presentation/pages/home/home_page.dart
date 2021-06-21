@@ -29,8 +29,15 @@ class HomePage extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             UserData user = UserData.fromMap(snapshot.data, _user.uid);
-            return Master(
-              user: user,
+            return BlocProvider(
+              create: (context) => PagesBloc(),
+              child: BlocBuilder<PagesBloc, PagesState>(
+                builder: (context, state) {
+                  return Master(
+                    user: user,
+                  );
+                },
+              ),
             );
           } else if (snapshot.hasError) {
             return ErrorMenu();

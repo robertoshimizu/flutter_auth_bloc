@@ -22,245 +22,105 @@ class MyIndications extends StatelessWidget {
     final qqeur = Provider.of<DataUserRepository>(context);
     List<Indication> indications;
 
-    return Container(
-      color: Colors.amber.shade100,
-      child: FutureBuilder<List<Indication>>(
-          future: myindicationrep.fetchMyIndications(_user.uid),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              indications = snapshot.data.toList();
-              // indications.forEach((element) {
-              //   print(element.personIndicatedName);
-              // });
-              return new ListView.builder(
-                itemCount: indications.length,
-                itemBuilder: (builContext, index) => Card(
-                  margin: EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CircleAvatar(
-                              radius: 22,
-                              backgroundImage: NetworkImage(
-                                  indications[index].personIndicatedPhoto),
-                            ),
-                            SizedBox(
-                              width: 38,
-                            ),
-                            Container(
-                              width: 250,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 8.0),
-                                    child: Text(
-                                      indications[index].personIndicatedName,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 16,
-                                        color: Colors.blue,
-                                      ),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                  ),
-                                  FutureBuilder(
-                                    future: needRequestProvider.fetchOneRequest(
-                                        indications[index].requestId),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.hasData) {
-                                        NeedRequest request = snapshot.data;
-                                        // print(request.serviceClassification);
-                                        return Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  'para  ',
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontStyle: FontStyle.italic,
-                                                  ),
-                                                  textAlign: TextAlign.justify,
-                                                ),
-                                                Text(
-                                                  request.serviceClassification,
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontStyle: FontStyle.italic,
-                                                    color: Colors.purple,
-                                                  ),
-                                                  textAlign: TextAlign.justify,
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: 8,
-                                            ),
-                                            Row(
-                                              children: [
-                                                Text("solicitado por "),
-                                                FutureBuilder(
-                                                  future: qqeur.getUserById(
-                                                      request.userId),
-                                                  builder: (context, snapshot) {
-                                                    if (snapshot.hasData) {
-                                                      return Text(
-                                                        snapshot.data["name"],
-                                                        style: TextStyle(
-                                                          fontSize: 14,
-                                                          fontStyle:
-                                                              FontStyle.italic,
-                                                          color: Colors.purple,
-                                                        ),
-                                                        textAlign:
-                                                            TextAlign.justify,
-                                                      );
-                                                    } else if (snapshot
-                                                        .hasError) {
-                                                      return Text('error');
-                                                    } else
-                                                      return Text('');
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        );
-                                      } else if (snapshot.hasError) {
-                                        return Text('error');
-                                      } else
-                                        return Text('');
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            left: 12.0,
+            top: 12.0,
+            bottom: 12.0,
+          ),
+          child: Text(
+            'meus indicados'.toUpperCase(),
+            style: TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Flexible(
+          child: FutureBuilder<List<Indication>>(
+              future: myindicationrep.fetchMyIndications(_user.uid),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  indications = snapshot.data.toList();
+                  // indications.forEach((element) {
+                  //   print(element.personIndicatedName);
+                  // });
+                  return GridView.count(
+                    crossAxisCount: 2,
+                    children: new List.generate(
+                      indications.length,
+                      (index) => Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          side: BorderSide(
+                            width: .1,
+                          ),
                         ),
-                      ),
-                      Container(
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 2, 8, 2),
-                          child: Column(
+                        elevation: 2,
+                        margin: EdgeInsets.all(8.0),
+                        child: Container(
+                          padding: EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                indications[index].knowledgeLevel,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontStyle: FontStyle.italic,
-                                ),
-                                textAlign: TextAlign.left,
-                              ),
+                              // Photo
                               SizedBox(
-                                height: 8,
+                                height: 90,
+                                child: Image(
+                                  fit: BoxFit.fill,
+                                  image: NetworkImage(
+                                      indications[index].personIndicatedPhoto),
+                                ),
                               ),
-                              Builder(builder: (context) {
-                                if (indications[index].comments == null) {
-                                  return Text(' ');
-                                } else {
-                                  return Text(
-                                    '${indications[index].comments}',
+                              Flexible(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 8.0),
+                                  child: Text(
+                                    indications[index].personIndicatedName,
                                     style: TextStyle(
+                                      fontWeight: FontWeight.w700,
                                       fontSize: 14,
-                                      fontStyle: FontStyle.italic,
+                                      color: Colors.black87,
                                     ),
                                     textAlign: TextAlign.left,
-                                    softWrap: false,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                  );
-                                }
-                              }),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
                       ),
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text(
+                    'error',
+                    style: TextStyle(fontSize: 20.0),
+                  );
+                } else {
+                  return Center(
+                      child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
                       SizedBox(
-                        height: 10,
+                        child: CircularProgressIndicator(),
+                        width: 60,
+                        height: 60,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.star_rate,
-                                size: 18,
-                              ),
-                              Icon(
-                                Icons.star_rate,
-                                size: 18,
-                              ),
-                              Icon(
-                                Icons.star_rate,
-                                size: 18,
-                              ),
-                              Icon(
-                                Icons.star_rate,
-                                size: 18,
-                              ),
-                              Icon(
-                                Icons.star_rate_outlined,
-                                size: 18,
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.delete,
-                              color: Colors.black26,
-                            ),
-                            onPressed: () {
-                              print(
-                                  'indication id: ${indications[index].indicationId}');
-                              var message =
-                                  'Deseja mesmo apagar esta indicação?';
-                              showAlertDialog(context, 'indication',
-                                  indications[index], message);
-                            },
-                          )
-                        ],
+                      const Padding(
+                        padding: EdgeInsets.only(top: 16),
+                        child: Text('Awaiting result...'),
                       ),
                     ],
-                  ),
-                ),
-              );
-            } else if (snapshot.hasError) {
-              return Text(
-                'error',
-                style: TextStyle(fontSize: 20.0),
-              );
-            } else {
-              return Center(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    child: CircularProgressIndicator(),
-                    width: 60,
-                    height: 60,
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 16),
-                    child: Text('Awaiting result...'),
-                  ),
-                ],
-              ));
-            }
-          }),
+                  ));
+                }
+              }),
+        ),
+      ],
     );
   }
 }

@@ -65,12 +65,12 @@ class CatalogTabBar extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(
               vertical: 10,
-              horizontal: 1,
+              horizontal: 0,
             ),
             child: Text(
               'nome'.toUpperCase(),
               style: TextStyle(
-                fontSize: 11,
+                fontSize: 10,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -80,12 +80,12 @@ class CatalogTabBar extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(
               vertical: 10,
-              horizontal: 1,
+              horizontal: 0,
             ),
             child: Text(
               'ranking'.toUpperCase(),
               style: TextStyle(
-                fontSize: 11,
+                fontSize: 10,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -95,12 +95,12 @@ class CatalogTabBar extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(
               vertical: 10,
-              horizontal: 1,
+              horizontal: 0,
             ),
             child: Text(
               'relacionamento'.toUpperCase(),
               style: TextStyle(
-                fontSize: 11,
+                fontSize: 10,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -113,21 +113,18 @@ class CatalogTabBar extends StatelessWidget {
           case 0:
             BlocProvider.of<RankingblocBloc>(context)
                 .add(RankingblocEvent.nome);
-            print(tabIndex);
             break;
 
           // Ranking
           case 1:
             BlocProvider.of<RankingblocBloc>(context)
                 .add(RankingblocEvent.ranking);
-            print(tabIndex);
             break;
 
           // Relacionamento
           case 2:
             BlocProvider.of<RankingblocBloc>(context)
                 .add(RankingblocEvent.relacionamento);
-            print(tabIndex);
             break;
         }
       },

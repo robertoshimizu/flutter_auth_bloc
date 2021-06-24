@@ -149,6 +149,7 @@ class _MasterNavigationBarState extends State<MasterNavigationBar> {
       builder: (context, state) {
         return Container(
           height: 62,
+          width: MediaQuery.of(context).size.width,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -233,13 +234,13 @@ class BottomNavigationItem extends StatelessWidget {
   Widget build(BuildContext context) {
     bool doubleChar = text.contains(" ");
 
-    if (text == "meu perfil") {
+    if (text == "meu perfil".toUpperCase()) {
       doubleChar = false;
     }
     return selected
         ? Container(
             height: 12,
-            width: 80,
+            width: MediaQuery.of(context).size.width * 0.15,
             child: Stack(
               alignment: Alignment.center,
               overflow: Overflow.visible,
@@ -259,44 +260,45 @@ class BottomNavigationItem extends StatelessWidget {
                   top: 4,
                   child: Container(
                     alignment: Alignment.bottomCenter,
-                    width: 50,
+                    width: MediaQuery.of(context).size.width * 0.13,
                     height: 22,
                     child: Wrap(
-                        direction: Axis.horizontal,
-                        alignment: WrapAlignment.center,
-                        children: [
-                          Text(
-                            text.toUpperCase(),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 9,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
+                      direction: Axis.horizontal,
+                      alignment: WrapAlignment.center,
+                      children: [
+                        Text(
+                          text.toUpperCase(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 9,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
                           ),
-                        ]),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
             ),
           )
-        : GestureDetector(
-            onTap: () {
-              onPress();
-            },
-            child: Container(
-              height: 12,
-              width: 80,
-              child: Stack(
-                alignment: Alignment.bottomCenter,
-                overflow: Overflow.visible,
-                children: [
-                  Positioned(
-                    bottom: -14,
-                    // Container somente para provocar wrap no titulo
+        : Container(
+            height: 12,
+            width: MediaQuery.of(context).size.width * 0.15,
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              overflow: Overflow.visible,
+              children: [
+                Positioned(
+                  bottom: -14,
+                  // Container somente para provocar wrap no titulo
+                  child: GestureDetector(
+                    onTap: () {
+                      onPress();
+                    },
                     child: Container(
                       alignment: Alignment.bottomCenter,
-                      width: 48,
+                      width: MediaQuery.of(context).size.width * 0.13,
                       height: 30,
                       child: Wrap(
                           direction: Axis.horizontal,
@@ -314,19 +316,19 @@ class BottomNavigationItem extends StatelessWidget {
                           ]),
                     ),
                   ),
-                  Positioned(
-                    top: 28,
-                    child: Container(
-                      width: 58.0,
-                      height: 58.0,
-                      decoration: new BoxDecoration(
-                        color: color,
-                        shape: BoxShape.circle,
-                      ),
+                ),
+                Positioned(
+                  top: 28,
+                  child: Container(
+                    width: 58.0,
+                    height: 58.0,
+                    decoration: new BoxDecoration(
+                      color: color,
+                      shape: BoxShape.circle,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
   }

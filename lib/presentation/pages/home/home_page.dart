@@ -142,14 +142,14 @@ class MyProfile extends StatelessWidget {
 
                     Flexible(
                       child: Container(
-                        height: 150,
+                        height: MediaQuery.of(context).size.height * 0.20,
                         padding: const EdgeInsets.only(left: 8, right: 8),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Container(
-                              width: 100,
+                              width: MediaQuery.of(context).size.width,
                               child: Wrap(
                                   direction: Axis.horizontal,
                                   alignment: WrapAlignment.start,

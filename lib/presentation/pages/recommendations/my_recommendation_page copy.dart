@@ -48,49 +48,58 @@ class MyIndications extends StatelessWidget {
                   // indications.forEach((element) {
                   //   print(element.personIndicatedName);
                   // });
-                  return GridView.count(
-                    crossAxisCount: 2,
-                    children: new List.generate(
-                      indications.length,
-                      (index) => Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          side: BorderSide(
-                            width: .1,
-                          ),
-                        ),
-                        elevation: 2,
-                        margin: EdgeInsets.all(8.0),
-                        child: Container(
-                          padding: EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Photo
-                              SizedBox(
-                                height: 90,
-                                child: Image(
-                                  fit: BoxFit.fill,
-                                  image: NetworkImage(
-                                      indications[index].personIndicatedPhoto),
-                                ),
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: GridView.count(
+                      crossAxisCount: 2,
+                      childAspectRatio: 10 / 5,
+                      children: new List.generate(
+                        indications.length,
+                        (index) => SizedBox(
+                          height: double.infinity,
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              side: BorderSide(
+                                width: .1,
                               ),
-                              Flexible(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: Text(
-                                    indications[index].personIndicatedName,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 14,
-                                      color: Colors.black87,
-                                    ),
-                                    textAlign: TextAlign.left,
+                            ),
+                            elevation: 2,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Photo
+                                ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10.0),
+                                    bottomLeft: Radius.circular(10.0),
+                                  ),
+                                  child: Image(
+                                    fit: BoxFit.fill,
+                                    image: NetworkImage(indications[index]
+                                        .personIndicatedPhoto),
+                                    height: double.infinity,
                                   ),
                                 ),
-                              ),
-                            ],
+
+                                Flexible(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    child: Text(
+                                      indications[index].personIndicatedName,
+                                      textAlign: TextAlign.justify,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 14,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

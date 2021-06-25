@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
               ),
             );
           } else if (snapshot.hasError) {
-            return ErrorMenu();
+            return ErrorMenu(error: snapshot.error.toString());
           } else if (!snapshot.hasData) {
             return ProfileIndex();
           } else
@@ -52,21 +52,23 @@ class HomePage extends StatelessWidget {
 }
 
 class ErrorMenu extends StatelessWidget {
+  final String error;
   const ErrorMenu({
     Key key,
+    this.error,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            'Did not load userData',
-            style: TextStyle(fontSize: 20.0),
+    return Scaffold(
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            'Error getting user data: $error',
+            style: TextStyle(fontSize: 14.0),
           ),
-        ],
+        ),
       ),
     );
   }

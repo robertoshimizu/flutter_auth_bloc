@@ -50,6 +50,9 @@ class ProfileIndex extends StatelessWidget {
                   ),
                 ),
               ),
+              SizedBox(
+                height: size.height * 0.2,
+              ),
               startButtons(
                 Color(0xff84BC75),
                 'próxima',

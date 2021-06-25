@@ -33,9 +33,9 @@ class UserData {
   final String id;
   final String gender;
   final String about;
-  final String cpf;
+  String cpf;
   final String companyName;
-  final String birthdate;
+  String birthdate;
 
   UserData({
     this.uid,

@@ -8,7 +8,6 @@ import '../../../data/repository/firestore_cloud_repository.dart';
 import '../../../data/repository/repositories.dart';
 import '../../../domain/entities/entities.dart';
 import '../../../locator.dart';
-import '../pages.dart';
 
 class FirstProfile4 extends StatelessWidget {
   final UserData user;
@@ -20,7 +19,6 @@ class FirstProfile4 extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     DataUserRepository api = locator<DataUserRepository>();
     return Scaffold(
-      appBar: AppBar(title: Text('Step Bar')),
       body: Container(
         margin: EdgeInsets.only(
           top: 10,
@@ -32,106 +30,115 @@ class FirstProfile4 extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Text(
-                  'Verifique se seu rosto está visível e a foto não está tremida',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+                padding: const EdgeInsets.only(
+                  top: 40.0,
+                  bottom: 38.0,
+                ),
+                child: Center(
+                  child: Image(
+                    image: AssetImage('assets/images/lockup-eu-indico.png'),
+                    height: size.height * 0.16,
                   ),
-                  textAlign: TextAlign.center,
                 ),
               ),
               SizedBox(
-                height: size.height * 0.05,
+                height: size.height * 0.03,
               ),
-              SizedBox(
-                height: size.height * 0.05,
-              ),
-              // CircleAvatar(
-              //   radius: (100),
-              //   backgroundColor: Colors.transparent,
-              //   backgroundImage: FileImage(imagePath),
-              // ),
-              CircleAvatar(
-                backgroundColor: Colors.transparent,
-                radius: 120,
-                child: ClipOval(
+              Container(
+                decoration: BoxDecoration(
+                    border: Border.all(
+                  width: 7.0,
+                )),
+                padding: EdgeInsets.all(
+                  35.0,
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10.0),
+                    bottomLeft: Radius.circular(10.0),
+                  ),
                   child: Image.file(
                     File(imagePath),
-                    scale: 2.0,
+                    scale: 3.0,
                     fit: BoxFit.cover,
                   ),
                 ),
               ),
               SizedBox(
-                height: size.height * 0.15,
+                height: size.height * 0.08,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.35,
-                    height: 50, // Will take 50% of screen space
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(25),
+              Flexible(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.35,
+                      height: 50, // Will take 50% of screen space
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(25),
+                        ),
+                        border: Border.all(
+                          color: Color(0xFF00B878),
+                        ),
                       ),
-                      border: Border.all(
-                        color: Color(0xFF00B878),
-                      ),
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => FirstProfile3()));
-                        Navigator.pop(context);
-                      },
-                      child: Center(
-                        child: Text(
-                          'Tirar outra',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Color(0xFF00B878),
+                      child: GestureDetector(
+                        onTap: () {
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => FirstProfile3()));
+                          Navigator.pop(context);
+                        },
+                        child: Center(
+                          child: Text(
+                            'Tirar outra',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xFF00B878),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  MaterialButton(
-                    height: 50,
-                    minWidth: MediaQuery.of(context).size.width * 0.35,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(30)),
-                    onPressed: () async {
-                      var title = (user.uid).substring(0, 7);
-                      var selectedImage = File(imagePath);
-                      var cloudStorageService = CloudStorageService();
-                      var storageResult = await cloudStorageService.uploadImage(
-                          imageToUpload: selectedImage, title: title);
+                    MaterialButton(
+                      height: 50,
+                      minWidth: MediaQuery.of(context).size.width * 0.35,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(30)),
+                      onPressed: () async {
+                        var title = (user.uid).substring(0, 7);
+                        var selectedImage = File(imagePath);
+                        var cloudStorageService = CloudStorageService();
+                        var storageResult =
+                            await cloudStorageService.uploadImage(
+                                imageToUpload: selectedImage, title: title);
 
-                      var imageUrl = storageResult.imageUrl;
-                      user.photo = imageUrl;
+                        var imageUrl = storageResult.imageUrl;
+                        user.photo = imageUrl;
+                        user.registered = DateTime.now();
+                        print('Confere User: ${user.toJson()}');
 
-                      try {
-                        await api.createUser(user.toJson());
-                      } catch (error) {}
+                        try {
+                          await api.createUser(user.toJson());
+                        } catch (error) {
+                          print(error);
+                        }
 
-                      Phoenix.rebirth(context);
-                    },
-                    child: Text(
-                      "Gostei",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.white,
+                        Phoenix.rebirth(context);
+                      },
+                      child: Text(
+                        "Gostei",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.white,
+                        ),
                       ),
+                      color: Color(0xFF00B878),
                     ),
-                    color: Color(0xFF00B878),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),

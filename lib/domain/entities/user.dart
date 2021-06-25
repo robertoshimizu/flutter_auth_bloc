@@ -26,7 +26,7 @@ class UserData {
   final String mobilePhone1;
   final String phone1;
   String photo;
-  final DateTime registered;
+  DateTime registered;
   final String occupation;
   final String address;
   final String idtype;

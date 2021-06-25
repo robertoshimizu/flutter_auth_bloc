@@ -459,7 +459,13 @@ class AdicionaFoto extends StatelessWidget {
                 'fotografar',
                 context,
                 () {
-                  Navigator.pushNamed(context, 'first_profile1');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => TakePictureScreen(
+                              user: userdata,
+                            )),
+                  );
                 },
               ),
               SizedBox(
@@ -470,7 +476,13 @@ class AdicionaFoto extends StatelessWidget {
                 'rolo da camera',
                 context,
                 () {
-                  Navigator.pushNamed(context, 'first_profile1');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => TakePictureScreen(
+                              user: userdata,
+                            )),
+                  );
                 },
               ),
               SizedBox(

@@ -29,7 +29,9 @@ class AuthenticationBloc
   Stream<AuthenticationState> mapEventToState(
     AuthenticationEvent event,
   ) async* {
-    if (event is ListeningToUserAuthChanges) {
+    if (event is AppStarted) {
+      yield Loading();
+    } else if (event is ListeningToUserAuthChanges) {
       yield _mapAuthenticationUserChangedToState(event);
     } else if (event is Logout) {
       await authRepository.logout();

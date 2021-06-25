@@ -41,9 +41,10 @@ class HomePage extends StatelessWidget {
             );
           } else if (snapshot.hasError) {
             return ErrorMenu();
-          } else {
-            return FirstProfile1();
-          }
+          } else if (!snapshot.hasData) {
+            return ProfileIndex();
+          } else
+            return LoadingIndicator();
         },
       ),
     );

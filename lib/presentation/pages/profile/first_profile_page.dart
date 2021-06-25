@@ -33,23 +33,15 @@ class _FirstProfile1State extends State<FirstProfile1> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 15, 0, 20),
-                child: const Text(
-                  'Estamos quase lá!',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 48.0),
-                child: const Text(
-                  'Preencha o cadastro para conhecermos você melhor.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 15,
+                padding: const EdgeInsets.only(
+                  top: 20.0,
+                  bottom: 38.0,
+                ),
+                child: Center(
+                  child: Image(
+                    image: AssetImage('assets/images/lockup-eu-indico.png'),
+                    height: size.height * 0.16,
                   ),
                 ),
               ),

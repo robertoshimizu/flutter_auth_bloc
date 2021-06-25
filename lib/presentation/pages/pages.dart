@@ -35,3 +35,5 @@ export './widgets/alertDialog.dart';
 export './ranking/ranking_name.dart';
 export './ranking/ranking_ranking.dart';
 export './ranking/ranking_relacionamento.dart';
+export './profile/profile_index.dart';
+export './widgets/start_button.dart';
